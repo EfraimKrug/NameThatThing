@@ -1,0 +1,23 @@
+    NNTDeadEmail
+            NNTDate
+            NNTEmail
+            NNTEntryKey
+            NNTKey(NNTEntryKey)
+
+    NNTVote
+            EntryPrimary01(NNTEntryKey)
+            EntryPrimary02(NNTEntryKey)
+            EntryPrimary03(NNTEntryKey)
+            NNTVote
+            NNTVoteEmail
+            NNTVotePrimary
+
+    NNTVoteCount
+            NNTEntry(NNTEntryKey)
+            NNTVoteCount
+
+    NTTEntry
+            NNTEntryEmail
+            NNTEntryKey(PrimaryKey)
+            NNTEntrySuggestion
+            Voted
