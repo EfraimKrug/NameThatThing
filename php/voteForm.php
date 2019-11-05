@@ -16,7 +16,52 @@
 <?php
 require 'openDB.php';
 // This EntryKey is pointing to the email address of the user voting
+function sendEmail($email){
+  $to = $email;
+  $subject = 'NAME THAT THING: Thanks for voting';
+  $message = "<html>
+              <body bgcolor=\"#DCEEFC\">
+              <center>
+              Hi! Thanks so much for voting for the name for the three wavy dots!
+              <br><br>
+              Remember, the more people who vote, the more money is available for the
+              winner... Send this around! Invite your friends to participate!
+              <br><br>
+              Best of luck!
+              </center>
+              </body>
+              </html>";
+
+  $headers = "From: EfraimMKrug@GMail.com\r\n";
+  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+  if(mail($to, $subject, $message, $headers)){
+    return true;
+  } else {
+    return false;
+  }
+}
+
 $EntryKey = $_REQUEST['EntryKey'];
+$EntryEmail = $_REQUEST['EntryEmail'];
+//echo $EntryKey;
+$sql = "SELECT COUNT(*) AS RECORD_COUNT FROM NTTEntry WHERE NNTEntryKey = " . $EntryKey . " AND Voted = TRUE;";
+$resource = $conn->query($sql);
+$row = $resource->fetch_assoc();
+if($row['RECORD_COUNT'] > 0){
+  echo '<div id=formDiv>';
+  echo "<br><br>Oh, I am so sorry! This entry combonation has already voted once. You can only vote once, unless you make another entry.";
+  echo "<br><br>But you are welcome to<a href='../index.html'> make another entry! </a>";
+  echo '</div>';
+  exit(1);
+}
+
+$sql = "SELECT * FROM NNTVoteNavigation";
+$resource = $conn->query($sql);
+$row = $resource->fetch_assoc();
+$CycleCount = $row['NNTCycleCount'];
 
 $counter = 0;
 foreach ($_REQUEST as $Key => $Value){
@@ -26,7 +71,7 @@ foreach ($_REQUEST as $Key => $Value){
   $resource = $conn->query($sql);
 
   while($row = $resource->fetch_assoc()){
-     $NNTVoteCount = $row['NNTVoteCount'] + 1;
+     $NNTVoteCount = $row['NNTVoteCount'] + $CycleCount;
      $sql = "UPDATE NNTVoteCount SET NNTVoteCount = $NNTVoteCount WHERE NNTEntry = " . $Key;
      if($conn->query($sql) === true){
        $messageBack = "Update OK";
@@ -41,6 +86,9 @@ foreach ($_REQUEST as $Key => $Value){
  $sql = "UPDATE  NTTEntry SET Voted = TRUE WHERE  NNTEntryKey = " . $EntryKey;
  $conn->query($sql);
 
+ #send email acknowledging the vote...
+
+ sendEmail($EntryEmail);
  # clean up the DeadEmail - records...
  $oldDate = date("Y-m-d", strtotime("-7 day"));
  $sql = "SELECT * FROM NNTDeadEmail WHERE NNTDate < '" . $oldDate . "'";
@@ -79,11 +127,26 @@ foreach ($_REQUEST as $Key => $Value){
 <div id=bottomDiv>
 <table>
 <tr>
-<td>
-<a href="https://slate.com/culture/2015/04/typing-indicator-bubbles-on-iphone-gchat-facebook-messenger-when-can-someone-see-you-typing-explained.html"><span class=white>Uh oh!</span><span class=white> | </span></a>
-</td>
-<td>
-</td>
+  <td>
+    <a href="../WhatAreWeDoing.html"><span class=white>What are we doing?</span></a><span class=white> | </span>
+  </td>
+  <td>
+  </td>
+  <td>
+    <a href="../HowDoesThisWork.html"><span class=white>How does this work?</span></a><span class=white> | </span>
+  </td>
+  <td>
+  </td>
+  <td>
+    <a href="../WhoAreWe.html"><span class=white>Who are we?</span></a><span class=white> | </span>
+  </td>
+  <td>
+  </td>
+  <td>
+    <a href="https://slate.com/culture/2015/04/typing-indicator-bubbles-on-iphone-gchat-facebook-messenger-when-can-someone-see-you-typing-explained.html"><span class=white>Uh oh!</span><span class=white> | </span></a>
+  </td>
+  <td>
+  </td>
 </tr>
 </table>
 </div>

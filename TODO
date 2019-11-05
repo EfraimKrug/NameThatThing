@@ -1,11 +1,10 @@
-DotBouncer =>
-HobbleDust =>
-JumpyDot =>
-SquiggleDots
-
 
 To do:
 1) Monetize (Force)
-2) Make sure back arrow does not take user to previous page -------------
-3) Decorate pages... new icons etc
-4) Fix next page start counter...
+2) Note front for testing... (Don't pay... just click on the name)
+DONE 3) Format name - maybe "This is your choice... you can't vote for it, but other people can!"
+4) TEST!!!!
+
+DONE 2) Make sure back arrow does not take user to previous page -------------
+DONE 3) Decorate pages... new icons etc
+DONE 4) Money counter on first page...

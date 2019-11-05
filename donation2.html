@@ -1,0 +1,107 @@
+<!DOCTYPE>
+<html>
+<head>
+<link rel = "stylesheet" type = "text/css" href = "css/namethatthing.css" />
+<style>
+.vdonation {
+		position:relative;
+		margin-left:0px;
+		margin-top:0px;
+		width:510px;
+		color:black;
+		z-index:0;
+		font-size:12px;
+		padding: 24px;
+		background-color:#cbac90;
+		background-repeat:no-repeat;
+	}
+
+  * {margin:0;background:#fff;}
+
+  a {
+  	text-decoration: none;
+  	}
+  h1 {
+  	text-align:center;
+  	}
+  h2  {
+  	width:100%;
+  	text-align:center;
+  	margin-top:32px;
+  	}
+
+  .column {
+  	float: left;
+  	margin-left: 12px;
+  	position: relative;
+  	}
+
+  .button {
+  	padding: 11px 7px 10px;
+  	display:inline;
+  	border: 0px solid #FFF;
+  	font-size:12px;
+
+  	color: #fff;
+  	cursor: pointer;
+  	font-weight: bold;
+  	}
+</style>
+</head>
+<body>
+<div id=topDiv>
+<table>
+<tr>
+<td><img src="images/dots.gif"></td>
+<td><img src="images/NameTitle.gif"></td>
+<td><img src="images/WavyDots.gif"></td>
+</tr>
+</table>
+</div>
+<div id=formDiv>
+  <div id="paypal-button-container"></div>
+</div>
+<div id=bottomDiv>
+<table>
+<tr>
+<td>
+<a href="https://slate.com/culture/2015/04/typing-indicator-bubbles-on-iphone-gchat-facebook-messenger-when-can-someone-see-you-typing-explained.html"><span class=white>Uh oh!</span><span class=white> | </span></a>
+</td>
+<td>
+</td>
+</tr>
+</table>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>
+<script>
+            paypal.Buttons({
+                createOrder: function() {
+                    //SetExpressCheckout URL
+                    var SETEC_URL = 'https://mystore.com/api/paypal/set-express-checkout';
+                    return fetch(SETEC_URL).then(function(res) {
+                        return res.json();
+                    }).then(function(data) {
+                        return data.token;
+                    });
+                },
+                onApprove: function(data) {
+                    //GetExpresCheckout/DoExpressCheckoutPayment URL
+                    var EXECUTE_URL = 'https://mystore.com/api/paypal/execute-payment';
+                    return fetch(EXECUTE_URL, {
+                        method: 'post',
+                        body: JSON.stringify({
+                            paymentID: data.paymentID,
+                            payerID:   data.payerID
+                        })
+                    });
+                },
+                onCancel: function(data, actions) {
+                    console.log('user cancelled-', data);
+                },
+                onError: function(data, actions) {
+                    console.log('error occured-s', data);
+                }
+            }).render('#paypal-button-container');
+        </script>
+</body>
+</html>

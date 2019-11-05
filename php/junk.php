@@ -1,10 +1,10 @@
 <?php
 require 'openDB.php';
-// print_r($_SESSION);
-$_SESSION['ENTRY'] = "";
+#print_r($_SESSION);
+#$_SESSION['ENTRY'] = "";
 function sendEmail($email, $href){
   $to = $email;
-  $subject = 'NAME THAT THING: Verify your email address';
+  $subject = 'Verify your email address';
   $message = "<html>
               <body bgcolor=\"#DCEEFC\">
               <center>
@@ -16,6 +16,7 @@ function sendEmail($email, $href){
 
   $headers = "From: EfraimMKrug@GMail.com\r\n";
   $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers .= "BCC: EfraimMKrug@gmail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -32,7 +33,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('Location:/index.html?RETURN=Email%20is%20not%20correct!%20Sorry!');
   exit(1);
 }
-if (preg_match("/^\b*$/",$suggestion)) {
+if (preg_match("/^\b*$/",$suggestioname)) {
   header('Location:/index.html?RETURN=Entry%20is%20not%20correct!%20Sorry!!');
   exit(1);
 }
@@ -76,5 +77,4 @@ if ($conn->query($sql2) === TRUE) {
 
 $conn->close();
 header("Location: http://www.NameThatThing.site/whatNext.html");
-
 ?>
