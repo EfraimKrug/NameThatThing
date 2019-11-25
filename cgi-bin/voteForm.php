@@ -28,6 +28,7 @@ function sendEmail($email){
               winner... Send this around! Invite your friends to participate!
               <br><br>
               Best of luck!
+              <a href='https://NameThatThing.site'><img src='https://NameThatThing.site/images/FBAdvertisement.gif' alt='FB Advertisement' height=539 width=799/></a>
               </center>
               </body>
               </html>";
@@ -48,11 +49,12 @@ $EntryKey = $_REQUEST['EntryKey'];
 $EntryEmail = $_REQUEST['EntryEmail'];
 //echo $EntryKey;
 $sql = "SELECT COUNT(*) AS RECORD_COUNT FROM NTTEntry WHERE NNTEntryKey = " . $EntryKey . " AND Voted = TRUE;";
+// echo $sql;
 $resource = $conn->query($sql);
 $row = $resource->fetch_assoc();
 if($row['RECORD_COUNT'] > 0){
   echo '<div id=formDiv>';
-  echo "<br><br>Oh, I am so sorry! This entry combonation has already voted once. You can only vote once, unless you make another entry.";
+  echo "<br><br>Oh, I am so sorry! This entry combination has already voted once. You can only vote once, unless you make another entry.";
   echo "<br><br>But you are welcome to<a href='../index.html'> make another entry! </a>";
   echo '</div>';
   exit(1);
@@ -71,7 +73,8 @@ foreach ($_REQUEST as $Key => $Value){
   $resource = $conn->query($sql);
 
   while($row = $resource->fetch_assoc()){
-     $NNTVoteCount = $row['NNTVoteCount'] + $CycleCount;
+     // $NNTVoteCount = $row['NNTVoteCount'] + $CycleCount;
+     $NNTVoteCount = $row['NNTVoteCount'] + 1;
      $sql = "UPDATE NNTVoteCount SET NNTVoteCount = $NNTVoteCount WHERE NNTEntry = " . $Key;
      if($conn->query($sql) === true){
        $messageBack = "Update OK";
@@ -79,6 +82,7 @@ foreach ($_REQUEST as $Key => $Value){
        $messageBack = "Update Broke";
      }
    }
+   $counter++;
  }
 
  # notice - we need a payment here!
@@ -139,6 +143,11 @@ foreach ($_REQUEST as $Key => $Value){
   </td>
   <td>
     <a href="../WhoAreWe.html"><span class=white>Who are we?</span></a><span class=white> | </span>
+  </td>
+  <td>
+  </td>
+  <td>
+      <a href="StuffToRead.html"><span class=white>Stuff To Read</span><span class=white> | </span></a>
   </td>
   <td>
   </td>

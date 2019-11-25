@@ -49,13 +49,19 @@ if ($row = $resource->fetch_assoc()){
   $entryCount = 0;
 }
 
-if($entryCount > 0){
+if($entryCount > 20){
   header('Location:/index.html?RETURN=The entry:%20' . preg_replace('/\s/','%20', $suggestion) . '%20has%20been%20entered%20more%20than%20twenty%20times!!');
   exit(1);
 }
 
-$sql = "INSERT INTO `NTTEntry` (`NNTEntryEmail`, `NNTEntrySuggestion`, `Voted`) VALUES ('" . $email . "','" . $suggestion . "', false)";
+$NNTLastLevel = 0;
+$sql = "SELECT NNTCycleCount FROM NNTVoteNavigation";
+$resource = $conn->query($sql);
+if ($row = $resource->fetch_assoc()){
+  $NNTCycleCount = $row['NNTCycleCount'];
+}
 
+$sql = "INSERT INTO `NTTEntry` (`NNTEntryEmail`, `NNTEntrySuggestion`, `Voted`, `NNTLevel`) VALUES ('" . $email . "','" . $suggestion . "', false, " . $NNTCycleCount . ")";
 $last_id = 0;
 if ($conn->query($sql) === TRUE) {
    $last_id = $conn->insert_id;

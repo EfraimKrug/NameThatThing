@@ -1,0 +1,21 @@
+<html>
+  <head>
+  </head>
+    <body>
+      <map name="map">
+        <imagemap>
+         <image src="FBAdvertisement.gif" width="720" height="640" border="0" usemap="#map" />
+           <area>
+              <shape>rect</shape>
+              <coords>3,4,594,85</coords>
+              <xref  href="https://NameThatThing.site"></xref>
+           </area>
+           <area>
+              <shape>rect</shape>
+              <coords>550,62,583,75</coords>
+              <xref  href="https://NameThatThing.site"></xref>
+           </area>
+        </imagemap>
+      </map>
+</body>
+</html>
