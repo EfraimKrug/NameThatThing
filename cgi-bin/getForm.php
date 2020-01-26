@@ -2,14 +2,24 @@
 require 'openDB.php';
 // print_r($_SESSION);
 $_SESSION['ENTRY'] = "";
-function sendEmail($email, $href){
+function sendEmail($email, $href, $suggestion){
   $to = $email;
   $subject = 'NAME THAT THING: Verify your email address';
   $message = "<html>
               <body bgcolor=\"#DCEEFC\">
               <center>
               Hi! Please <a href='$href'>click on the link</a> to verify your email address...
-              And best of luck!
+              <br>
+              The way this works:
+              <br>
+              You have entered the suggestion: '$suggestion'.
+              <br>
+              Once you have confirmed your email address, and voted, your entry will be
+              eligible to win!
+              <br>
+              So go! <a href='$href'>Vote!</a>
+              <br>
+              And best of luck! May the most clever entry win!
               </center>
               </body>
               </html>";
@@ -75,7 +85,7 @@ $sql2 = "INSERT INTO `NNTDeadEmail`(`NNTEmail`, `NNTKey`, `NNTDate`, `NNTEntryKe
 if ($conn->query($sql2) === TRUE) {
    $confirmationString = "NNTKey=" . $NNTKey . "&NNTEntryEmail=" . $email . "&NNTSuggestion=" . $suggestion .  "&NNTEntryKey=" . $last_id . "'";
    $href = "http://www.NameThatThing.site/cgi-bin/confirmationPage.php?" . $confirmationString;
-   sendEmail($email, $href);
+   sendEmail($email, $href, $suggestion);
 } else {
    echo "Sorry: Something weird happened! Please come back later after we get this fixed...";
 }

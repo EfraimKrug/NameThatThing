@@ -1,0 +1,246 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahrzeits</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+
+  <script src="js/formatData.js"></script>
+  <script src="js/dataBase.js"></script>
+  <link rel="stylesheet" href="css/yahrzeit.css">
+  </head>
+<body>
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <h1><font color=#f98e3f>Yahrzeit</font></h1>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="large-8 medium-8 cell">
+      <h5>We will email two weeks before each yahrzeit</h5>
+    <form id=YahrzeitForm method="post">
+    <div class="grid-x grid-padding-x">
+      <div class="large-8 medium-8 cell">
+          <label class=flabel>Whole name? (as on a memorial plaque)</label>
+          <input id=yname type="text" placeholder="Yahrzeit Name" />
+       </div>
+     </div>
+
+     <div class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 small-4 cell">
+            <label class=flabel>Gregorian month?</label>
+            <select id=gmonth>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
+        </div>
+        <div class="large-4 medium-4 small-4 cell">
+            <label class=flabel>Gregorian day?</label>
+            <input id=gday type="text" placeholder="1-31" />
+        </div>
+        <div class="large-4 medium-4 small-4 cell">
+            <label class=flabelb>Gregorian year?</label>
+            <input id=gyear type="text" placeholder="Four digit year" />
+        </div>
+      </div>
+
+
+      <div class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 small-4 cell">
+            <label class=flabel>Hebrew month?</label>
+            <select id=hmonth>
+                <option value="Tishrei">Tishrei</option>
+                <option value="Cheshvan">Cheshvan</option>
+                <option value="Kislev">Kislev</option>
+                <option value="Tevet">Tevet</option>
+                <option value="Shvat">Shvat</option>
+                <option value="Adar">Adar</option>
+                <option value="AdarII">Adar II</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Iyar">Iyar</option>
+                <option value="Sivan">Sivan</option>
+                <option value="Tammuz">Tammuz</option>
+                <option value="Av">Av</option>
+                <option value="Elul">Elul</option>
+            </select>
+        </div>
+        <div class="large-4 medium-4 small-4 cell">
+            <label class=flabel>Hebrew day?</label>
+            <input id=hday type="text" placeholder="1-31" />
+        </div>
+        <div class="large-4 medium-4 small-4 cell">
+            <label class=flabelb>Hebrew year?</label>
+            <input id=hyear type="text" placeholder="Four digit year" />
+        </div>
+          <button id="SButton" type=button class="button" onclick=checkLogin();>Enter</button>
+      </div>
+    </form>
+  </div>
+    <div class="large-4 medium-4 cell">
+        <a href=# onclick=gotoRequests() class=YahrListMenu>Requests</a>
+        <a href=# onclick=gotoOrgs() class=YahrListMenu>Places</a>
+        <div class=YahrList>
+        <h5>Yahrzeits</h5>
+        <div id=YList class=YahrList>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<div id=output></div>
+<div id=output2></div>
+<div id=output3></div>
+</body>
+<script src="js/yahrzeit.js"></script>
+<script>
+var LOGON_OK = "";
+var LOGON_PID = "";
+var FIRST_ENTRY = true;
+var EDIT_FORM = false;
+var EDIT_YID = 0;
+
+function gotoRequests(){
+  var x = querystring('X'); //ConfKey
+  var y = querystring('Y'); //FName
+
+  document.location = "enterRequests.html?X=" + x + "&Y=" + y;
+}
+
+function gotoOrgs(){
+  var x = querystring('X'); //ConfKey
+  var y = querystring('Y'); //FName
+
+  document.location = "enterOrgs.html?X=" + x + "&Y=" + y;
+}
+
+function querystring(key) {
+  var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
+  var r=[], m;
+  while ((m=re.exec(document.location.search)) != null) r[r.length]=m[1];
+  return r;
+}
+
+var output = document.getElementById("output");
+function initForm(){
+  var SButton = document.getElementById("SButton");
+  EDIT_YID = 0;
+  EDIT_FORM = false;
+  SButton.innerHTML = "Add New!"
+
+  var yname = document.getElementById("yname");
+  var gmonth = document.getElementById("gmonth");
+  var gday = document.getElementById("gday");
+  var gyear = document.getElementById("gyear");
+  var hmonth = document.getElementById("hmonth");
+  var hday = document.getElementById("hday");
+  var hyear = document.getElementById("hyear");
+  yname.value = gyear.value = gday.value = hday.value = hyear.value = "";
+  gmonth.selectedIndex = hmonth.selectedIndex = 0;
+}
+
+function enterForm(){
+  // checkLogin();
+  var yname = document.getElementById("yname");
+  var gmonth = document.getElementById("gmonth");
+  var gday = document.getElementById("gday");
+  var gyear = document.getElementById("gyear");
+  var hmonth = document.getElementById("hmonth");
+  var hday = document.getElementById("hday");
+  var hyear = document.getElementById("hyear");
+  if(EDIT_FORM)
+    dbYahrzeits("update", output, querystring('X'), querystring('Y'), [EDIT_YID, escape(yname.value), gyear.value + "-" + (gmonth.selectedIndex + 1) + "-" + gday.value, hmonth.options[hmonth.selectedIndex].text, hday.value, hyear.value]);
+  else
+    dbYahrzeits("insert", output, querystring('X'), querystring('Y'), [0, escape(yname.value), gyear.value + "-" + (gmonth.selectedIndex + 1) + "-" + gday.value, hmonth.options[hmonth.selectedIndex].text, hday.value, hyear.value]);
+  // yname.value = gyear.value = gday.value = hday.value = hyear.value = "";
+  // gmonth.selectedIndex = hmonth.selectedIndex = 0;
+  initForm();
+  var SButton = document.getElementById("SButton");
+  SButton.innerHTML = "Enter New!"
+
+  // dbPYConn("insert", output, querystring('X'), querystring('Y'), [LOGON_PID, YID]);
+}
+
+function refillFormFinish(){
+  var yname = document.getElementById("yname");
+  var gmonth = document.getElementById("gmonth");
+  var gday = document.getElementById("gday");
+  var gyear = document.getElementById("gyear");
+  var hmonth = document.getElementById("hmonth");
+  var hday = document.getElementById("hday");
+  var hyear = document.getElementById("hyear");
+
+  var YData = JSON.parse(document.getElementById("output").innerHTML);
+  var SButton = document.getElementById("SButton");
+  // console.log(YData);
+  yname.value = unescape(YData['YName']);
+  var dArray = YData['YGDate'].split('-');
+  gyear.value = dArray[0];
+  gday.value = dArray[2];
+  hday.value = YData['YHDay'];
+  hyear.value = YData['YHYear'];
+  gmonth.selectedIndex = dArray[1];
+  hmonth.selectedIndex = YData['YHMonth'];
+  EDIT_YID = YData['YahrzeitID'];
+  EDIT_FORM = true;
+  SButton.innerHTML = "Change It!"
+}
+
+function refillForm(YahrzeitID){
+    // alert(YahrzeitID);
+    dbYahrzeits("select", output, querystring('X'), querystring('Y'), [YahrzeitID, '', '', '', '', ''], refillFormFinish);
+}
+
+function outYahrzeits(){
+  // console.log("formatYahrzeits");
+  var YData = JSON.parse(document.getElementById("output").innerHTML);
+  var YList = document.getElementById("YList");
+  YList.innerHTML = "<span class=YahrList onclick=initForm()>NEW</span><br>";
+  // alert(YData.length);
+  for (i=0; i < YData.length; i++){
+    YList.innerHTML += "<span class=YahrList onclick=refillForm(" + YData[i].YahrzeitID + ")>" + unescape(YData[i].YName) + "</span><br>";
+  }
+  var SButton = document.getElementById("SButton");
+  SButton.innerHTML = "Add New!"
+  // console.log(JSON.parse(logon));
+}
+
+function dbAccess(X, Y, ID){
+  var logon = JSON.parse(document.getElementById("output").innerHTML);
+  LOGON_OK = logon.RETURN;
+  if(LOGON_OK.search("TRUE") > -1){
+    LOGON_PID = logon.PID;
+    if(!FIRST_ENTRY) enterForm();
+    FIRST_ENTRY = false;
+    dbYahrzeitsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","",""], outYahrzeits);
+  }
+}
+
+function checkLogin(){
+  var x = querystring('X'); //ConfKey
+  var y = querystring('Y'); //FName
+  dbLogon("check", output, x[0], y[0], dbAccess);
+  if(FIRST_ENTRY) initForm();
+}
+checkLogin();
+</script>
+<script src="js/escape.js"></script>
+<script src="js/vendor/jquery.js"></script>
+<script src="js/vendor/what-input.js"></script>
+<script src="js/vendor/foundation.js"></script>
+<script src="js/app.js"></script>
+</html>

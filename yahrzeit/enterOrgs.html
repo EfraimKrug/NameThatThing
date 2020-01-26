@@ -1,0 +1,305 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizations</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/yahrzeit.css">
+    <!-- "#320500"; fdf9cc-->
+  <style>
+    .OrgList {
+      background-color: #320500;
+      color: #f98e3f;
+      padding: 3%;
+    }
+
+    .OrgListMenu {
+      background-color: #320500;
+      color: #f98e3f;
+      padding: 3%;
+      border: 1px solid #f98e3f;
+      margin-bottom: 5px;
+    }
+
+    .OrgList2 {
+      color:"#ffffff";
+      background-color: "#f98e3f";
+      width: 200px;
+      height: 100px;
+      border: 2px solid red;
+    }
+
+    #EntryDisplay {
+      color:blue;
+    }
+
+    .grid-container {
+      width: 100%;
+      height: 100%;
+      min-height:900px;
+      z-index:-990;
+      background: url('https://www.NameThatThing.site/images/yahrzeit-candles.jpg?v1') no-repeat right;
+    }
+    body {
+      z-index:-999;
+      background-color: black;
+    }
+    #banner {
+      width: 100%;
+      height: 100%;
+      min-height:50px;
+      z-index:-990;
+      background-color: black;
+    }
+
+    .flabel, .flabelb {
+      color: #f98e3f;
+      font-weight: bold;
+    }
+    .flabelbx {
+      color: black;
+    }
+    #output {
+      color:white;
+      visibility: hidden;
+    }
+  </style>
+  <script src="js/formatData.js"></script>
+  <script src="js/dataBase.js"></script>
+  </head>
+<body>
+  <!--
+  <div id="bnr">
+    <div class="row">
+        <div class="small-12 columns">&nbsp;</div>
+    </div>
+  </div>
+-->
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <h1><font color=#f98e3f>Places</font></h1>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="large-8 medium-8 cell">
+      <h5>We will contact the organization for you</h5>
+    <form id=OrgForm method="post">
+    <div class="grid-x grid-padding-x">
+      <div class="large-8 medium-8 cell">
+          <label class=flabel>Place Name</label>
+          <input id=oname type="text" placeholder="Organization Name" />
+       </div>
+     </div>
+
+     <div class="grid-x grid-padding-x">
+       <div class="large-8 medium-8 cell">
+           <label class=flabel>Rabbi/Admin (and title)</label>
+           <input id=orav type="text" placeholder="As addressing an email e.g. Rabbi Zuber" />
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+          <div class="large-4 medium-4 small-4 cell">
+              <label class=flabel>City</label>
+              <input id=ocity type="text" placeholder="City" />
+          </div>
+          <div class="large-4 medium-4 small-4 cell">
+              <label class=flabel>State</label>
+              <input id=ostate type="text" placeholder="State" />
+          </div>
+          <div class="large-4 medium-4 small-4 cell">
+              <label class=flabel>Country</label>
+              <input id=ocountry type="text" placeholder="Country" />
+          </div>
+
+       </div>
+
+       <div class="grid-x grid-padding-x">
+           <div class="large-6 medium-6 small-6 cell">
+               <label class=flabel>Street</label>
+               <input id=ostreetaddress type="text" placeholder="Street Address" />
+           </div>
+           <div class="large-6 medium-6 small-6 cell">
+               <label class=flabel>Email</label>
+               <input id=oemail type="text" placeholder="Email" />
+           </div>
+        </div>
+          <button id="SButton" type=button class="button" onclick=checkLogin();>Enter</button>
+      </div>
+    </form>
+    <div class="large-4 medium-4 cell">
+      <!-- <div class="primary callout"> -->
+        <a href=# onclick=gotoYahr() class=OrgListMenu>Yahrzeits</a>
+        <a href=# onclick=gotoRequests() class=OrgListMenu>Requests</a>
+        <div class=OrgList>
+        <h5>Organizations</h5>
+        <div id=OList class=OrgList>
+        </div>
+      <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id=output></div>
+<div id=output2></div>
+<div id=output3></div>
+
+</body>
+<script>
+var LOGON_OK = "";
+var LOGON_PID = "";
+var FIRST_ENTRY = true;
+var EDIT_FORM = false;
+var EDIT_OID = 0;
+
+function gotoYahr(){
+  var x = querystring('X'); //ConfKey
+  var y = querystring('Y'); //FName
+
+  document.location = "enterYahrzeits.html?X=" + x + "&Y=" + y;
+}
+
+function gotoRequests(){
+  var x = querystring('X'); //ConfKey
+  var y = querystring('Y'); //FName
+
+  document.location = "enterRequests.html?X=" + x + "&Y=" + y;
+}
+
+function querystring(key) {
+  var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
+  var r=[], m;
+  while ((m=re.exec(document.location.search)) != null) r[r.length]=m[1];
+  return r;
+}
+
+var output = document.getElementById("output");
+function initForm(type){
+  var SButton = document.getElementById("SButton");
+  // alert("HERE: " + type);
+  // if(type == 'NEW'){
+    EDIT_OID = 0;
+    EDIT_FORM = false;
+    SButton.innerHTML = "Add New!"
+  // }
+  var oname = document.getElementById("oname");
+  var ocity = document.getElementById("ocity");
+  var ostate = document.getElementById("ostate");
+  var ocountry = document.getElementById("ocountry");
+  var ostreetaddress = document.getElementById("ostreetaddress");
+  var orav = document.getElementById("orav");
+  var oemail = document.getElementById("oemail");
+  oname.value = ocountry.value = ostate.value = orav.value = oemail.value = "";
+  ocity.value = ostreetaddress.value = "";
+}
+
+function enterForm(){
+  // checkLogin();
+  var oname = document.getElementById("oname");
+  var ocity = document.getElementById("ocity");
+  var ostate = document.getElementById("ostate");
+  var ocountry = document.getElementById("ocountry");
+  var ostreetaddress = document.getElementById("ostreetaddress");
+  var orav = document.getElementById("orav");
+  var oemail = document.getElementById("oemail");
+  // console.log("Details");
+  // console.log(EDIT_FORM);
+  // console.log([EDIT_OID, orav.value, oemail.value, oname.value, ostreetaddress.value, ocity.value, ostate.value, ocountry.value]);
+  if(EDIT_FORM)
+    dbOrgs("update", output, querystring('X'), querystring('Y'), [EDIT_OID, escape(orav.value), escape(oemail.value), escape(oname.value), escape(ostreetaddress.value), escape(ocity.value), escape(ostate.value), escape(ocountry.value)]);
+  else
+    dbOrgs("insert", output, querystring('X'), querystring('Y'), [0, escape(orav.value), escape(oemail.value), escape(oname.value), escape(ostreetaddress.value), escape(ocity.value), escape(ostate.value), escape(ocountry.value)]);
+
+  initForm();
+  var SButton = document.getElementById("SButton");
+  SButton.innerHTML = "Enter New!"
+
+  // dbPYConn("insert", output, querystring('X'), querystring('Y'), [LOGON_PID, YID]);
+}
+
+// var DEBUG_ON = false;
+
+function refillFormFinish(){
+  var oname = document.getElementById("oname");
+  var ocity = document.getElementById("ocity");
+  var ostate = document.getElementById("ostate");
+  var ocountry = document.getElementById("ocountry");
+  var ostreetaddress = document.getElementById("ostreetaddress");
+  var orav = document.getElementById("orav");
+  var oemail = document.getElementById("oemail");
+
+  var OData = JSON.parse(document.getElementById("output").innerHTML);
+  var SButton = document.getElementById("SButton");
+  // console.log("REFILL:");
+  // console.log(OData);
+  oname.value = unescape(OData['OName']);
+  ocountry.value = unescape(OData['OCountry']);
+  ostate.value = unescape(OData['OState']);
+  orav.value = unescape(OData['ORav']);
+  oemail.value = unescape(OData['OEmail']);
+  ocity.value = unescape(OData['OCity']);
+  // alert(OData['OStreetAddress']);
+  // alert(unescape(OData['OStreetAddress']));
+  // DEBUG_ON = true;
+  ostreetaddress.value = unescape(OData['OStreetAddress']);
+  // DEBUG_ON = false;
+  // alert(ostreetaddress.value);
+  EDIT_OID = OData['OrgID'];
+  EDIT_FORM = true;
+  SButton.innerHTML = "Change It!"
+}
+
+function refillForm(OrgID){
+    // alert(YahrzeitID);
+    // alert(OrgID);
+    dbOrgs("select", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', ''], refillFormFinish);
+}
+
+function outOrgs(){
+  // console.log("formatYahrzeits");
+  var OData = JSON.parse(document.getElementById("output").innerHTML);
+  var OList = document.getElementById("OList");
+  OList.innerHTML = "<span class=OrgList onclick=initForm('new')>NEW</span><br>";
+  // alert(OData.length);
+  for (i=0; i < OData.length; i++){
+    OList.innerHTML += "<span class=OrgList onclick=refillForm(" + OData[i].OrgID + ")>" + unescape(OData[i].OName) + "</span><br>";
+  }
+  var SButton = document.getElementById("SButton");
+  SButton.innerHTML = "Add New!"
+  // console.log(JSON.parse(logon));
+}
+
+function dbAccess(X, Y, ID){
+  // alert("dbAccess");
+  var logon = JSON.parse(document.getElementById("output").innerHTML);
+  LOGON_OK = logon.RETURN;
+  // alert(LOGON_OK);
+  if(LOGON_OK.search("TRUE") > -1){
+    LOGON_PID = logon.PID;
+    if(!FIRST_ENTRY) enterForm();
+    FIRST_ENTRY = false;
+    dbOrgsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","",""], outOrgs);
+  }
+}
+
+function checkLogin(){
+  var x = querystring('X'); //ConfKey
+  var y = querystring('Y'); //FName
+  // console.log("checkLogin");
+  dbLogon("check", output, x[0], y[0], dbAccess);
+  if(FIRST_ENTRY) initForm();
+}
+checkLogin();
+</script>
+<script src="js/escape.js"></script>
+<script src="js/vendor/jquery.js"></script>
+<script src="js/vendor/what-input.js"></script>
+<script src="js/vendor/foundation.js"></script>
+<script src="js/app.js"></script>
+</html>

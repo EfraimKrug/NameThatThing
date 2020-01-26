@@ -60,6 +60,11 @@ if($row['RECORD_COUNT'] > 0){
   exit(1);
 }
 
+$LastDisplay = $_REQUEST['LastDisplay'];
+$CycleCount = $_REQUEST['CycleCount'];
+$sql2 = "UPDATE NNTVoteNavigation SET NNTLastDisplay = " . $LastDisplay . ", NNTCycleCount = " . $CycleCount;
+$conn->query($sql2);
+
 $sql = "SELECT * FROM NNTVoteNavigation";
 $resource = $conn->query($sql);
 $row = $resource->fetch_assoc();

@@ -1,0 +1,87 @@
+<!DOCTYPE>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link rel = "stylesheet" type = "text/css" href = "css/yahrzeit.css" />
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+  async defer></script>
+  <script type="text/javascript">
+    var verifyCallback = function(response) {
+      alert(response);
+    };
+
+    var onloadCallback = function() {
+      grecaptcha.render('captcha_element', {
+        'sitekey' : '6LewqMEUAAAAAJQ7wHGf4sYpLDQipBbgX2wPjHny'
+      });
+    };
+
+    function isCaptchaChecked() {
+      return grecaptcha && grecaptcha.getResponse().length !== 0;
+    }
+
+    function checkCaptcha(){
+      if(isCaptchaChecked()) return true;
+      return false;
+    }
+  </script>
+</head>
+<body>
+<div id=topDiv>
+</div>
+<!-- captcha -->
+<table><tr><td>
+<div id=output></div>
+<div id=formDiv>
+<form action="javascript:alert(grecaptcha.getResponse(widgetId1));" method="POST">
+  <div id="captcha_element"></div>
+  <br>
+</form>
+<form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
+<div id=folks>
+<table>
+<tr>
+<td></td><td>First, some information about you... </td>
+</tr>
+<tr>
+<td>Email: </td><td><input type="text" name="email" placeholder="your email"/></td>
+<td><input type="password" name="secret" placeholder="password"/></td>
+</tr>
+<td>Name: </td><td><input type="text" name="fname" placeholder="first name"/></td>
+<td><input type="text" name="lname" placeholder="last name"/></td>
+</tr>
+</table>
+</div>
+
+</form>
+<div id=SubmitButton onclick='formSubmit();'>Enter the name!</div>
+</div>
+</td>
+</tr>
+</table>
+<script>
+
+var output = document.getElementById("output");
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+output.innerHTML = getUrlVars()["RETURN"] ? getUrlVars()["RETURN"].replace(/\%20/g, ' ') : "";
+
+</script>
+<script>
+
+function formSubmit(){
+  if(checkCaptcha()){
+    document.getElementById("SuggestionForm").submit();
+  }
+}
+</script>
+
+</body>
+</html>

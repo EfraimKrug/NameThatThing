@@ -1,0 +1,87 @@
+<html>
+<head>
+    <script src="formatData.js"></script>
+</head>
+<body>
+</body>
+<script>
+// var vars = {'FName':"Efraim",'LName':'Krug','EMail':'EfraimMKrug@GMail.com','Secret':'b0st0n'};
+// var varsA = ["Efraim",'Krug','EfraimMKrug@GMail.com','b0st0n'];
+// var A = "Efraim";
+// var B = 'Krug';
+// var C = 'EfraimMKrug@GMail.com';
+// var D = 'b0st0n';
+// alert(formatPeople(vars));
+// alert(formatPeople(varsA));
+// alert(formatPeople(A,B,C,D));
+///////////////////////////////////////////////////////////////////////////////////////
+// var vars = {'ORav':"Rabbi Hamaoui",'OEmail':'Rabbi@SefardiShul.org','OName':'Sefardi Shul@GMail.com','OStreetAddress':'128 Corey Road','OCity':'Brighton','OState':'Massachusetts','OCountry':'USA'};
+// var A = 'Rabbi Hamaoui';
+// var B = 'Rabbi@SefardiShul.org';
+// var C = 'Sefardi Shul';
+// var D = '128 Corey Road';
+// var E = 'Brighton';
+// var F = 'Massachusetts';
+// var G = 'USA';
+// var varsA = [A,B,C,D,E,F,G];
+// alert(formatOrg(A,B,C,D,E,F,G));
+// alert(formatOrg(varsA));
+// alert(formatOrg(vars));
+///////////////////////////////////////////////////////////////////////////////////////
+//
+// var vars = {'ConfEmail':"EfraimMKrug@GMail.com",'ConfKeyIndex':'-46hqgq9e4856vnqt-q3948yvb','ConfDateIndex':'2020-01-03','ConfPID':'17'};
+// var varsA = ["EfraimMKrug@GMail.com",'-46hqgq9e4856vnqt-q3948yvb','2020-01-03','17'];
+// var A = "EfraimMKrug@GMail.com";
+// var B = '-46hqgq9e4856vnqt-q3948yvb';
+// var C = '2020-01-03';
+// var D = '17';
+// alert(formatConf(vars));
+// alert(formatConf(varsA));
+// alert(formatConf(A,B,C,D));
+////////////////////////////////////////////////////////////////////////////////////////////
+// var vars = {'PID':"17",'OID':'29'};
+// var varsA = [17, 29];
+// var A = 17;
+// var B = 29;
+// alert(formatPOConn(vars));
+// alert(formatPOConn(varsA));
+// alert(formatPOConn(A,B));
+//////////////////////////////////////////////////////////////////////////////////////////
+// var vars = {'PID':"17",'YID':'29'};
+// var varsA = [17, 29];
+// var A = 17;
+// var B = 29;
+// alert(formatPYConn(vars));
+// alert(formatPYConn(varsA));
+// alert(formatPYConn(A,B));
+//////////////////////////////////////////////////////////////////////////////////////////
+
+// var vars = {'YName':"Kiddushas Levi, z\"l",'YGDate':'1810-09-10','YHMonth':'Tishrei','YHDay':'14','YHYear':'5578'};
+// var A = "Kiddushas Levi, z`l";
+// var B = '1810-09-10';
+// var C = 'Tishrei';
+// var D = 14;
+// var E = 5578;
+// var varsA = [A, B, C, D, E];
+// alert(formatYahrzeits(vars));
+// alert(formatYahrzeits(varsA));
+// alert(formatYahrzeits(A, B, C, D, E));
+//////////////////////////////////////////////////////////////////////////////////////////
+
+var vars = {'ReqPID':"17",'ReqType':'11','ReqDate':'2020-01-17','ReqAmount':'18','ReqPaidDate':'2020-01-18','ReqRequestSentDate':'2020-01-19','ReqRequestAcceptDate':'2020-01-20','ReqMoneySentDate':'2020-01-21','ReqCancelDate':'2020-01-22'};
+var A = "17";
+var B = '11';
+var C = '2020-01-17';
+var D = 18;
+var E = '2020-01-18';
+var F = '2020-01-19';
+var G = '2020-01-20';
+var H = '2020-01-21';
+var I = '2020-01-22';
+
+var varsA = [A, B, C, D, E, F, G, H, I];
+alert(formatRequests(vars));
+alert(formatRequests(varsA));
+alert(formatRequests(A, B, C, D, E, F, G, H, I));
+</script>
+</html>

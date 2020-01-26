@@ -1,0 +1,24 @@
+First Entrance:
+Create People (getPeople.php):
+  Email and name/ Create ConfKey record NO DATE!
+Wait for email confirmation...
+==============================================================
+Send email: link with name & ConfKey
+Confirms email - name & ConfKey - Login page(ConfirmationPage)
+  Add to Conf Table: Date/Time
+  Next page (Add Yahrzeit): URL has ConfKey & name
+  Each page checks against time (give 2 hours from sign-in)
+    (if time is gone... nothing)
+  After two hours - date/time is wiped out
+==============================================================
+Login -
+  User enters fname and secret
+  Add to Conf Table: Date/Time
+  Next page (Add Yahrzeit): URL has ConfKey & name
+  Each page checks against time (give 2 hours from sign-in)
+    (if time is gone... nothing)
+  After two hours - date/time is wiped out
+==============================================================
+Notice: fname + secret must be unique
+
+Timeout: delete time

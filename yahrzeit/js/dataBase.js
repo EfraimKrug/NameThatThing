@@ -1,0 +1,102 @@
+function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
+  var phpProg = "";
+
+  if(type.toLowerCase() == "insert") phpProg = "cgi-bin/insert" + TableName + ".php";
+  if(type.toLowerCase() == "update") phpProg = "cgi-bin/update" + TableName + ".php";
+  if(type.toLowerCase() == "delete") phpProg = "cgi-bin/delete" + TableName + ".php";
+  if(type.toLowerCase() == "select") phpProg = "cgi-bin/select" + TableName + ".php";
+  if(type.toLowerCase() == "check") phpProg = "cgi-bin/checkLogin.php";
+  // console.log(phpProg);
+  var xhttp;
+  var returnVal;
+  var outData = "";
+  var func = "";
+
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200){
+      // try {
+      //   outData = JSON.parse(this.responseText);
+      // } catch (e) {
+      outData = this.responseText;
+      // console.log("HERE");
+      // console.log(this.responseText);
+      // }
+      outDiv.innerHTML = outData;
+      if(typeof(callback) == 'function'){
+        // callback(X, Y, outData["ConfPID"]);
+        callback(X, Y, outData);
+      }
+      returnVal = 0;
+    }
+    else
+      returnVal = this.status;
+  };
+  // console.log(TableName);RequestsByPeople
+  switch(TableName){
+    case "Requests":          func = formatRequests; break;
+    case "RequestsByPeople":  func = formatRequests; break;
+    case "YahrzeitsByPeople": func = formatPeople; break;
+    case "OrgsByPeople":      func = formatPeople; break;
+    case "Orgs":              func = formatOrgs; break;
+    case "Yahrzeits":         func = formatYahrzeits; break;
+    case "Conf":              func = formatConf; break;
+    case "People":            func = formatPeople; break;
+    case "PYConn":            func = formatPYConn; break;
+    case "checkLogin":        func = doNothing; break;
+    default:                  func = doNothing; break;
+  }
+  // console.log("rowVars: ");
+  // console.log(rowVars);
+  // console.log("FIRE");
+  // console.log(func(rowVars));
+  xhttp.open("POST", phpProg, true);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
+}
+
+function dbYahrzeits(type, outDiv, X, Y, rowVars, callback) {
+  dbGo("Yahrzeits", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbOrgs(type, outDiv, X, Y, rowVars, callback) {
+  dbGo("Orgs", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbConf(type, outDiv, X, Y, rowVars, callback) {
+  return dbGo("Conf", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbPeople(type, outDiv, X, Y, rowVars, callback) {
+  return dbGo("People", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbYahrzeitsByPeople(type, outDiv, X, Y, rowVars, callback) {
+  // console.log("dbYahrzeitsByPeople");
+  return dbGo("YahrzeitsByPeople", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbOrgsByPeople(type, outDiv, X, Y, rowVars, callback) {
+  return dbGo("OrgsByPeople", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
+  return dbGo("RequestsByPeople", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbRequests(type, outDiv, X, Y, rowVars, callback) {
+  // console.log(rowVars);
+  return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
+}
+
+function doNothing(rowVars){
+    return "doNothing=doNothing";
+}
+
+function dbLogon(type, outDiv, X, Y, callback){
+  return dbGo("checkLogin", type, outDiv, X, Y, [], callback);
+}
+
+// function dbPYConn(type, outDiv, X, Y, rowVars, callback){
+//   return dbGo("PYConn", type, outDiv, X, Y, rowVars, callback);
+// }

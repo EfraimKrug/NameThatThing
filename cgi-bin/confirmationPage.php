@@ -38,12 +38,16 @@ $NNTKey = mysqli_real_escape_string ($conn ,  $_REQUEST['NNTKey']);
 $NNTEntryEmail = mysqli_real_escape_string ($conn ,  $_REQUEST['NNTEntryEmail']);
 
 $NNTSuggestion = mysqli_real_escape_string ($conn , $_REQUEST['NNTSuggestion']);
+#$NNTSuggestion = preg_replace('/\s*/', ' ', $NNTSuggestion);
+#$NNTSuggestion = strtolower($NNTSuggestion);
+
 $NNTEntryKey = mysqli_real_escape_string ($conn , $_REQUEST['NNTEntryKey']);
 
 # check if the user is coming back for a second vote... not nice!
 
 $sql = "SELECT * FROM NTTEntry WHERE NNTEntryKey = " . $NNTEntryKey;
-echo "<div id=EntryDisplay onclick=release()>Your entry: '" . $NNTSuggestion . "' (You can vote for it!)</div>";
+#echo "<div id=EntryDisplay onclick=release()>Your entry: '" . $NNTSuggestion . "' (You can vote for it!)</div>";
+echo "<div id=EntryDisplay>Your entry: '" . $NNTSuggestion . "' (You can vote for it!)<br><br><i>Enter your vote for $1.00. Only one vote per entry!</i><br><br></div>";
 $resource = $conn->query($sql);
 if ($row = $resource->fetch_assoc()){
   if ($row['Voted']){
@@ -62,6 +66,8 @@ if ($row = $resource->fetch_assoc()){
   if (!$NNTPaid){
     echo '<div id="paypal-button-container"></div>';
     echo '<script>var NOT_PAID = true;</script>';
+  } else {
+    echo '<script>var NOT_PAID = false;</script>';
   }
 }
 
@@ -130,7 +136,7 @@ if ($row = $resource->fetch_assoc()){
   $row = $resource->fetch_assoc();
   $LastDisplay = $row['NNTLastDisplay'];
   // $LastLevel = $row['NNTLastLevel'];
-  // $CycleCount = $row['NNTCycleCount'];
+  $CycleCount = $row['NNTCycleCount'];
   // limit = 365: 20 rows / entry allowed (17 * 20 = 340)
   $sql = "SELECT E.NNTEntrySuggestion AS NNTEntrySuggestion, E.NNTEntryKey AS NNTEntryKey FROM NTTEntry AS E, NNTVoteCount AS VC WHERE VC.NNTEntry = E.NNTEntryKey  AND VC.NNTEntry > $LastDisplay AND Voted = TRUE LIMIT 365;";
   // $sql = "SELECT * FROM NTTEntry AS E, NNTVoteCount AS VC WHERE VC.NNTEntry = E.NNTEntryKey AND VC.NNTEntry > $LastDisplay AND Voted = TRUE LIMIT 17;";
@@ -167,6 +173,7 @@ if ($row = $resource->fetch_assoc()){
   $sql2 = "UPDATE NNTVoteNavigation SET NNTLastDisplay = " . $LastDisplay;
 
   if ($rowCount < 17){
+    $CycleCount+=1;
     $rowsNeeded = (17 - $rowCount);
     // $sql = "SELECT * FROM NTTEntry AS E, NNTVoteCount AS VC WHERE VC.NNTEntry = E.NNTEntryKey AND Voted = TRUE LIMIT " . $rowsNeeded . ";";
     $sql = "SELECT E.NNTEntrySuggestion AS NNTEntrySuggestion, E.NNTEntryKey AS NNTEntryKey FROM NTTEntry AS E, NNTVoteCount AS VC WHERE VC.NNTEntry = E.NNTEntryKey AND Voted = TRUE LIMIT " . ($rowsNeeded * 20) . ";";
@@ -184,7 +191,8 @@ if ($row = $resource->fetch_assoc()){
           echo "<td>" . $row['NNTEntrySuggestion'] . "</td><td><input type='checkbox' name='" . $row['NNTEntryKey'] . "' value='Yes' /></td>";
           echo "</tr>";
           $LastDisplay = $row['NNTEntryKey'];
-          $sql2 = "UPDATE NNTVoteNavigation SET NNTLastDisplay = " . $LastDisplay . ", NNTCycleCount = " . ($CycleCount + 1);
+          // $CycleCount+=1;
+          // $sql2 = "UPDATE NNTVoteNavigation SET NNTLastDisplay = " . $LastDisplay . ", NNTCycleCount = " . $CycleCount;
           $gotRows = true;
         }
     } catch (Exception $e){
@@ -204,10 +212,12 @@ if ($row = $resource->fetch_assoc()){
     echo "</tr>";
   }
 
-
-  if($conn->query($sql2) === true){
-    $errorMessage = "Successfully updated LastDisplay";
-  }
+  echo '<input type="hidden" id="LastDisplay" name="LastDisplay" value="' . $LastDisplay . '">';
+  echo '<input type="hidden" id="CycleCount" name="CycleCount" value="' . $CycleCount . '">';
+  // moving this to the actually voteForm.php
+  // if($conn->query($sql2) === true){
+  //   $errorMessage = "Successfully updated LastDisplay";
+  // }
 
   echo '</table>';
   echo '</form>';
@@ -217,8 +227,7 @@ if ($row = $resource->fetch_assoc()){
   echo '</body></html>';
   $conn->close();
  ?>
- <!-- <script src="https://www.paypal.com/sdk/js?client-id=AfcRF9xThrarQuF4-C34Jpk9dR3d8F71Lqlpjo-SeTW3c9BI12fF7Byz5Pp3fAkIhmxaMiqpnmVJ8KI5&currency=USD" data-sdk-integration-source="button-factory"></script> --> ';
- <script src="https://www.paypal.com/sdk/js?client-id=AfwMNLu41rs2uwA0Avt1k2B8jnHHhZlOUQWcxkpsKtfF4OD5MSPC4AcMCZgg7XAIplOPVYaI37p4dyLp&currency=USD" data-sdk-integration-source="button-factory"></script>
+ <script src="https://www.paypal.com/sdk/js?client-id=AfcRF9xThrarQuF4-C34Jpk9dR3d8F71Lqlpjo-SeTW3c9BI12fF7Byz5Pp3fAkIhmxaMiqpnmVJ8KI5&currency=USD" data-sdk-integration-source="button-factory"></script>
  <script>
  function updateNNTPaid() {
       var xhttp;

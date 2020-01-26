@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+      <script src="js/formatData.js"></script>
+</head>
+<body>
+HELLO - posting...
+<div id=out></div>
+<div id=return></div>
+<script>
+//ReqPID, ReqType, ReqDate, ReqAmount, ReqPaidDate,
+//ReqRequestSentDate, ReqRequestAcceptDate, ReqMoneySentDate, ReqCancelDate
+var rowVars = {"ID":1, "ReqPID":8,  "ReqType":6, "ReqDate":"2020-01-21", "ReqAmount":19, "ReqPaidDate":"2020-01-22","ReqRequestSentDate":"2020-01-23", "ReqRequestAcceptDate":"2020-01-24", "ReqMoneySentDate":"2020-01-25", "ReqCancelDate":"2020-01-26"};
+var outVar = document.getElementById("out");
+
+function saveOrg(rowVars) {
+  var xhttp;
+  var returnVal;
+
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+      returnVal = 0;
+    else
+      returnVal = this.status;
+    outVar.innerHTML = this.responseText;
+  };
+  xhttp.open("POST", "cgi-bin/deleteRequests.php", true);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhttp.send("RID=" + rowVars['ID'] + "&" + formatRequests(rowVars));
+  //xhttp.send(formatRequests(rowVars));
+}
+
+saveOrg(rowVars);
+</script>
+</body>
+</html>

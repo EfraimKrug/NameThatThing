@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+      <script src="js/formatData.js"></script>
+</head>
+<body>
+HELLO - posting...
+<div id=out></div>
+<div id=return></div>
+<script>
+//YName, YGDate, YHMonth, YHDay, YHYear
+var rowVars = {"ID":4, "YName":"Levi Yitzchak", "YGDate":"2020-01-21", "YHMonth":"Tishrei", "YHDay":"14","YHYear":"5575"};
+var outVar = document.getElementById("out");
+
+function saveOrg(rowVars) {
+  var xhttp;
+  var returnVal;
+
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+      returnVal = 0;
+    else
+      returnVal = this.status;
+    outVar.innerHTML = this.responseText;
+  };
+  xhttp.open("POST", "cgi-bin/selectYahrzeits.php", true);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhttp.send("YahrzeitID=" + rowVars['ID'] + "&" + formatYahrzeits(rowVars));
+  //xhttp.send(formatRequests(rowVars));
+}
+
+saveOrg(rowVars);
+</script>
+</body>
+</html>
