@@ -1,0 +1,103 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "stylesheet" type = "text/css" href = "css/yahrzeit.css" />
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+  async defer></script>
+  <title>Yahrzeit Keeper</title>
+  <link rel="stylesheet" href="css/foundation.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/yahrzeit.css">
+</head>
+<body>
+  <style>
+  .box {
+    border: 2px solid #f98e3f;
+  }
+  </style>
+<div id=topDiv>
+</div>
+<!-- captcha -->
+
+<!-- starting -->
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <h1><font color=#f98e3f>Remembering</font></h1>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="large-8 medium-8 cell">
+      <h5>We will contact the organization for you</h5>
+
+    <form id=SuggestionForm action="cgi-bin/getAccept.php" method="post">
+     <div class="grid-x grid-padding-x">
+       <div class="large-8 medium-8 small-8 cell box">
+           <label class=flabel>Accept using PayPal</label>
+           <label class=flabel>Better email address for PayPal?</label>
+           <input type="text" id="email" placeholder="your paypal email"/>
+           <button id="SButton" type=button class="button" onclick=formAccept(1);>Accept using PayPal</button>
+       </div>
+
+       <div class="large-8 medium-8 small-8 cell box">
+         <label class=flabel>Accept, but send a check</label>
+         <label class=flabel>Mailing Address?</label>
+         <input type="text" id="mailaddress" placeholder="full mailing address"/>
+         <button id="SButton" type=button class="button" onclick=formAccept(2);>Accept - but send us a check</button>
+       </div>
+
+       <div class="large-8 medium-8 small-8 cell box">
+         <label class=flabel>Refuse, please leave us alone!</label>
+         <button id="SButton" type=button class="button" onclick=formAccept(3);>Leave us alone</button>
+       </div>
+      </div>
+      </div>
+    </form>
+   </div>
+</div>
+</body>
+<script src="js/yahrzeit.js"></script>
+<script>
+// function getUrlVars() {
+//     var vars = {};
+//     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+//         vars[key] = value;
+//     });
+//     return vars;
+// }
+
+var RID = getUrlVars()["RID"];
+
+function acceptPayPal(){
+    var email = document.getElementById("email").value;
+    if(email.length > 0 && email.length < 10){
+      alert("Please enter an email address");
+      return;
+    }
+
+}
+
+function acceptCheck(){
+    var mailaddress = document.getElementById("mailaddress").value;
+    if(mailaddress.length < 10) alert("Please enter full address");
+}
+
+function refuseAll(){
+    alert("Are you sure you do not want to participate?");
+}
+
+function formAccept(level){
+  switch(level){
+    case 1: acceptPayPal(); break;
+    case 2: acceptCheck(); break;
+    case 3: refuseAll(); break;
+    default: break;
+  }
+}
+</script>
+
+</html>

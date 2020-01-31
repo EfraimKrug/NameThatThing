@@ -5,8 +5,9 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   if(type.toLowerCase() == "update") phpProg = "cgi-bin/update" + TableName + ".php";
   if(type.toLowerCase() == "delete") phpProg = "cgi-bin/delete" + TableName + ".php";
   if(type.toLowerCase() == "select") phpProg = "cgi-bin/select" + TableName + ".php";
-  if(type.toLowerCase() == "check") phpProg = "cgi-bin/checkLogin.php";
-  // console.log(phpProg);
+  if(type.toLowerCase() == "check")  phpProg = "cgi-bin/checkLogin.php";
+  if(type.toLowerCase() == "paid")   phpProg = "cgi-bin/paidLogin.php";
+
   var xhttp;
   var returnVal;
   var outData = "";
@@ -44,6 +45,9 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     case "People":            func = formatPeople; break;
     case "PYConn":            func = formatPYConn; break;
     case "checkLogin":        func = doNothing; break;
+    case "paidLogin":         func = formatPaid;
+                              X = rowVars['X']; Y = rowVars['Y'];
+                              break;
     default:                  func = doNothing; break;
   }
   // console.log("rowVars: ");
@@ -52,6 +56,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   // console.log(func(rowVars));
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // console.log([X,Y,rowVars]);
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
 
@@ -93,7 +98,10 @@ function doNothing(rowVars){
     return "doNothing=doNothing";
 }
 
-function dbLogon(type, outDiv, X, Y, callback){
+function dbLogon(type, outDiv, X, Y, callback, valArray){
+  if(type == "paid")
+      return dbGo("paidLogin", type, outDiv, X, Y, valArray, callback);
+
   return dbGo("checkLogin", type, outDiv, X, Y, [], callback);
 }
 

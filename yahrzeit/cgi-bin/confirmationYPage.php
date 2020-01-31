@@ -13,31 +13,10 @@ There are two reasons to get an email:
     <title>Yahrzeits</title>
     <link rel="stylesheet" href="../css/foundation.css">
     <link rel="stylesheet" href="../css/app.css">
-  <style>
-    #EntryDisplay {
-      color:blue;
-    }
-    .grid-container {
-      width: 100%;
-      height: 100%;
-      min-height:900px;
-      z-index:-990;
-      background: url('https://www.NameThatThing.site/images/yahrzeit-candles.jpg?v1') no-repeat right;
-    }
-    body {
-      z-index:-999;
-      background-color: black;
-    }
-    #banner {
-      width: 100%;
-      height: 100%;
-      min-height:50px;
-      z-index:-990;
-      background-color: black;
-    }
-  </style>
+    <link rel="stylesheet" href="../css/yahrzeit.css">
   </head>
 <body>
+<script src="../js/cookieControl.js"></script>
 <?php
 require 'openYDB.php';
 require 'email.php';
@@ -45,9 +24,12 @@ date_default_timezone_set("America/New_York");
 $today = date("Y-m-d H:i:s");
 
 $logon = FALSE;
-$ConfKey = mysqli_real_escape_string ($conn ,  $_REQUEST['ConfKey']);
-$ConfEmail = mysqli_real_escape_string ($conn ,  $_REQUEST['ConfEmail']);
-$ConfPID = mysqli_real_escape_string ($conn , $_REQUEST['ConfPID']);
+$ConfKey = $ConfEmail = "";
+$ConfPID = 0;
+
+if(isset($_REQUEST['ConfKey']))   $ConfKey = mysqli_real_escape_string ($conn ,  $_REQUEST['ConfKey']);
+if(isset($_REQUEST['ConfEmail'])) $ConfEmail = mysqli_real_escape_string ($conn ,  $_REQUEST['ConfEmail']);
+if(isset($_REQUEST['ConfPID']))   $ConfPID = mysqli_real_escape_string ($conn , $_REQUEST['ConfPID']);
 
 $sql = "SELECT * FROM People WHERE PeopleID = " . $ConfPID;
 $resource = $conn->query($sql);
@@ -83,6 +65,7 @@ if(isset($row['ConfKey']) && isset($row['ConfTime']) ){
   if($CompToday > $CompConfTime){
     $sql = "UPDATE Conf SET ConfKey = '" . $NewConfKey . "', ConfTime = '" . $CompToday->format('Y-m-d H:i:s') . "' WHERE ConfKey = '" . $ConfKey . "'";
     $resource = $conn->query($sql);
+    $ConfKey = $NewConfKey; // for cookie setting below...
   }
 }
 
@@ -91,17 +74,7 @@ if(!$logon){
   die();
 }
 
-// else {
-//   echo '<div id=formDiv>';
-//   echo "<br><br>We got a problem here, please check your email for a new link...";
-//   echo '</div>';
-//   $sql = "UPDATE Conf SET ConfKey = '" . $NewConfKey . "' WHERE ConfEmail = '" . $ConfEmail . "'";
-//   $resource = $conn->query($sql);
-//   $confirmationString = "ConfKey=" . $NewConfKey . "&ConfEmail=" . $ConfEmail . "&ConfPID=" . $ConfPID;
-//   $href = "https://www.NameThatThing.site/cgi-bin/confirmationYPage.php?" . $confirmationString;
-//   sendEmailRenew($ConfEmail, $href, $fname);
-//   die();
-// }
+
 ?>
 <div class="grid-container">
   <div id="bnr">
@@ -120,34 +93,13 @@ if(!$logon){
 
           <ul class="vertical menu" data-responsive-menu="drilldown medium-accordion" style="max-width: 250px;">
             <li>
-              <a href='https://www.NameThatThing.site/enterYahrzeits.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Enter Yahrzeits</font></a>
-              <ul class="vertical menu">
-                <li>
-                  <a href="#">Item 1A</a>
-                  <ul class="vertical menu">
-                    <li><a href="#">Item 1A</a></li>
-                    <li><a href="#">Item 1B</a></li>
-                    <li><a href="#">Item 1C</a></li>
-                    <li><a href="#">Item 1D</a></li>
-                    <li><a href="#">Item 1E</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Item 1B</a></li>
-              </ul>
+              <a href='https://www.NameThatThing.site/enterYahrzeits.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Yahrzeits</font></a>
             </li>
             <li>
-              <a href='https://www.NameThatThing.site/enterOrgs.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Enter Organizations</font></a>
-              <ul class="vertical menu">
-                <li><a href="#">Item 2A</a></li>
-                <li><a href="#">Item 2B</a></li>
-              </ul>
+              <a href='https://www.NameThatThing.site/enterOrgs.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Organizations</font></a>
             </li>
             <li>
-              <a href='https://www.NameThatThing.site/enterRequests.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Enter Requests</font></a>
-              <ul class="vertical menu">
-                <li><a href="#">Item 3A</a></li>
-                <li><a href="#">Item 3B</a></li>
-              </ul>
+              <a href='https://www.NameThatThing.site/enterRequests.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Requests</font></a>
             </li>
           </ul>
         </div>
@@ -160,4 +112,5 @@ if(!$logon){
   </div>
 </div>
 </body>
+<script>setConfKey("<?php echo $ConfKey; ?>"); setFName("<?php echo $fname; ?>");</script>
 </html>

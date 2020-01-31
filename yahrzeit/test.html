@@ -2,6 +2,7 @@
 <html class="no-js" lang="en" dir="ltr">
 <head>
 <script src="js/test.js"></script>
+<script src="js/cookieControl.js"></script>
 <style>
 #outDiv {
   visibility: hidden;
@@ -10,8 +11,39 @@
 </head>
 <body>
 <h1>TESTING test.js</h1>
+<h1>TESTING cookieControl.js</h1>
+
 <div id=outDiv></div>
 <div id=poutDiv></div>
+<hr><hr>
+<div id=clickit onclick=Ggo();>Click Here</div>
+<hr><hr>
+<script>
+var dCookie = document.cookie;
+poutDiv = document.getElementById("poutDiv");
+poutDiv.innerHTML = "HERE: " + dCookie + "<br>";
+if(checkConfKey()){
+  poutDiv.innerHTML += getConfKey();
+}
+if(checkfname()){
+  poutDiv.innerHTML += "[" + getFName() + "]";
+}
+
+
+function Ggo(){
+  // var confKey = "CrazyLong$$123@ConfKey";
+  // var confKey = "";
+  // setConfKey(confKey);
+  deleteCookie('ConfKey', "")
+  var fname = "Fred";
+  setFName(fname);
+  alert(getConfKey());
+}
+
+</script>
+
+
+
 <script>
 function parseData(){
   outDivData = JSON.parse(document.getElementById("outDiv").innerHTML);
@@ -39,7 +71,7 @@ function go(s){
   .replace(/</g, '\\x3C')
   .replace(/>/g, '\\x3E');
 
-  alert(x);
+  // alert(x);
 
   x = ('' + x)
   .replace(/\\x3E/g, '>')
@@ -51,7 +83,7 @@ function go(s){
   .replace(/\\n/g, '\n')
   .replace(/\\t/g, '\t');
 
-  alert(x);
+  // alert(x);
 
 
 }

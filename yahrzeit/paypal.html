@@ -1,0 +1,60 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requests</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/yahrzeit.css">
+    <script src="js/formatData.js"></script>
+    <script src="js/dataBase.js"></script>
+    <script src="js/cookieControl.js"></script>
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script> -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AfcRF9xThrarQuF4-C34Jpk9dR3d8F71Lqlpjo-SeTW3c9BI12fF7Byz5Pp3fAkIhmxaMiqpnmVJ8KI5&currency=USD" data-sdk-integration-source="button-factory"></script>
+  </head>
+<body>
+<div class="grid-container">
+
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <h1><font color=#f98e3f>Payments</font></h1>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="large-8 medium-8 cell">
+          <div class="grid-x grid-padding-x">
+            <div class="large-4 medium-4 small-4 cell">
+              <div class=RequestList>
+                <div id="paypal-button-container"></div>
+              </div>
+            </div>
+          </div>
+       </div>
+  </div>
+</div>
+
+<div id=output></div>
+<div id=output2></div>
+<div id=output3></div>
+</body>
+<script src="js/yahrzeit.js"></script>
+<script src="js/payPal.js"></script>
+<script>
+  var amount = getUrlVars()["AMOUNT"];
+  var pid = getUrlVars()["PID"];
+  var oid = getUrlVars()["OID"];
+  var yid = getUrlVars()["YahrID"];
+  var X = getUrlVars()["X"];
+  var Y = getUrlVars()["Y"];
+  setUpPayPal(amount, pid, oid, yid, X, Y);
+</script>
+
+<script src="js/escape.js"></script>
+<script src="js/vendor/jquery.js"></script>
+<script src="js/vendor/what-input.js"></script>
+<script src="js/vendor/foundation.js"></script>
+<script src="js/app.js"></script>
+</html>

@@ -1,9 +1,7 @@
 <?php
 require 'openYDB.php';
+require 'email.php';
 
-// ReqPID, ReqType, ReqDate, ReqAmount, ReqPaidDate, ReqRequestSentDate,
-// ReqRequestAcceptDate, ReqMoneySentDate, ReqCancelDate
-//ID=0&ReqPID=49&ReqType=Yahrzeit&ReqDate=&ReqAmount=18.00&ReqPaidDate=&ReqRequestSentDate=&ReqRequestAcceptDate=&ReqMoneySentDate=&ReqCancelDate=
 $ReqPID = "";
 $ReqType = "";
 $ReqDate = "";
@@ -25,14 +23,17 @@ if(array_key_exists('ReqDate', $_POST)) $ReqDate = $today;
 if(array_key_exists('ReqAmount', $_POST)) $ReqAmount = $_POST['ReqAmount'];
 if(array_key_exists('ReqYID', $_POST)) $ReqYID = $_POST['ReqYID'];
 if(array_key_exists('ReqOID', $_POST)) $ReqOID = $_POST['ReqOID'];
-
-
-// if(array_key_exists('ReqPaidDate', $_POST)) $ReqPaidDate = $_POST['ReqPaidDate'];
-// if(array_key_exists('ReqRequestSentDate', $_POST)) $ReqRequestSentDate = $_POST['ReqRequestSentDate'];
-// if(array_key_exists('ReqRequestAcceptDate', $_POST)) $ReqRequestAcceptDate = $_POST['ReqRequestAcceptDate'];
-// if(array_key_exists('ReqMoneySentDate', $_POST)) $ReqMoneySentDate = $_POST['ReqMoneySentDate'];
-// if(array_key_exists('ReqCancelDate', $_POST)) $ReqCancelDate = $_POST['ReqCancelDate'];
+###########################
+$sql = "SELECT YName, YHDay, YHMonth, ORav, OEmail  FROM  `Yahrzeits`, `Orgs` WHERE YahrzeitID = " . $ReqYID . " AND OrgID = " . $ReqOID;
+$resource = $conn->query($sql);
+$row = $resource->fetch_assoc();
+$ydate =  $row['YHDay'] . " " . $row['YHMonth'];
 
 $sql = "INSERT INTO `Requests` (`ReqPID`,`ReqType`,`ReqDate`,`ReqAmount`,`ReqPaidDate`,`ReqRequestSentDate`,`ReqRequestAcceptDate`,`ReqMoneySentDate`,`ReqCancelDate`, `ReqOID`, `ReqYID`) VALUES ('" . $ReqPID .  "','" . $ReqType . "','" . $ReqDate . "','" . $ReqAmount . "','" . $ReqPaidDate .   "','" . $ReqRequestSentDate .   "','" . $ReqRequestAcceptDate .   "','" . $ReqMoneySentDate . "','" . $ReqCancelDate . "','" . $ReqOID . "','" . $ReqYID . "')";
 $resource = $conn->query($sql);
+$RID = $conn->insert_id;
+
+$href = "https://www.NameThatThing.site/accept.html?RID=" . $RID;
+sendEmailRequest($row['OEmail'], $href, $row['ORav'], $ReqType, $row['YName'], $ydate, $ReqAmount);
+
 ?>

@@ -11,6 +11,6 @@ if(array_key_exists('EMail', $_POST)) $EMail = $_POST['EMail'];
 if(array_key_exists('Secret', $_POST)) $Secret = $_POST['Secret'];
 
 $sql = "INSERT INTO `People` (`FName`,`LName`,`EMail`,`Secret`) VALUES ('" . $FName .  "','" . $LName .  "','" . $EMail .  "','" . $Secret . "')";
-echo $sql;
+// echo $sql;
 $resource = $conn->query($sql);
 ?>

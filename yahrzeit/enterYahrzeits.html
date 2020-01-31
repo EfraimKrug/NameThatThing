@@ -10,6 +10,7 @@
 
   <script src="js/formatData.js"></script>
   <script src="js/dataBase.js"></script>
+  <script src="js/cookieControl.js"></script>
   <link rel="stylesheet" href="css/yahrzeit.css">
   </head>
 <body>
@@ -87,13 +88,13 @@
             <label class=flabelb>Hebrew year?</label>
             <input id=hyear type="text" placeholder="Four digit year" />
         </div>
-          <button id="SButton" type=button class="button" onclick=checkLogin();>Enter</button>
+          <button id="SButton" type=button class="button" onclick=checkLogin("yahr");>Enter</button>
       </div>
     </form>
   </div>
     <div class="large-4 medium-4 cell">
-        <a href=# onclick=gotoRequests() class=YahrListMenu>Requests</a>
-        <a href=# onclick=gotoOrgs() class=YahrListMenu>Places</a>
+        <a role=button onclick=gotoRequests() class=YahrListMenu>Requests</a>
+        <a role=button onclick=gotoOrgs() class=YahrListMenu>Places</a>
         <div class=YahrList>
         <h5>Yahrzeits</h5>
         <div id=YList class=YahrList>
@@ -108,73 +109,6 @@
 </body>
 <script src="js/yahrzeit.js"></script>
 <script>
-var LOGON_OK = "";
-var LOGON_PID = "";
-var FIRST_ENTRY = true;
-var EDIT_FORM = false;
-var EDIT_YID = 0;
-
-function gotoRequests(){
-  var x = querystring('X'); //ConfKey
-  var y = querystring('Y'); //FName
-
-  document.location = "enterRequests.html?X=" + x + "&Y=" + y;
-}
-
-function gotoOrgs(){
-  var x = querystring('X'); //ConfKey
-  var y = querystring('Y'); //FName
-
-  document.location = "enterOrgs.html?X=" + x + "&Y=" + y;
-}
-
-function querystring(key) {
-  var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
-  var r=[], m;
-  while ((m=re.exec(document.location.search)) != null) r[r.length]=m[1];
-  return r;
-}
-
-var output = document.getElementById("output");
-function initForm(){
-  var SButton = document.getElementById("SButton");
-  EDIT_YID = 0;
-  EDIT_FORM = false;
-  SButton.innerHTML = "Add New!"
-
-  var yname = document.getElementById("yname");
-  var gmonth = document.getElementById("gmonth");
-  var gday = document.getElementById("gday");
-  var gyear = document.getElementById("gyear");
-  var hmonth = document.getElementById("hmonth");
-  var hday = document.getElementById("hday");
-  var hyear = document.getElementById("hyear");
-  yname.value = gyear.value = gday.value = hday.value = hyear.value = "";
-  gmonth.selectedIndex = hmonth.selectedIndex = 0;
-}
-
-function enterForm(){
-  // checkLogin();
-  var yname = document.getElementById("yname");
-  var gmonth = document.getElementById("gmonth");
-  var gday = document.getElementById("gday");
-  var gyear = document.getElementById("gyear");
-  var hmonth = document.getElementById("hmonth");
-  var hday = document.getElementById("hday");
-  var hyear = document.getElementById("hyear");
-  if(EDIT_FORM)
-    dbYahrzeits("update", output, querystring('X'), querystring('Y'), [EDIT_YID, escape(yname.value), gyear.value + "-" + (gmonth.selectedIndex + 1) + "-" + gday.value, hmonth.options[hmonth.selectedIndex].text, hday.value, hyear.value]);
-  else
-    dbYahrzeits("insert", output, querystring('X'), querystring('Y'), [0, escape(yname.value), gyear.value + "-" + (gmonth.selectedIndex + 1) + "-" + gday.value, hmonth.options[hmonth.selectedIndex].text, hday.value, hyear.value]);
-  // yname.value = gyear.value = gday.value = hday.value = hyear.value = "";
-  // gmonth.selectedIndex = hmonth.selectedIndex = 0;
-  initForm();
-  var SButton = document.getElementById("SButton");
-  SButton.innerHTML = "Enter New!"
-
-  // dbPYConn("insert", output, querystring('X'), querystring('Y'), [LOGON_PID, YID]);
-}
-
 function refillFormFinish(){
   var yname = document.getElementById("yname");
   var gmonth = document.getElementById("gmonth");
@@ -201,42 +135,38 @@ function refillFormFinish(){
 }
 
 function refillForm(YahrzeitID){
-    // alert(YahrzeitID);
     dbYahrzeits("select", output, querystring('X'), querystring('Y'), [YahrzeitID, '', '', '', '', ''], refillFormFinish);
 }
 
 function outYahrzeits(){
-  // console.log("formatYahrzeits");
   var YData = JSON.parse(document.getElementById("output").innerHTML);
   var YList = document.getElementById("YList");
-  YList.innerHTML = "<span class=YahrList onclick=initForm()>NEW</span><br>";
-  // alert(YData.length);
+  YList.innerHTML = "<span class=YahrList onclick=initForm('yahr')>NEW</span><br>";
   for (i=0; i < YData.length; i++){
     YList.innerHTML += "<span class=YahrList onclick=refillForm(" + YData[i].YahrzeitID + ")>" + unescape(YData[i].YName) + "</span><br>";
   }
   var SButton = document.getElementById("SButton");
   SButton.innerHTML = "Add New!"
-  // console.log(JSON.parse(logon));
 }
 
 function dbAccess(X, Y, ID){
+  //
+  if(!FIRST_ENTRY && !(yname.value && gyear.value && gday.value && hday.value && hyear.value)){
+    alert("Please fill out all the fields!");
+    return;
+  }
+  //
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
-    if(!FIRST_ENTRY) enterForm();
+    if(!FIRST_ENTRY) enterForm("yahr");
     FIRST_ENTRY = false;
     dbYahrzeitsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","",""], outYahrzeits);
   }
 }
 
-function checkLogin(){
-  var x = querystring('X'); //ConfKey
-  var y = querystring('Y'); //FName
-  dbLogon("check", output, x[0], y[0], dbAccess);
-  if(FIRST_ENTRY) initForm();
-}
-checkLogin();
+checkLogin("yahr");
 </script>
 <script src="js/escape.js"></script>
 <script src="js/vendor/jquery.js"></script>

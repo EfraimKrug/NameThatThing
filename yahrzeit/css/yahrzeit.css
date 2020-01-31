@@ -40,6 +40,12 @@
       padding: 3%;
     }
 
+    .OrgListPublic {
+      background-color: #320500;
+      color: #fbaf5f;
+      padding: 3%;
+    }
+
     .OrgListMenu {
       background-color: #320500;
       color: #f98e3f;
@@ -98,4 +104,9 @@
 
     #output3 {
       visibility: hidden;
+    }
+
+    #greeting {
+      align: right;
+      color: #f98e3f;
     }

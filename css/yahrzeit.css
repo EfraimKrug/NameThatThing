@@ -38,6 +38,14 @@
       background-color: #320500;
       color: #f98e3f;
       padding: 3%;
+      padding-left: 5%;
+    }
+
+    .OrgListPublic {
+      background-color: #320500;
+      color: white;
+      padding: 3%;
+      padding-left: 5%;
     }
 
     .OrgListMenu {

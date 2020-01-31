@@ -66,6 +66,41 @@ function formatPeople(Id, FName, LName, EMail, Secret) {
   }
 }
 
+// checkLogin("paid", [pid, oid, yid, amount]);
+function formatPaid(pid, oid, yid, amount) {
+  var str = '';
+  if(pid && oid && yid && amount){
+    str = "pid=" + pid;
+    str += "&oid=" + oid;
+    str += "&yid=" + yid;
+    str += "&amount=" + amount;
+    str += "&X=" + X;
+    str += "&Y=" + Y;
+    // console.log(str);
+    return str;
+  }
+  if(Array.isArray(pid)){
+    str = "pid=" + pid[0];
+    str += "&oid=" + pid[1];
+    str += "&yid=" + pid[2];
+    str += "&amount=" + pid[3];
+    str += "&X=" + pid[4];
+    str += "&Y=" + pid[5];
+
+    // console.log(str);
+    return str;
+  }
+  if (Object.keys(pid).length > 2){
+    str = "pid=" + pid['pid'];
+    str += "&oid=" + pid['oid'];
+    str += "&yid=" + pid['yid'];
+    str += "&amount=" + pid['amount'];
+    str += "&X=" + pid['X'];
+    str += "&Y=" + pid['Y'];
+    return str;
+  }
+}
+
 function formatConf(Id, ConfKey, ConfDate, ConfPID, ConfTime) {
   var str = '';
   if(Id && ConfKey && ConfDate && ConfPID && ConfTime){

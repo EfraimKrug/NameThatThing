@@ -88,8 +88,18 @@
 
 
 <!-- ending -->
-<script src="js/yahrzeit.js"></script>
 <script>
+
+var output = document.getElementById("output");
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 output.innerHTML = getUrlVars()["RETURN"] ? getUrlVars()["RETURN"].replace(/\%20/g, ' ') : "";
 
 </script>

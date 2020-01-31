@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+This page is only accessible from email.
+There are two reasons to get an email:
+  1) Email confirmation - when the person first logs in, and
+  2) When the person signs out - or gets logged out - they get a new email
+-->
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahrzeits</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/yahrzeit.css">
+  </head>
+<body>
+<script src="js/cookieControl.js"></script>
+<div class="grid-container">
+  <div id="bnr">
+    <div class="row">
+        <div class="small-12 columns">&nbsp;</div>
+    </div>
+  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="large-8 cell">
+      <div class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 cell">&nbsp;</div>
+        <div class="large-4 medium-4 cell"><span id=greeting></span>
+        </div>
+      </div>
+      <div class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 cell">
+
+          <ul class="vertical menu" data-responsive-menu="drilldown medium-accordion" style="max-width: 250px;">
+            <li>
+              <button onclick=doYahr(); href='https://www.NameThatThing.site/enterYahrzeits.html' class="button"><font color=yellow>&nbsp;Yahrzeits&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></button>
+            </li>
+            <li>
+              <button onclick=doOrg(); href='https://www.NameThatThing.site/enterOrgs.html' class="button"><font color=yellow>Organizations</font></button>
+            </li>
+            <li>
+              <button onclick=doReq(); href='https://www.NameThatThing.site/enterRequests.html' class="button"><font color=yellow>&nbsp;Requests&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 cell">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<!-- <script>setConfKey("<?php echo $ConfKey; ?>"); setFName("<?php echo $fname; ?>");</script> -->
+<script>
+if(!checkConfKey()){
+  window.open("https://www.NameThatThing.site/noCookies.html", "_self")
+}
+
+var confKey = getConfKey();
+var fname = getFName();
+
+var greeting = document.getElementById("greeting");
+greeting.innerHTML = "Welcome back, " + fname;
+
+function doYahr(){
+  window.open("https://www.NameThatThing.site/enterYahrzeits.html?X=" + confKey + "&Y=" + fname,  "_self")
+}
+
+function doOrg(){
+  window.open("https://www.NameThatThing.site/enterOrgs.html?X=" + confKey + "&Y=" + fname,  "_self")
+}
+
+function doReq(){
+  window.open("https://www.NameThatThing.site/enterRequests.html?X=" + confKey + "&Y=" + fname,  "_self")
+}
+
+</script>
+<div id=output></div>
+<script src="js/formatData.js"></script>
+<script src="js/dataBase.js"></script>
+<script src="js/yahrzeit.js"></script>
+<script>
+function setUp(){
+  var logon = JSON.parse(document.getElementById("output").innerHTML);
+  LOGON_OK = logon.RETURN;
+  if(LOGON_OK.search("TRUE") > -1){
+    LOGON_PID = logon.PID;
+  } else {
+    window.open("https://www.NameThatThing.site/noCookies.html", "_self");
+  }
+}
+
+isLoginPossible(output, fname, confKey, setUp);
+</script>
+</html>

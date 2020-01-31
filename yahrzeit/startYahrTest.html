@@ -49,7 +49,7 @@
     <div class="large-8 medium-8 cell">
       <h5>We will contact the organization for you</h5>
 
-    <form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
+    <form id=SuggestionForm action="cgi-bin/getPeopleTEST.php" method="post">
      <div class="grid-x grid-padding-x">
        <div class="large-8 medium-8 cell">
            <label class=flabel>What is your email address?</label>
@@ -90,6 +90,17 @@
 <!-- ending -->
 <script src="js/yahrzeit.js"></script>
 <script>
+
+// var output = document.getElementById("output");
+//
+// function getUrlVars() {
+//     var vars = {};
+//     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+//         vars[key] = value;
+//     });
+//     return vars;
+// }
+//
 output.innerHTML = getUrlVars()["RETURN"] ? getUrlVars()["RETURN"].replace(/\%20/g, ' ') : "";
 
 </script>
