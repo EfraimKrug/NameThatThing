@@ -41,7 +41,7 @@ There are two reasons to get an email:
               <button onclick=doOrg(); href='https://www.NameThatThing.site/enterOrgs.html' class="button"><font color=yellow>Organizations</font></button>
             </li>
             <li>
-              <button onclick=doReq(); href='https://www.NameThatThing.site/enterRequests.html' class="button"><font color=yellow>&nbsp;Requests&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></button>
+              <!-- <button onclick=doReq(); href='https://www.NameThatThing.site/enterRequests.html' class="button"><font color=yellow>&nbsp;Requests&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></button> -->
             </li>
           </ul>
         </div>
@@ -56,13 +56,14 @@ There are two reasons to get an email:
 </body>
 <!-- <script>setConfKey("<?php echo $ConfKey; ?>"); setFName("<?php echo $fname; ?>");</script> -->
 <script>
-if(!checkConfKey()){
-  window.open("https://www.NameThatThing.site/noCookies.html", "_self")
-}
+// if(!checkConfKey()){
+//   window.open("https://www.NameThatThing.site/noCookies.html", "_self")
+// }
 
 var confKey = getConfKey();
 var fname = getFName();
-
+// alert(confKey);
+// alert(fname);
 var greeting = document.getElementById("greeting");
 greeting.innerHTML = "Welcome back, " + fname;
 
@@ -86,11 +87,13 @@ function doReq(){
 <script>
 function setUp(){
   var logon = JSON.parse(document.getElementById("output").innerHTML);
+  // alert(logon);
   LOGON_OK = logon.RETURN;
+  // alert(LOGON_OK);
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
   } else {
-    window.open("https://www.NameThatThing.site/noCookies.html", "_self");
+    //window.open("https://www.NameThatThing.site/noCookies.html", "_self");
   }
 }
 

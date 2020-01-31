@@ -165,6 +165,7 @@ function enterForm(type){
 
 // returns true/false
 function isLoginPossible(output, x, y, callback){
+  console.log(x + ":" + y);
   dbLogon("check", output, x, y, callback);
 }
 // var DEBUG_ON = false;

@@ -23,7 +23,8 @@ require 'email.php';
 date_default_timezone_set("America/New_York");
 $today = date("Y-m-d H:i:s");
 
-$logon = FALSE;
+$logon = TRUE;
+$reason = "";
 $ConfKey = $ConfEmail = "";
 $ConfPID = 0;
 
@@ -32,45 +33,57 @@ if(isset($_REQUEST['ConfEmail'])) $ConfEmail = mysqli_real_escape_string ($conn 
 if(isset($_REQUEST['ConfPID']))   $ConfPID = mysqli_real_escape_string ($conn , $_REQUEST['ConfPID']);
 
 $sql = "SELECT * FROM People WHERE PeopleID = " . $ConfPID;
+$reason .= $ConfPID;
 $resource = $conn->query($sql);
 $row = $resource->fetch_assoc();
 $NewConfKey = "";
+$PeopleID = $row['PeopleID'];
+$reason .= "[ $PeopleID ]";
 if(isset($row['FName'])){
       $fname = $row['FName'];
       $NewConfKey = crypt($today . $email . $fname);
 }
 
+$reason .= "[ $fname ]";
 $sql = "SELECT * FROM Conf WHERE ConfKey = '" . $ConfKey . "'";
 $resource = $conn->query($sql);
 $row = $resource->fetch_assoc();
+$reason .= "[ $ConfKey ]";
 //prepare for later comparison
 $CompConfTime = $row['ConfTime'] ? new DateTime($row['ConfTime'], new DateTimeZone('America/New_York')) : new DateTime($today, new DateTimeZone('America/New_York'));
+$confPID = $row['ConfPID'];
 $CompToday = new DateTime($today, new DateTimeZone('America/New_York'));
 $CompToday->modify('-2 hours');
 
 if(isset($row['ConfKey']) && !$row['ConfTime']){
   $sql = "UPDATE Conf SET ConfTime = '" . $today . "' WHERE ConfKey = '" . $ConfKey . "'";
   $resource = $conn->query($sql);
-  $logon = TRUE;
+  // $logon = TRUE;
+  $reason = "No Conftime";
   $CARRY_STRING = "?X=" . $ConfKey . "&Y=" . $fname;
 }
 
 if($CompToday < $CompConfTime){
-  $logon = TRUE;
+  // $logon = TRUE;
+  $reason .= "::time correct";
   $CARRY_STRING = "?X=" . $ConfKey . "&Y=" . $fname;
 }
 
-//time up - log him off
-if(isset($row['ConfKey']) && isset($row['ConfTime']) ){
-  if($CompToday > $CompConfTime){
-    $sql = "UPDATE Conf SET ConfKey = '" . $NewConfKey . "', ConfTime = '" . $CompToday->format('Y-m-d H:i:s') . "' WHERE ConfKey = '" . $ConfKey . "'";
-    $resource = $conn->query($sql);
-    $ConfKey = $NewConfKey; // for cookie setting below...
-  }
+if($PeopleID != $ConfPID){
+  $reason .= "::IDs not the same";
+  $logon = FALSE;
 }
+//time up - log him off
+// if(isset($row['ConfKey']) && isset($row['ConfTime']) ){
+//   if($CompToday > $CompConfTime){
+//     $sql = "UPDATE Conf SET ConfKey = '" . $NewConfKey . "', ConfTime = '" . $CompToday->format('Y-m-d H:i:s') . "' WHERE ConfKey = '" . $ConfKey . "'";
+//     $resource = $conn->query($sql);
+//     $ConfKey = $NewConfKey; // for cookie setting below...
+//   }
+// }
 
 if(!$logon){
-  echo "<div>That didn't work... your login is wonkey!</div>";
+  echo "<div>That didn't work... your login is wonkey![ $reason ]</div>";
   die();
 }
 
@@ -99,7 +112,7 @@ if(!$logon){
               <a href='https://www.NameThatThing.site/enterOrgs.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Organizations</font></a>
             </li>
             <li>
-              <a href='https://www.NameThatThing.site/enterRequests.html<?php echo $CARRY_STRING ?>' class="button"><font color=yellow>Requests</font></a>
+              <!-- <a href='https://www.NameThatThing.site/enterRequests.html<?php #echo $CARRY_STRING ?>' class="button"><font color=yellow>Requests</font></a> -->
             </li>
           </ul>
         </div>
