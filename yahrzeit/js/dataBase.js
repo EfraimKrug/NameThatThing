@@ -34,6 +34,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
       returnVal = this.status;
   };
   // console.log(TableName);RequestsByPeople
+  console.log(TableName);
   switch(TableName){
     case "Requests":          func = formatRequests; break;
     case "RequestsByPeople":  func = formatRequests; break;
@@ -90,7 +91,7 @@ function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbRequests(type, outDiv, X, Y, rowVars, callback) {
-  // console.log(rowVars);
+  console.log(rowVars);
   return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
 }
 

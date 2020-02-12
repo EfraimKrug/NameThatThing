@@ -1,0 +1,21 @@
+
+#popUpBox {
+  visibility: hidden;
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+  width: 20%;
+  height: 20%;
+  min-height:100px;
+  z-index:990;
+  background: url('https://www.NameThatThing.site/images/yahrzeit-candles.jpg') no-repeat right;
+}
+
+#popUpMessage {
+  color:black;
+}
+
+.popUpBox{
+  color:black;
+  background-color: #f98e3f;
+}

@@ -5,12 +5,13 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel = "stylesheet" type = "text/css" href = "css/yahrzeit.css" />
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-  async defer></script>
-  <title>Yahrzeit Keeper</title>
+  <!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"  async defer></script> -->
+  <title>Yahrzeit Donations</title>
   <link rel="stylesheet" href="css/foundation.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/yahrzeit.css">
+  <script src="js/formatData.js"></script>
+  <script src="js/dataBase.js"></script>
 </head>
 <body>
   <style>
@@ -26,7 +27,7 @@
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell">
-      <h1><font color=#f98e3f>Remembering</font></h1>
+      <h1><font color=#f98e3f>Yahrzeits: Please give us an address</font></h1>
     </div>
   </div>
 
@@ -59,6 +60,7 @@
     </form>
    </div>
 </div>
+<div id=output></div>
 </body>
 <script src="js/yahrzeit.js"></script>
 <script>
@@ -69,25 +71,42 @@
 //     });
 //     return vars;
 // }
-
 var RID = getUrlVars()["RID"];
+var mailaddressELT = document.getElementById("mailaddress");
+var emailELT = document.getElementById("email");
+mailaddressELT.value = "";
+emailELT.value = "";
+
+function storeEmailAddress(){
+    alert('Email Address: ' + popUpReturn + "[" + RID + "]");
+}
 
 function acceptPayPal(){
-    var email = document.getElementById("email").value;
-    if(email.length > 0 && email.length < 10){
-      alert("Please enter an email address");
-      return;
-    }
+    var email = emailELT.value;
+    if(email.length < 10)
+      openPopUpText("Please enter an email address for PayPal.", "EMail Address", storeEmailAddress, nostuff);
+    else
+      alert(email);
+}
 
+function storeCheckAddress(){
+    alert('Check Address: ' + popUpReturn + "[" + RID + "]");
 }
 
 function acceptCheck(){
-    var mailaddress = document.getElementById("mailaddress").value;
-    if(mailaddress.length < 10) alert("Please enter full address");
+  var mailaddress = mailaddressELT.value;
+  if(mailaddress.length < 10)
+    openPopUpText("Please tell us exactly how to address the envelope.", "Mailing Address", storeCheckAddress, nostuff);
+  else
+    alert(mailaddress);
+}
+
+function refusing(){
+    alert("Removing entry from database");
 }
 
 function refuseAll(){
-    alert("Are you sure you do not want to participate?");
+    openPopUp("You really don't want these donations? ", refusing, nostuff);
 }
 
 function formAccept(level){
@@ -98,6 +117,68 @@ function formAccept(level){
     default: break;
   }
 }
-</script>
 
+function testFunc(){
+  alert("testFunc fired");
+}
+
+function testing(){
+    console.log(RID);
+    dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', ''], testFunc);
+}
+testing();
+</script>
+<!-- begining of the popUpBox -->
+<script>
+// THESE FUNCTIONS MUST BE WRITTEN FOR THE APPLICATION -
+// USUALLY okstuff STORES INFORMATION OR CAUSES CHANGES
+// THERE ARE TWO WAYS TO SET UP THE BOX:
+//    openPopUpText("This is the question", "Text Prompt", callback-for-ok, call-back-for-not-ok);
+//    openPopUp("This is the question", callback-for-ok, call-back-for-not-ok);
+//
+function okstuff(){
+  if(popUpReturn) alert("AHAH: " + popUpReturn);
+  else alert("no entry - ok!");
+}
+
+function nostuff(){
+  // alert("nope! not");
+}
+
+</script>
+<!-- HTML below - hidden by style sheet above -->
+<link rel="stylesheet" href="css/popUp.css">
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <div id=popUpBox class=popUpBox>
+        <table id=tbl class=popUpBox>
+          <div class="large-12 cell">
+          <tr class=popUpBox>
+            <td class=popUpBox>
+              <div id=popUpMessage class=popUpBox></div>
+            </td>
+          </tr>
+          </div>
+          <div class="large-12 cell">
+            <tr>
+              <td class=popUpBox>
+              <input type="text" id="popUpInput" placeholder=""/>
+              </td></tr>
+          </div>
+          <div class="large-4 cell"></div>
+          <div class="large-4 cell">
+            <tr><td class=popUpBox>
+            <div id=popUpButtons>
+              <button type=button class="button popUpBox" onclick=popUpTextOK(1);>Yes</button>
+              <button type=button class="button popUpBox" onclick=popUpTextOK(0);>No</button>
+            </div>
+            </td></tr>
+          </div>
+          </table>
+      </div>
+</div>
+</div>
+<script src="js/popUp.js"></script>
+<!-- ending of the popUpBox -->
 </html>
