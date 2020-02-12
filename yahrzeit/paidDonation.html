@@ -11,6 +11,7 @@
     <script src="js/formatData.js"></script>
     <script src="js/dataBase.js"></script>
     <script src="js/cookieControl.js"></script>
+    <script src="js/doMail.js"></script>
   </head>
 <body>
 <div class="grid-container">
@@ -108,6 +109,11 @@ function outRequests(){
   SButton.innerHTML = "Add New!"
 }
 
+function doMail(){
+  alert("mail to Org");
+  alert("mail to Person");
+}
+
 function dbAccess(X, Y, ID){
   // alert("dbAccess");
   var logon = JSON.parse(document.getElementById("output").innerHTML);
@@ -115,6 +121,7 @@ function dbAccess(X, Y, ID){
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
     if(!FIRST_ENTRY) enterForm("req");
+    if(FIRST_ENTRY) doMail();
     FIRST_ENTRY = false;
     dbRequestsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","",""], outRequests);
     dbOrgsAccess(querystring('X'), querystring('Y'));
@@ -157,7 +164,7 @@ function dbOrgsAccess(X, Y){
 <script>
 // yahrzeits connection...
 function outYahrs(){
-  alert("outYahrs");
+  // alert("outYahrs");
   var YahrOption = "";
   var YData = JSON.parse(document.getElementById("output3").innerHTML);
   var YahrDropDown = document.getElementById("yahrDropdown");

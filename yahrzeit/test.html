@@ -3,6 +3,10 @@
 <head>
 <script src="js/test.js"></script>
 <script src="js/cookieControl.js"></script>
+<script src="js/yahrzeit.js"></script>
+<script src="js/payPal.js"></script>
+
+
 <style>
 #outDiv {
   visibility: hidden;
@@ -31,13 +35,20 @@ if(checkfname()){
 
 
 function Ggo(){
+  var X="$1$oqil3CRV$zIbRFp4neQsPmqLGfKro./";
+  var Y = "Efraim";
+  yid = 1;
+  oid = 1;
+  pid = 20;
+  amt = 23.99;
+  setUpPayPal(amt, pid, oid, yid, X, Y);
   // var confKey = "CrazyLong$$123@ConfKey";
   // var confKey = "";
   // setConfKey(confKey);
-  deleteCookie('ConfKey', "")
-  var fname = "Fred";
-  setFName(fname);
-  alert(getConfKey());
+  // deleteCookie('ConfKey', "")
+  // var fname = "Fred";
+  // setFName(fname);
+  // alert(getConfKey());
 }
 
 </script>
