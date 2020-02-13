@@ -32,9 +32,12 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     }
     else
       returnVal = this.status;
+    // console.log("Now This: ");
+    // console.log(this.status);
+    // console.log(outData);
   };
   // console.log(TableName);RequestsByPeople
-  console.log(TableName);
+  // console.log(TableName);
   switch(TableName){
     case "Requests":          func = formatRequests; break;
     case "RequestsByPeople":  func = formatRequests; break;
@@ -57,10 +60,12 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   // console.log(func(rowVars));
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // console.log("Then This: ");
   // console.log([X,Y,rowVars]);
+  // console.log(func(rowVars));
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
-
+ 
 function dbYahrzeits(type, outDiv, X, Y, rowVars, callback) {
   dbGo("Yahrzeits", type, outDiv, X, Y, rowVars, callback);
 }
@@ -91,7 +96,7 @@ function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbRequests(type, outDiv, X, Y, rowVars, callback) {
-  console.log(rowVars);
+  // console.log(rowVars);
   return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
 }
 

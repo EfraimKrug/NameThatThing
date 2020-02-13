@@ -106,6 +106,10 @@
       visibility: hidden;
     }
 
+    #output4 {
+      visibility: hidden;
+    }
+
     #greeting {
       align: right;
       color: #f98e3f;

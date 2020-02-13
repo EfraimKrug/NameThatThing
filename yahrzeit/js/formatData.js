@@ -220,7 +220,7 @@ function formatRequests(Id, ReqPID, ReqType, ReqDate, ReqAmount, ReqPaidDate, Re
     return str;
   }
   if (Object.keys(Id).length > 3){
-    str = "ID=" + Id['ID'];
+    str = "ID=" + (Id['ID'] || Id['RID']);
     str += "&ReqPID=" + Id['ReqPID'];
     str += "&ReqType=" + Id['ReqType'];
     str += "&ReqDate=" + Id['ReqDate'];

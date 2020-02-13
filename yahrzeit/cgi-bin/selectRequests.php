@@ -7,6 +7,7 @@ require 'openYDB.php';
 $RID = "";
 
 if(array_key_exists('RID', $_POST)) $RID = $_POST['RID'];
+if(array_key_exists('ID', $_POST)) $RID = $_POST['ID'];
 
 $sql = "SELECT * FROM Requests WHERE RID = " . $RID;
 

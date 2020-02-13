@@ -17,7 +17,7 @@ $ReqCancelDate = "";
 $ReqYID = "";
 $ReqOID = "";
 
-if(array_key_exists('RID', $_POST)) $RID = $_POST['RID'];
+if(array_key_exists('ID', $_POST)) $RID = $_POST['ID'];
 if(array_key_exists('ReqPID', $_POST)) $ReqPID = $_POST['ReqPID'];
 if(array_key_exists('ReqType', $_POST)) $ReqType = $_POST['ReqType'];
 if(array_key_exists('ReqDate', $_POST)) $ReqDate = $_POST['ReqDate'];
@@ -32,7 +32,7 @@ if(array_key_exists('ReqOID', $_POST)) $ReqOID = $_POST['ReqOID'];
 
 
 $sql = "UPDATE Requests SET ReqPID = " . $ReqPID . "," .
-                        "ReqType = " . $ReqType . "," .
+                        "ReqType = '" . $ReqType . "'," .
                         "ReqDate = " . "'" . $ReqDate . "'," .
                         "ReqAmount = '" . $ReqAmount . "'," .
                         "ReqYID = " . $ReqYID . "," .

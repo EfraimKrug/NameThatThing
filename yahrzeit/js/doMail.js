@@ -1,4 +1,4 @@
-function __doMail() {
+function __doMail(type, email, name, req) {
   var xhttp;
   var returnVal;
   var outData = "";
@@ -9,22 +9,21 @@ function __doMail() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200){
       outData = this.responseText;
-      outDiv.innerHTML = outData;
-      if(typeof(callback) == 'function'){
-        callback(X, Y, outData);
-      }
+      // outDiv.innerHTML = outData;
+      // if(typeof(callback) == 'function'){
+      //   callback(X, Y, outData);
+      // }
       returnVal = 0;
     }
     else
       returnVal = this.status;
   };
 
-    xhttp.open("POST", dgphpProg = "cgi-bin/insert" + TableName + ".php";, true);
-  x
-  http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
+  xhttp.open("POST", phpProg, true);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
 }
 
-function doMail(){
-  __doMail();
+function doMail(type, email, name, req){
+  __doMail(type, email, name);
 }

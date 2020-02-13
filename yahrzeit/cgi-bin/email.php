@@ -106,4 +106,67 @@ function sendEmailRequest($email, $href, $fname, $type, $yname, $ydate, $amount)
   }
 }
 
+
+function sendEmailCancelOrg($email){
+  $to = $email;
+  $subject = 'We have canceled your donations on your request';
+  $message = "<html>
+              <body bgcolor=\"#DCEEFC\">
+              <center>
+              We are so sorry to see you leave!
+              <br>
+              We are honoring your request to be left alone.
+              <br>
+              Best,
+              <br>
+              Efraim
+              </center>
+              </body>
+              </html>";
+
+  $headers = "From: EfraimMKrug@GMail.com\r\n";
+  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+  if(mail($to, $subject, $message, $headers)){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+function sendEmailOrgCanceled($email, $name, $href){
+  $to = $email;
+  $subject = 'We have canceled your donations on your request';
+  $message = "<html>
+              <body bgcolor=\"#DCEEFC\">
+              <center>
+              Dear $name:
+              <br>
+              The place you wanted to give money to in honor of your yahrzeit has asked
+              that they not receive donations at this time.
+              <br>
+              Please follow this <a href='$href'>link</a>, and choose another place!
+              <br>
+              Best,
+              <br>
+              Efraim
+              </center>
+              </body>
+              </html>";
+
+  $headers = "From: EfraimMKrug@GMail.com\r\n";
+  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+  if(mail($to, $subject, $message, $headers)){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+
 ?>
