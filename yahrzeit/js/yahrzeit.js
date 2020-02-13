@@ -8,6 +8,9 @@ var EDIT_RID = 0;
 
 
 var output = document.getElementById("output");
+var output2 = document.getElementById("output2");
+var output3 = document.getElementById("output3");
+var output4 = document.getElementById("output4");
 
 // utility code
 function getUrlVars() {

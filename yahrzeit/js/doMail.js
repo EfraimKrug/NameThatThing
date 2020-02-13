@@ -18,12 +18,14 @@ function __doMail(type, email, name, req) {
     else
       returnVal = this.status;
   };
-
+  // console.log(phpProg);
+  // console.log([type, email, name, req]);
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
 }
 
 function doMail(type, email, name, req){
-  __doMail(type, email, name);
+  // console.log(type);
+  __doMail(type, email, name, req);
 }

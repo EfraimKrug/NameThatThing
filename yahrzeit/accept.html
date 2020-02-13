@@ -105,12 +105,22 @@ function acceptCheck(){
     alert(mailaddress);
 }
 
-function emailOrg(elt){
-  doMail("CancelOrg", elt['OEmail']);
-}
+var PID = "";
 
-function emailPeople(elt, req){
-  doMail("OrgCanceledPeople", elt['Email'], elt['FName'] + " " + elt['LName'], req);
+function emailPeople(){
+  // console.log('emailPeople');
+  var out = JSON.parse(output3.innerHTML)[0];
+  doMail("OrgCanceledPeople", out['EMail'], out['FName'] + " " + out['LName'], RID);
+  // console.log(out);
+  // alert(out);
+}
+function emailOrg(){
+  // var out = output2.innerHTML;
+  var out = JSON.parse(output2.innerHTML);
+  // console.log(out);
+  // alert(out);
+  doMail("CancelOrg", out['OEmail']);
+  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], emailPeople);
 }
 
 function refusalDB(){
@@ -128,13 +138,12 @@ function refusalDB(){
   // alert(strDate);
   var RData = JSON.parse(document.getElementById("output").innerHTML);
   var OID = RData['ReqOID'];
-  var PID = RData['ReqPID'];
+  PID = RData['ReqPID'];
   var YID = RData['ReqYID'];
   RData['ReqCancelDate'] = strDate;
   // console.log(RData);
   dbRequests("update", output, 'X', 'Y', RData, function(){});
-  dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', ''], emailOrg(output2));
-  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], emailPeople(output3, RData['RID']));
+  dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', ''], emailOrg);
 }
 
 function refusing(){
@@ -155,7 +164,7 @@ function formAccept(level){
 }
 
 function testFunc(){
-  alert("testFunc fired");
+  // alert("testFunc fired");
 }
 
 function testing(){

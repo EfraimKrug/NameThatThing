@@ -65,7 +65,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   // console.log(func(rowVars));
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
- 
+
 function dbYahrzeits(type, outDiv, X, Y, rowVars, callback) {
   dbGo("Yahrzeits", type, outDiv, X, Y, rowVars, callback);
 }
@@ -79,6 +79,9 @@ function dbConf(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbPeople(type, outDiv, X, Y, rowVars, callback) {
+  // console.log("dbPeople: ");
+  // console.log(X);
+  // console.log(Y);
   return dbGo("People", type, outDiv, X, Y, rowVars, callback);
 }
 

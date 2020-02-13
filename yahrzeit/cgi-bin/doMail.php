@@ -2,15 +2,18 @@
 require 'openYDB.php';
 require 'email.php';
 
-$email = "";
+// echo "HERE";
+$req = "";
 $type = "";
+$email = "";
 $name = "";
-$req = "":
 
-if(array_key_exists('type', $_POST)) $type = $_POST['type'];
-if(array_key_exists('email', $_POST)) $email = $_POST['email'];
-if(array_key_exists('name', $_POST)) $name = $_POST['name'];
-if(array_key_exists('req', $_POST)) $req = $_POST['req'];
+// print_r($_REQUEST);
+
+if(array_key_exists('type', $_REQUEST)) $type = $_REQUEST['type'];
+if(array_key_exists('email', $_REQUEST)) $email = $_REQUEST['email'];
+if(array_key_exists('name', $_REQUEST)) $name = $_REQUEST['name'];
+if(array_key_exists('req', $_REQUEST)) $req = $_REQUEST['req'];
 
 $sql = "SELECT * FROM Requests WHERE RID = " . $req;
 $resource = $conn->query($sql);
