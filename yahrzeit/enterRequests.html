@@ -55,7 +55,6 @@
             </div>
           </div>
 
-
           <button id="SButton" type=button class="button" onclick=getPaymentAndGo();>Enter</button>
        </div>
     </form>
@@ -86,20 +85,32 @@
 <script src="js/yahrzeit.js"></script>
 <!-- <script src="js/payPal.js"></script> -->
 <script>
+function fillname(){
+  var yahrDropdown = document.getElementById("yahrDropdown");
+  var YData = JSON.parse(document.getElementById("output3").innerHTML);
+  for(var i = 0; i < yahrDropdown.length; i++) {
+      if(yahrDropdown.options[i].innerHTML === YData['YName']) {
+          yahrDropdown.selectedIndex = i;
+          break;
+      }
+  }
+}
 
 function refillFormFinish(){
   var rtype = document.getElementById("rtype");
   var ramount = document.getElementById("ramount");
-  var rorg = document.getElementById("rorg");
+  var rorg = document.getElementById("orgDropdown");
 
   var RData = JSON.parse(document.getElementById("output").innerHTML);
+  dbYahrzeits("select", output3, querystring('X'), querystring('Y'), [RData['ReqYID'], '', '', '', '', ''], fillname);
   var SButton = document.getElementById("SButton");
   rtype.value = RData['ReqType'];
   ramount.value = unescape(RData['ReqAmount']);
   rorg.value = RData['ReqOID'];
-  EDIT_RID = RData['RID'];
-  EDIT_FORM = true;
+  // EDIT_RID = RData['RID'];
+  // EDIT_FORM = true;
   SButton.innerHTML = "Change It!"
+  SButton.disabled = true;
 }
 
 function refillForm(RequestID){
@@ -112,13 +123,20 @@ function outRequests(){
   RList.innerHTML = "<span class=RequestList onclick=initForm('req')>NEW</span><br>";
   // alert(RData.length);
   for (i=0; i < RData.length; i++){
+    // RList.innerHTML += "<span id=deleterid class=smallbutton onclick=deleteRid(" + RData[i].RID + ")>Del</span><span title='" + unescape(RData[i].OName) + "' class=RequestList onclick=refillForm(" + RData[i].RID + ")>" + RData[i].ReqType + ": (" + unescape(RData[i].YName) + ")</span><br>";
     RList.innerHTML += "<span title='" + unescape(RData[i].OName) + "' class=RequestList onclick=refillForm(" + RData[i].RID + ")>" + RData[i].ReqType + ": (" + unescape(RData[i].YName) + ")</span><br>";
   }
   var SButton = document.getElementById("SButton");
-  SButton.innerHTML = "Add New!"
+  SButton.disabled = false;
+  SButton.innerHTML = "Add New!";
 }
 
 function dbAccess(X, Y, ID){
+  if(!FIRST_ENTRY && !(rtype.value && ramount.value && orgDropdown.value && yahrDropdown.value)){
+    alert("Please fill out all the fields!");
+    return;
+  }
+
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
   if(LOGON_OK.search("TRUE") > -1){
@@ -136,19 +154,28 @@ checkLogin("req");
 function getPaymentAndGo(){
   var X = querystring('X');
   var Y = querystring('Y');
-  alert(X);
-  alert(Y);
+  // alert(X);
+  // alert(Y);
   var ramount = document.getElementById("ramount").value;
-
   var yahrDropdown = document.getElementById("yahrDropdown");
+  var rtype = document.getElementById("rtype");
   var yahrID = yahrDropdown.options[yahrDropdown.selectedIndex].value;
 
   var orgDropdown = document.getElementById("orgDropdown");
   var orgID = orgDropdown.options[orgDropdown.selectedIndex].value;
-
+  var rtype = rtype.options[rtype.selectedIndex].value;
   checkLogin("req");
-  window.open("https://NameThatThing.site/paypal.html?AMOUNT=" + ramount + "&PID=" + LOGON_PID + "&OID=" + orgID + "&YahrID=" + yahrID + "&X=" + X + "&Y=" + Y, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=200,height=250");
+  // var rid = 0;
+  // if(EDIT_FORM) rid = EDIT_RID;
+  // console.log("AMOUNT=" + ramount + "&PID=" + LOGON_PID + "&OID=" + orgID + "&YahrID=" + yahrID + "&X=" + X + "&Y=" + Y);
+  // window.open("https://NameThatThing.site/paypal.html?AMOUNT=" + ramount + "&PID=" + LOGON_PID + "&OID=" + orgID + "&YahrID=" + yahrID + "&X=" + X + "&Y=" + Y + "&type=" + rtype +"&rid=" + rid, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=200,height=250");
+  window.open("https://NameThatThing.site/paypal.html?AMOUNT=" + ramount + "&PID=" + LOGON_PID + "&OID=" + orgID + "&YahrID=" + yahrID + "&X=" + X + "&Y=" + Y + "&type=" + rtype, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=200,height=250");
 }
+
+// function deleteRid(rid){
+//    dbRequests("delete", output, querystring('X'), querystring('Y'), [rid, '', '', '', '', '', '', ''], function(){});
+//   // alert(rid);
+// }
 </script>
 
 <script>
@@ -166,8 +193,8 @@ function outOrgs(){
 }
 
 function dbOrgsAccess(X, Y){
-  var output2 = document.getElementById("output2");
-  dbOrgsByPeople("select", output2, X, Y, [LOGON_PID,"","","","",""], outOrgs);
+  // var output2 = document.getElementById("output2");
+  dbOrgsByPeople("select", output2, X, Y, [LOGON_PID,"","","","","","",""], outOrgs);
 }
 </script>
 <script>
@@ -185,7 +212,7 @@ function outYahrs(){
 }
 
 function dbYahrAccess(X, Y){
-  var output3 = document.getElementById("output3");
+  // var output3 = document.getElementById("output3");
   dbYahrzeitsByPeople("select", output3, X, Y, [LOGON_PID,"","","","",""], outYahrs);
 }
 

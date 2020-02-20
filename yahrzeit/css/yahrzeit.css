@@ -18,6 +18,13 @@
       padding: 3%;
     }
 
+    .smallbutton{
+      background-color: #320500;
+      color: #f98e3f;
+      border: 1px solid #f98e3f;
+      padding: 2px;
+    }
+
     .RequestListMenu {
       background-color: #320500;
       color: #f98e3f;

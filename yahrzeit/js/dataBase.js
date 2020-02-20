@@ -1,6 +1,5 @@
 function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   var phpProg = "";
-
   if(type.toLowerCase() == "insert") phpProg = "cgi-bin/insert" + TableName + ".php";
   if(type.toLowerCase() == "update") phpProg = "cgi-bin/update" + TableName + ".php";
   if(type.toLowerCase() == "delete") phpProg = "cgi-bin/delete" + TableName + ".php";
@@ -16,28 +15,17 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200){
-      // try {
-      //   outData = JSON.parse(this.responseText);
-      // } catch (e) {
       outData = this.responseText;
-      // console.log("HERE");
-      // console.log(this.responseText);
-      // }
       outDiv.innerHTML = outData;
       if(typeof(callback) == 'function'){
-        // callback(X, Y, outData["ConfPID"]);
         callback(X, Y, outData);
       }
       returnVal = 0;
     }
     else
       returnVal = this.status;
-    // console.log("Now This: ");
-    // console.log(this.status);
-    // console.log(outData);
   };
-  // console.log(TableName);RequestsByPeople
-  // console.log(TableName);
+
   switch(TableName){
     case "Requests":          func = formatRequests; break;
     case "RequestsByPeople":  func = formatRequests; break;
@@ -54,14 +42,9 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
                               break;
     default:                  func = doNothing; break;
   }
-  // console.log("rowVars: ");
-  // console.log(rowVars);
-  // console.log("FIRE");
-  // console.log(func(rowVars));
+
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  // console.log("Then This: ");
-  // console.log([X,Y,rowVars]);
   // console.log(func(rowVars));
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
@@ -71,6 +54,7 @@ function dbYahrzeits(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbOrgs(type, outDiv, X, Y, rowVars, callback) {
+  // console.log(rowVars);
   dbGo("Orgs", type, outDiv, X, Y, rowVars, callback);
 }
 

@@ -51,8 +51,11 @@
   var oid = getUrlVars()["OID"];
   var yid = getUrlVars()["YahrID"];
   var X = getUrlVars()["X"];
-  var Y = getUrlVars()["Y"];
-  setUpPayPal(amount, pid, oid, yid, X, Y);
+  var Y = getUrlVars()["Y"]
+  var type = getUrlVars()["type"];
+  var rid = getUrlVars()["rid"];
+
+  setUpPayPal(amount, pid, oid, yid, X, Y, type, rid);
 </script>
 
 <script src="js/escape.js"></script>

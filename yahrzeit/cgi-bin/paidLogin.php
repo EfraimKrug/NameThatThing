@@ -9,34 +9,34 @@ $yid = "";
 $amount = "";
 $logon = TRUE;
 
-if(array_key_exists('pid', $_POST)){
-  $pid = addslashes ($_POST['pid']);
+if(array_key_exists('pid', $_REQUEST)){
+  $pid = addslashes ($_REQUEST['pid']);
 } else {
   $logon = FALSE;
 }
 
-if(array_key_exists('oid', $_POST)){
-  $oid = addslashes ($_POST['oid']);
+if(array_key_exists('oid', $_REQUEST)){
+  $oid = addslashes ($_REQUEST['oid']);
 } else {
   $logon = FALSE;
 }
-if(array_key_exists('yid', $_POST)){
-  $yid = addslashes ($_POST['yid']);
+if(array_key_exists('yid', $_REQUEST)){
+  $yid = addslashes ($_REQUEST['yid']);
 } else {
   $logon = FALSE;
 }
-if(array_key_exists('amount', $_POST)){
-  $amount = addslashes ($_POST['amount']);
+if(array_key_exists('amount', $_REQUEST)){
+  $amount = addslashes ($_REQUEST['amount']);
 } else {
   $logon = FALSE;
 }
-if(array_key_exists('X', $_POST)){
-  $X = addslashes ($_POST['X']);
+if(array_key_exists('X', $_REQUEST)){
+  $X = addslashes ($_REQUEST['X']);
 } else {
   $logon = FALSE;
 }
-if(array_key_exists('Y', $_POST)){
-  $Y = addslashes ($_POST['Y']);
+if(array_key_exists('Y', $_REQUEST)){
+  $Y = addslashes ($_REQUEST['Y']);
 } else {
   $logon = FALSE;
 }
@@ -86,8 +86,8 @@ if(array_key_exists('Y', $_POST)){
   // if($row['FName'] !== $FName){
   //   $logon = FALSE;
   // }
-  $rObj = $logon ? (object) array('RETURN' => 'TRUE', 'PID' => $PeopleID) : (object) array('RETURN' => 'FALSE');
-  // $rObj = $_POST;
+  $rObj = $logon ? (object) array('RETURN' => 'TRUE', 'PID' => $pid) : (object) array('RETURN' => 'FALSE');
+  // $rObj = $_REQUEST;
   // $rObj = ['RETURN' => 'TRUE'];
   // echo $logon;
   // rObj->RETURN = $logon ? "TRUE" : "FALSE";

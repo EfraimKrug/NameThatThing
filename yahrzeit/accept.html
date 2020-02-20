@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/foundation.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/yahrzeit.css">
+  <script src="js/cookieControl.js"></script>
   <script src="js/formatData.js"></script>
   <script src="js/dataBase.js"></script>
   <script src="js/doMail.js"></script>
@@ -22,7 +23,6 @@
   </style>
 <div id=topDiv>
 </div>
-<!-- captcha -->
 
 <!-- starting -->
 <div class="grid-container">
@@ -68,109 +68,162 @@
 </body>
 <script src="js/yahrzeit.js"></script>
 <script>
-// function getUrlVars() {
-//     var vars = {};
-//     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-//         vars[key] = value;
-//     });
-//     return vars;
-// }
+FIRST_ENTRY = false;
 var RID = getUrlVars()["RID"];
+var X = getUrlVars()["X"];
+var Y = getUrlVars()["Y"];
+
 var mailaddressELT = document.getElementById("mailaddress");
 var emailELT = document.getElementById("email");
 mailaddressELT.value = "";
 emailELT.value = "";
 
+//initData
+//get current Request
+//based on Request, get People and Org records...
+function initData(){
+  var OID = "";
+  var PID = "";
+
+    var getOrg = function(){
+          dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', ''], function(){});
+        }
+
+    var getPeople = function(){
+          var RData = JSON.parse(document.getElementById("output").innerHTML);
+          OID = RData['ReqOID'];
+          PID = RData['ReqPID'];
+          dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], getOrg);
+        }
+
+  dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', ''], getPeople);
+}
+initData();
+
+function emailNextNoticeOrg(){
+  var out = JSON.parse(output2.innerHTML);
+  doMail("NextNoticeOrg", out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']);
+  window.open("https://NameThatThing.site/orgThanks.html", "_blank", "resizable=yes");
+}
+
+//response to formAccept...
+//first response - give email for PayPal
+var emailaddress = "";
+
 function storeEmailAddress(){
-    alert('Email Address: ' + popUpReturn + "[" + RID + "]");
+    if(!emailaddress) emailaddress = popUpReturn;
+
+    var RData = JSON.parse(document.getElementById("output").innerHTML);
+    var OData = JSON.parse(document.getElementById("output2").innerHTML);
+    var OID = RData['ReqOID'];
+
+    OData['OPayPalEmail'] = emailaddress;
+    OData['ID'] = OData['OrgID'];
+    // console.log(OData);
+    // console.log(emailELT.value);
+    // console.log(emailaddress);
+    dbOrgs("update", output4, X, Y, OData, function (){});
+    emailNextNoticeOrg();
 }
 
 function acceptPayPal(){
-    var email = emailELT.value;
-    if(email.length < 10)
-      openPopUpText("Please enter an email address for PayPal.", "EMail Address", storeEmailAddress, nostuff);
-    else
-      alert(email);
+  emailaddress = emailELT.value;
+  if(emailaddress.length < 10)
+    openPopUpText("Please enter an email address for PayPal.", "EMail Address", storeEmailAddress, nostuff);
+  else
+    storeEmailAddress();
 }
+
+//response to formAccept...
+//second response - give mailing address
+
+var mailaddress = "";
 
 function storeCheckAddress(){
-    alert('Check Address: ' + popUpReturn + "[" + RID + "]");
+    // console.log(popUpReturn);
+    if(!mailaddress) mailaddress = popUpReturn;
+    // console.log(mailaddress);
+    var RData = JSON.parse(document.getElementById("output").innerHTML);
+    var OData = JSON.parse(document.getElementById("output2").innerHTML);
+    var OID = RData['ReqOID'];
+
+    OData['OMailAddress'] = mailaddress;
+    OData['ID'] = OData['OrgID'];
+
+    dbOrgs("update", output4, X, Y, OData, function (){});
+    emailNextNoticeOrg();
 }
 
+// Option 2 on formAccept - get an address to send check
 function acceptCheck(){
-  var mailaddress = mailaddressELT.value;
+  mailaddress = mailaddressELT.value;
   if(mailaddress.length < 10)
     openPopUpText("Please tell us exactly how to address the envelope.", "Mailing Address", storeCheckAddress, nostuff);
   else
-    alert(mailaddress);
+    storeCheckAddress();
 }
 
-var PID = "";
-
-function emailPeople(){
-  // console.log('emailPeople');
-  var out = JSON.parse(output3.innerHTML)[0];
-  doMail("OrgCanceledPeople", out['EMail'], out['FName'] + " " + out['LName'], RID);
-  // console.log(out);
-  // alert(out);
-}
+// Email both person and organization
+// Person - needs to find another Org
+// Organization - for verification...
 function emailOrg(){
-  // var out = output2.innerHTML;
   var out = JSON.parse(output2.innerHTML);
-  // console.log(out);
-  // alert(out);
   doMail("CancelOrg", out['OEmail']);
-  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], emailPeople);
+  var out = JSON.parse(output3.innerHTML)[0];
+  doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID);
+  window.open("https://NameThatThing.site/orgThanks.html", "_blank", "resizable=yes");
 }
 
+// Option 3 on formAccept
+// Organization is asking to leave them alone - Mamash like Rashbi
 function refusalDB(){
-  // alert("Removing entry from database");
   var today = new Date();
-  // var strDate = 'Y-m-d:h:i:s';
   var strDate = 'Y-m-d'
     .replace('Y', today.getFullYear())
-    .replace('m', today.getMonth()+1 < 10 ? '0' + today.getMonth()+1 : today.getMonth()+1)
+    .replace('m', parseInt(parseInt(today.getMonth())+1) < 10 ? '0' + parseInt(today.getMonth()+1) : parseInt(today.getMonth()+1))
     .replace('d', today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
     // .replace('h', today.getHours())
     // .replace('i', today.getMinutes())
     // .replace('s', today.getSeconds());
-
-  // alert(strDate);
+  // console.log(strDate);
+  // console.log(today.getMonth()+1);
+  // console.log(today.getMonth()+1 < 10 ? "less":"more");
   var RData = JSON.parse(document.getElementById("output").innerHTML);
-  var OID = RData['ReqOID'];
-  PID = RData['ReqPID'];
-  var YID = RData['ReqYID'];
-  RData['ReqCancelDate'] = strDate;
-  // console.log(RData);
-  dbRequests("update", output, 'X', 'Y', RData, function(){});
-  dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', ''], emailOrg);
-}
-
-function refusing(){
-    dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', ''], refusalDB);
-}
-
-function refuseAll(){
-    openPopUp("You really don't want these donations? ", refusing, nostuff);
-}
-
-function formAccept(level){
-  switch(level){
-    case 1: acceptPayPal(); break;
-    case 2: acceptCheck(); break;
-    case 3: refuseAll(); break;
-    default: break;
+  // console.log(RData['ReqCancelDate']);
+  if(!RData['ReqCancelDate']){
+    RData['ReqCancelDate'] = strDate;
+    // console.log("update Request");
+    dbRequests("update", output, 'X', 'Y', RData, emailOrg);
   }
 }
 
-function testFunc(){
-  // alert("testFunc fired");
+function refuseAll(){
+    openPopUp("You really don't want these donations? ", refusalDB, nostuff);
 }
 
-function testing(){
-    dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', ''], testFunc);
+function formAccept(level){
+  if(LOGON_OK.search("TRUE") > -1){
+    switch(level){
+      case 1: acceptPayPal(); break;
+      case 2: acceptCheck(); break;
+      case 3: refuseAll(); break;
+      default: break;
+    }
+  }
 }
-// testing();
+
+// regular logon and verification...
+function dbAccess(X, Y, ID){
+  var logon = JSON.parse(document.getElementById("output").innerHTML);
+  LOGON_OK = logon.RETURN;
+  if(LOGON_OK.search("TRUE") > -1){
+    LOGON_PID = logon.PID;
+    initData();
+  }
+}
+
+checkLogin("org");
+
 </script>
 <!-- begining of the popUpBox -->
 <script>

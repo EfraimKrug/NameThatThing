@@ -53,7 +53,7 @@ $reason .= "[ $ConfKey ]";
 $CompConfTime = $row['ConfTime'] ? new DateTime($row['ConfTime'], new DateTimeZone('America/New_York')) : new DateTime($today, new DateTimeZone('America/New_York'));
 $confPID = $row['ConfPID'];
 $CompToday = new DateTime($today, new DateTimeZone('America/New_York'));
-$CompToday->modify('-2 hours');
+$CompToday->modify('-24 hours');
 
 if(isset($row['ConfKey']) && !$row['ConfTime']){
   $sql = "UPDATE Conf SET ConfTime = '" . $today . "' WHERE ConfKey = '" . $ConfKey . "'";

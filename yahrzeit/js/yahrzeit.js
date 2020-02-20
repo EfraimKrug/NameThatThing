@@ -65,8 +65,10 @@ function checkLogin(type, valArray){
 
   var x = r[0] ? r[0] : querystring('X')[0]; //ConfKey
   var y = r[1] ? r[1] : querystring('Y')[0]; //FName
-
-  if(type == "paid") dbLogon("paid", output, x, y, dbAccess, valArray);
+  // console.log("here: " + type);
+  if(type == "paid"){
+    dbLogon("paid", output, x, y, dbAccess, valArray);
+  }
   else dbLogon("check", output, x, y, dbAccess);
   if(FIRST_ENTRY) initForm(type);
 }
@@ -75,7 +77,10 @@ function checkLogin(type, valArray){
 
 function initForm(type){
   var SButton = document.getElementById("SButton");
-  SButton.innerHTML = "Add New!"
+  if(SButton){
+    SButton.innerHTML = "Add New!"
+    SButton.disabled = false;
+  }
   if(type == "yahr"){
     EDIT_YID = 0;
     EDIT_FORM = false;
@@ -168,7 +173,7 @@ function enterForm(type){
 
 // returns true/false
 function isLoginPossible(output, x, y, callback){
-  console.log(x + ":" + y);
+  // console.log(x + ":" + y);
   dbLogon("check", output, x, y, callback);
 }
 // var DEBUG_ON = false;

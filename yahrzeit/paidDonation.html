@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Requests</title>
+    <title>Thanks!</title>
     <link rel="stylesheet" href="css/foundation.css">
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/yahrzeit.css">
@@ -18,182 +18,134 @@
 
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell">
-      <h1><font color=#f98e3f>Requests</font></h1>
+      <h1><font color=#f98e3f>&nbsp;</font></h1>
     </div>
   </div>
 
   <div class="grid-x grid-padding-x">
     <div class="large-8 medium-8 cell">
-      <h5>We will follow up on your requests</h5>
-    <form id=RequestForm method="post">
       <div class="grid-x grid-padding-x">
           <div class="large-4 medium-4 small-4 cell">
-              <label class=flabel>Donation Amount</label>
-              <input id=ramount type="text" placeholder="$18.00" />
-          </div>
-          <div class="large-4 medium-4 small-4 cell">
-            <label class=flabel>Type</label>
-            <select id=rtype>
-                <option value="Kaddish">Kaddish (Year)</option>
-                <option value="Yahrzeit">Yahrzeit</option>
-                <option value="Yizkor">Yizkor</option>
-            </select>
+            <div class=RequestList>
+              Thank you, <span id=fname></span>,
+              <p><br>You have donated <span id=donation></span> to <span id=place></span>
+              in honor of <span id=yname></span><br>[Yahrzeit: <span id=hdate></span>].</p>
+            </div>
           </div>
         </div>  <!-- here -->
-
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-              <label class=flabel>Place</label>
-              <select id=orgDropdown>
-              </select>
-            </div>
-            <div class="large-4 medium-4 small-4 cell">
-              <label class=flabel>Yahrzeit</label>
-              <select id=yahrDropdown>
-              </select>
-            </div>
-          </div>
-
-
-          <button id="SButton" type=button class="button" onclick=getPaymentAndGo();>Enter</button>
        </div>
-    </form>
-
-    <div class="large-4 medium-4 cell">
-      <!-- <div class="primary callout"> -->
-        <a role=button onclick=gotoOrgs() class=RequestListMenu>Places</a>
-        <a role=button onclick=gotoYahr() class=RequestListMenu>Yahrzeits</a>
-        <div class=RequestList>
-        <h5>Requests</h5>
-        <div id=RList class=RequestList>
-        </div>
-      </div>
-  </div>
-
   </div>
 </div>
 <div id=output></div>
 <div id=output2></div>
 <div id=output3></div>
+<div id=output4></div>
 </body>
-<script src="js/yahrzeit.js"></script>
+<script src="js/yahrzeit.js?v2"></script>
 <script>
 
-function refillFormFinish(){
-  var rtype = document.getElementById("rtype");
-  var ramount = document.getElementById("ramount");
-  var rorg = document.getElementById("rorg");
-
-  var RData = JSON.parse(document.getElementById("output").innerHTML);
-  var SButton = document.getElementById("SButton");
-  rtype.value = RData['ReqType'];
-  ramount.value = unescape(RData['ReqAmount']);
-  rorg.value = RData['ReqOID'];
-  EDIT_RID = RData['RID'];
-  EDIT_FORM = true;
-  SButton.innerHTML = "Change It!"
+function sendMail2(){
+  var OData = JSON.parse(document.getElementById("output2").innerHTML);
+  var PData = JSON.parse(document.getElementById("output3").innerHTML);
+  var req = document.getElementById("output4").innerHTML;
+  console.log('sending email - 2');
+  doMail("ThanksPerson", PData[0]['EMail'], PData[0]['FName'], req);
 }
 
-function refillForm(RequestID){
-    dbRequests("select", output, querystring('X'), querystring('Y'), [RequestID, '', '', '', '', '', '', ''], refillFormFinish);
+function sendMail(){
+  var OData = JSON.parse(document.getElementById("output2").innerHTML);
+  var PData = JSON.parse(document.getElementById("output3").innerHTML);
+  var req = document.getElementById("output4").innerHTML;
+  console.log('sending email - 1');
+  doMail("OrgSchedule", OData['OEmail'], OData['ORav'], req, sendMail2);
 }
 
-function outRequests(){
-  var RData = JSON.parse(document.getElementById("output").innerHTML);
-  var RList = document.getElementById("RList");
-  RList.innerHTML = "<span class=RequestList onclick=initForm('req')>NEW</span><br>";
-  for (i=0; i < RData.length; i++){
-    RList.innerHTML += "<span title='" + unescape(RData[i].OName) + "' class=RequestList onclick=refillForm(" + RData[i].RID + ")>" + RData[i].ReqType + ": (" + unescape(RData[i].YName) + ")</span><br>";
-  }
-  var SButton = document.getElementById("SButton");
-  SButton.innerHTML = "Add New!"
+function fillPage(){
+  var YData = JSON.parse(document.getElementById("output").innerHTML);
+  var OData = JSON.parse(document.getElementById("output2").innerHTML);
+  var PData = JSON.parse(document.getElementById("output3").innerHTML);
+
+  var donation = document.getElementById("donation");
+  var place = document.getElementById("place");
+  var yname = document.getElementById("yname");
+  var fname = document.getElementById("fname");
+  var hdate = document.getElementById("hdate");
+
+  donation.innerHTML = "$" + amount;
+  place.innerHTML = OData['OName'];
+  yname.innerHTML = YData['YName'];
+  fname.innerHTML = PData[0]['FName'];
+  hdate.innerHTML = YData['YHDay'] + ", " + YData['YHMonth'];
+  sendMail();
 }
 
-function doMail(){
-  alert("mail to Org");
-  alert("mail to Person");
-}
+function dbAccess(){
+  // console.log("dbAccess");
+    var getOrg = function(){
+          dbOrgs("select", output2, 'X', 'Y', [oid, '', '', '', '', '', '', '', '', ''], fillPage);
+        }
 
-function dbAccess(X, Y, ID){
-  // alert("dbAccess");
+    var getPeople = function(){
+          dbPeople("select", output3, 'X', 'Y', [pid, '', '', '', '', '', '', ''], getOrg);
+        }
+
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
-    if(!FIRST_ENTRY) enterForm("req");
-    if(FIRST_ENTRY) doMail();
     FIRST_ENTRY = false;
-    dbRequestsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","",""], outRequests);
-    dbOrgsAccess(querystring('X'), querystring('Y'));
-    dbYahrAccess(querystring('X'), querystring('Y'));
+    dbRequests("insert", output4, X, Y, [0, pid, type, '', amount, '',  '', '', '', '', oid, yid], function(){});
+    dbYahrzeits("select", output, 'X', 'Y', [yid, '', '', '', '', '', '', ''], getPeople);
   }
 }
 
-function getPaymentAndGo(){
-  var ramount = document.getElementById("ramount").value;
+// function dbAccess(){
+//   console.log("dbAccess");
+//   // if(rid)
+//   dbRequests("select", output4, X, Y, [rid, '', '', '', '', '',  '', '', '', '', '', ''], init2);
+//   // else
+//     // init2();
+// }
 
-  var yahrDropdown = document.getElementById("yahrDropdown");
-  var yahrID = yahrDropdown.options[yahrDropdown.selectedIndex].value;
-
-  var orgDropdown = document.getElementById("orgDropdown");
-  var orgID = orgDropdown.options[orgDropdown.selectedIndex].value;
-
-  window.open("https://NameThatThing.site/paypal.html?AMOUNT=" + ramount + "&PID=" + LOGON_PID + "&OID=" + OrgID + "&YahrID=" + YahrID, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=200,height=250");
-}
-</script>
-
-<script>
-// orgs connection...
-function outOrgs(){
-  var OrgOption = "";
-  var OData = JSON.parse(document.getElementById("output2").innerHTML);
-  var OrgDropDown = document.getElementById("orgDropdown");
-  for (i=0; i < OData.length; i++){
-    OrgOption = document.createElement("option");
-    OrgOption.text = unescape(OData[i].OName);
-    OrgOption.value = OData[i].OrgID;
-    OrgDropDown.add(OrgOption);
-  }
-}
-
-function dbOrgsAccess(X, Y){
-  var output2 = document.getElementById("output2");
-  dbOrgsByPeople("select", output2, X, Y, [LOGON_PID,"","","","",""], outOrgs);
-}
-</script>
-<script>
-// yahrzeits connection...
-function outYahrs(){
-  // alert("outYahrs");
-  var YahrOption = "";
-  var YData = JSON.parse(document.getElementById("output3").innerHTML);
-  var YahrDropDown = document.getElementById("yahrDropdown");
-  for (i=0; i < YData.length; i++){
-    YahrOption = document.createElement("option");
-    YahrOption.text = unescape(YData[i].YName);
-    YahrOption.value = YData[i].YahrzeitID;
-    YahrDropDown.add(YahrOption);
-  }
-}
-
-function dbYahrAccess(X, Y){
-  var output3 = document.getElementById("output3");
-  // alert("two: " + LOGON_PID);
-  dbYahrzeitsByPeople("select", output3, X, Y, [LOGON_PID,"","","","",""], outYahrs);
-}
-
-// <!-- setUpPayPal(); -->
-</script>
-<script>
 var amount = getUrlVars()["AMOUNT"];
 var pid = getUrlVars()["PID"];
-// alert("one: " + pid);
 var oid = getUrlVars()["OID"];
+// var rid = getUrlVars()["RID"];
 var yid = getUrlVars()["YahrID"];
 var X = getUrlVars()["X"];
 var Y = getUrlVars()["Y"];
-checkLogin("paid", [pid, oid, yid, amount, X, Y]);
+var type = getUrlVars()["type"];
 
+// function init2(){
+//   // console.log("init2");
+//   var logon = JSON.parse(document.getElementById("output").innerHTML);
+//   // if(rid){
+//   // var RData = JSON.parse(document.getElementById("output4").innerHTML);
+//   // console.log("=====>>>>>>>>>");
+//   // console.log(document.getElementById("output4").innerHTML);
+//   // RData['ReqType'] = type;
+//   // RData['ReqOID'] = oid;
+//   // RData['ReqAmount'] = amount;
+//   // RData['ReqYID'] = yid;
+//       // console.log(RData);
+//   // }
+//   LOGON_OK = logon.RETURN;
+//   if(LOGON_OK.search("TRUE") > -1){
+//     LOGON_PID = logon.PID;
+//     FIRST_ENTRY = false;
+//     // if(rid)
+//     // dbRequests("update", output4, X, Y, RData, dbAccess2);
+//     // else
+//     dbRequests("insert", output4, X, Y, [0, pid, type, '', amount, '',  '', '', '', '', oid, yid], function(){});
+//   }
+// }
+
+function init(){
+    // console.log("init");
+    checkLogin("paid", [pid, oid, yid, amount, X, Y]);
+}
+
+init();
 </script>
 <script src="js/escape.js"></script>
 <script src="js/vendor/jquery.js"></script>

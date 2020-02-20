@@ -17,10 +17,14 @@ $ReqCancelDate = "";
 $ReqYID = "";
 $ReqOID = "";
 
+date_default_timezone_set("America/New_York");
+$today = date("Y-m-d");
+$ReqDate = $today;
+
 if(array_key_exists('ID', $_POST)) $RID = $_POST['ID'];
 if(array_key_exists('ReqPID', $_POST)) $ReqPID = $_POST['ReqPID'];
 if(array_key_exists('ReqType', $_POST)) $ReqType = $_POST['ReqType'];
-if(array_key_exists('ReqDate', $_POST)) $ReqDate = $_POST['ReqDate'];
+// if(array_key_exists('ReqDate', $_POST)) $ReqDate = $_POST['ReqDate'];
 if(array_key_exists('ReqAmount', $_POST)) $ReqAmount = $_POST['ReqAmount'];
 if(array_key_exists('ReqPaidDate', $_POST)) $ReqPaidDate = $_POST['ReqPaidDate'];
 if(array_key_exists('ReqRequestSentDate', $_POST)) $ReqRequestSentDate = $_POST['ReqRequestSentDate'];
@@ -44,6 +48,6 @@ $sql = "UPDATE Requests SET ReqPID = " . $ReqPID . "," .
                         "ReqCancelDate = '" . $ReqCancelDate . "'" .
 
               " WHERE RID = $RID";
-echo $sql;
+// echo $sql;
 $resource = $conn->query($sql);
 ?>

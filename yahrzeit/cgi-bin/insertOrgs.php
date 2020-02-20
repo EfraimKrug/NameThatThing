@@ -7,6 +7,8 @@ $OStreetAddress = "";
 $OCity = "";
 $OState = "";
 $OCountry = "";
+$OPayPalEmail = "";
+$OMailAddress = "";
 
 if (count($_POST) < 5) die();
 
@@ -17,6 +19,8 @@ if(array_key_exists('OStreetAddress', $_POST)) $OStreetAddress = $_POST['OStreet
 if(array_key_exists('OCity', $_POST)) $OCity = $_POST['OCity'];
 if(array_key_exists('OState', $_POST)) $OState = $_POST['OState'];
 if(array_key_exists('OCountry', $_POST)) $OCountry = $_POST['OCountry'];
+if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = $_POST['OPayPalEmail'];
+if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = $_POST['OMailAddress'];
 
 if(array_key_exists('X', $_POST)) $X = $_POST['X'];
 if(array_key_exists('Y', $_POST)) $Y = $_POST['Y'];

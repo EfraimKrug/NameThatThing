@@ -1,6 +1,6 @@
-function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country) {
+function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country, PayPalEmail, MailAddress) {
   var str = '';
-  if(Id && Rav && Email && Name && SAddress && City && State && Country){
+  if(Id && Rav && Email && Name && SAddress && City && State && Country && PayPalEmail && MailAddress){
     str = "ID=" + Id;
     str += "&ORav=" + Rav;
     str += "&OEmail=" + Email;
@@ -9,6 +9,9 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country) {
     str += "&OCity=" + City;
     str += "&OState=" + State;
     str += "&OCountry=" + Country;
+    str += "&OPayPalEmail=" + PayPalEmail;
+    str += "&OMailAddress=" + MailAddress;
+
     return str;
   }
 
@@ -21,6 +24,9 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country) {
     str += "&OCity=" + Id[5];
     str += "&OState=" + Id[6];
     str += "&OCountry=" + Id[7];
+    str += "&OPayPalEmail=" + Id[8];
+    str += "&OMailAddress=" + Id[9];
+
     return str;
   }
 
@@ -33,6 +39,9 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country) {
     str += "&OCity=" + Id['OCity'];
     str += "&OState=" + Id['OState'];
     str += "&OCountry=" + Id['OCountry'];
+    str += "&OPayPalEmail=" + Id['OPayPalEmail'];
+    str += "&OMailAddress=" + Id['OMailAddress'];
+
     return str;
   }
 

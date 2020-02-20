@@ -71,7 +71,7 @@
                 <option value="Tevet">Tevet</option>
                 <option value="Shvat">Shvat</option>
                 <option value="Adar">Adar</option>
-                <option value="AdarII">Adar II</option>
+                <option value="AdarII">AdarII</option>
                 <option value="Nissan">Nissan</option>
                 <option value="Iyar">Iyar</option>
                 <option value="Sivan">Sivan</option>
@@ -93,7 +93,7 @@
     </form>
   </div>
     <div class="large-4 medium-4 cell">
-        <!-- <a role=button onclick=gotoRequests() class=YahrListMenu>Requests</a> -->
+        <a role=button onclick=gotoRequests() class=YahrListMenu>Requests</a>
         <a role=button onclick=gotoOrgs() class=YahrListMenu>Places</a>
         <div class=YahrList>
         <h5>Yahrzeits</h5>
@@ -127,8 +127,9 @@ function refillFormFinish(){
   gday.value = dArray[2];
   hday.value = YData['YHDay'];
   hyear.value = YData['YHYear'];
-  gmonth.selectedIndex = dArray[1];
-  hmonth.selectedIndex = YData['YHMonth'];
+  gmonth.selectedIndex = dArray[1]-1;
+  hmonth.value = YData['YHMonth'];
+  // hmonth.selectedIndex = YData['YHMonth']-1;
   EDIT_YID = YData['YahrzeitID'];
   EDIT_FORM = true;
   SButton.innerHTML = "Change It!"
