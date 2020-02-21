@@ -22,8 +22,8 @@ function sendEmailInvite($email, $href, $fname){
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -55,8 +55,8 @@ function sendEmailRenew($email, $href, $fname){
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -95,8 +95,8 @@ function sendEmailRequest($email, $href, $fname, $type, $yname, $ydate, $amount)
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -125,8 +125,8 @@ function sendEmailCancelOrg($email){
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -139,7 +139,7 @@ function sendEmailCancelOrg($email){
 
 function sendEmailOrgCanceled($email, $name, $req, $href){
   $to = $email;
-  $subject = 'We have canceled your donations on your request';
+  $subject = 'Your donation was not accepted';
   $message = "<html>
               <body bgcolor=\"#DCEEFC\">
               <center>
@@ -157,8 +157,8 @@ function sendEmailOrgCanceled($email, $name, $req, $href){
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -188,8 +188,8 @@ function sendPersonThanks($email, $name, $req, $href, $amount, $oname, $yname){
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -221,8 +221,8 @@ function NextNoticeOrg($email, $rname, $ppemail, $maddress){
               </body>
               </html>";
 
-  $headers = "From: EfraimMKrug@GMail.com\r\n";
-  $headers .= "Reply-To: EfraimMKrug@GMail.com\r\n";
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 

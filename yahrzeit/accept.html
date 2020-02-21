@@ -77,33 +77,37 @@ var mailaddressELT = document.getElementById("mailaddress");
 var emailELT = document.getElementById("email");
 mailaddressELT.value = "";
 emailELT.value = "";
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 //initData
 //get current Request
 //based on Request, get People and Org records...
+var OID = "";
+var PID = "";
+
+var getOrg = function(){
+  dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', ''], function(){});
+}
+
+var getPeople = function(){
+  var RData = JSON.parse(document.getElementById("output").innerHTML);
+  OID = RData['ReqOID'];
+  PID = RData['ReqPID'];
+  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], getOrg);
+}
+
 function initData(){
-  var OID = "";
-  var PID = "";
-
-    var getOrg = function(){
-          dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', ''], function(){});
-        }
-
-    var getPeople = function(){
-          var RData = JSON.parse(document.getElementById("output").innerHTML);
-          OID = RData['ReqOID'];
-          PID = RData['ReqPID'];
-          dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], getOrg);
-        }
-
+  // console.log(RID);
   dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', ''], getPeople);
 }
+
 initData();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 function emailNextNoticeOrg(){
   var out = JSON.parse(output2.innerHTML);
   doMail("NextNoticeOrg", out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']);
-  window.open("https://NameThatThing.site/orgThanks.html", "_blank", "resizable=yes");
+  window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
 }
 
 //response to formAccept...
@@ -171,7 +175,7 @@ function emailOrg(){
   doMail("CancelOrg", out['OEmail']);
   var out = JSON.parse(output3.innerHTML)[0];
   doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID);
-  window.open("https://NameThatThing.site/orgThanks.html", "_blank", "resizable=yes");
+  window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
 }
 
 // Option 3 on formAccept
