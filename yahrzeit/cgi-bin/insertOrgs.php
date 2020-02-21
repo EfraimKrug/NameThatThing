@@ -10,6 +10,7 @@ $OCountry = "";
 $OPayPalEmail = "";
 $OMailAddress = "";
 
+
 if (count($_POST) < 5) die();
 
 if(array_key_exists('ORav', $_POST)) $ORav = $_POST['ORav'];
@@ -21,9 +22,13 @@ if(array_key_exists('OState', $_POST)) $OState = $_POST['OState'];
 if(array_key_exists('OCountry', $_POST)) $OCountry = $_POST['OCountry'];
 if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = $_POST['OPayPalEmail'];
 if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = $_POST['OMailAddress'];
+if(array_key_exists('OrgKey', $_POST)) $OrgKey = $_POST['OrgKey'];
 
 if(array_key_exists('X', $_POST)) $X = $_POST['X'];
 if(array_key_exists('Y', $_POST)) $Y = $_POST['Y'];
+
+$today = date("Y-m-d H:i:s");
+$OrgKey = crypt($today . $OEmail . $OName);
 
 $sql = "SELECT * FROM Conf WHERE ConfKey = '" . $X . "'";
 
@@ -41,7 +46,7 @@ if(isset($row['ConfKey'])){
   }
 }
 
-$sql = "INSERT INTO `Orgs` (`ORav`,`OEmail`,`OName`,`OStreetAddress`,`OCity`,`OState`,`OCountry`) VALUES ('" . $ORav .  "','" . $OEmail .  "','" . $OName .  "','" . $OStreetAddress .  "','" . $OCity .  "','" . $OState .  "','" . $OCountry . "')";
+$sql = "INSERT INTO `Orgs` (`ORav`,`OEmail`,`OName`,`OStreetAddress`,`OCity`,`OState`,`OCountry`, `OrgKey`) VALUES ('" . $ORav .  "','" . $OEmail .  "','" . $OName .  "','" . $OStreetAddress .  "','" . $OCity .  "','" . $OState . "','" . $OCountry . "','" . $OrgKey . "')";
 $resource = $conn->query($sql);
 
 $OID = $conn->insert_id;

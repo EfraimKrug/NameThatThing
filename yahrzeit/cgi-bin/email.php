@@ -233,6 +233,5 @@ function NextNoticeOrg($email, $rname, $ppemail, $maddress){
   }
 }
 
-
 // sendEmailRequest("EfraimMKrug@GMail.com","https://www.NameThatThing.site/accept.html?RID=3&X=$1$h99zZovM$rSFy9JHuBvrO5fM7GODVi/&Y=Efraim","Rabbi Efraim","Kaddish","Happy Go Lucky","14 AdarII","18.00");
 ?>

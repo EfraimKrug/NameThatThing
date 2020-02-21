@@ -84,9 +84,9 @@ emailELT.value = "";
 var OID = "";
 var PID = "";
 
-var getOrg = function(){
-  dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', ''], function(){});
-}
+    var getOrg = function(){
+          dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', '', ''], function(){});
+        }
 
 var getPeople = function(){
   var RData = JSON.parse(document.getElementById("output").innerHTML);
@@ -226,7 +226,7 @@ function dbAccess(X, Y, ID){
   }
 }
 
-checkLogin("org");
+checkLogin("OrgLog");
 
 </script>
 <!-- begining of the popUpBox -->
