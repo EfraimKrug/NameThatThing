@@ -48,7 +48,7 @@ function sendMail2(){
   var OData = JSON.parse(document.getElementById("output2").innerHTML);
   var PData = JSON.parse(document.getElementById("output3").innerHTML);
   var req = document.getElementById("output4").innerHTML;
-  console.log('sending email - 2');
+  // console.log('sending email - 2');
   doMail("ThanksPerson", PData[0]['EMail'], PData[0]['FName'], req);
 }
 
@@ -56,7 +56,7 @@ function sendMail(){
   var OData = JSON.parse(document.getElementById("output2").innerHTML);
   var PData = JSON.parse(document.getElementById("output3").innerHTML);
   var req = document.getElementById("output4").innerHTML;
-  console.log('sending email - 1');
+  // console.log('sending email - 1');
   doMail("OrgSchedule", OData['OEmail'], OData['ORav'], req, sendMail2);
 }
 
@@ -82,7 +82,7 @@ function fillPage(){
 function dbAccess(){
   // console.log("dbAccess");
     var getOrg = function(){
-          dbOrgs("select", output2, 'X', 'Y', [oid, '', '', '', '', '', '', '', '', ''], fillPage);
+          dbOrgs("select", output2, 'X', 'Y', [oid, '', '', '', '', '', '', '', '', '', ''], fillPage);
         }
 
     var getPeople = function(){

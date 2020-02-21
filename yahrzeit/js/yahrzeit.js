@@ -66,10 +66,17 @@ function checkLogin(type, valArray){
   var x = r[0] ? r[0] : querystring('X')[0]; //ConfKey
   var y = r[1] ? r[1] : querystring('Y')[0]; //FName
   // console.log("here: " + type);
-  if(type == "paid"){
-    dbLogon("paid", output, x, y, dbAccess, valArray);
+  // OrgLog - cookies are impossible...
+  if(type == "OrgLog"){
+    y = querystring('Y')[0];
+    dbLogon("OrgLog", output, x, y, dbAccess, valArray);
   }
-  else dbLogon("check", output, x, y, dbAccess);
+  else {
+    if(type == "paid"){
+      dbLogon("paid", output, x, y, dbAccess, valArray);
+    }
+    else dbLogon("check", output, x, y, dbAccess);
+  }
   if(FIRST_ENTRY) initForm(type);
 }
 

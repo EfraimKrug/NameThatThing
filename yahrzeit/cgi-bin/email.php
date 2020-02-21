@@ -139,7 +139,7 @@ function sendEmailCancelOrg($email){
 
 function sendEmailOrgCanceled($email, $name, $req, $href){
   $to = $email;
-  $subject = 'We have canceled your donations on your request';
+  $subject = 'We have canceled your donation';
   $message = "<html>
               <body bgcolor=\"#DCEEFC\">
               <center>

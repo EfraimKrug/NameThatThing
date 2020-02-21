@@ -6,6 +6,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   if(type.toLowerCase() == "select") phpProg = "cgi-bin/select" + TableName + ".php";
   if(type.toLowerCase() == "check")  phpProg = "cgi-bin/checkLogin.php";
   if(type.toLowerCase() == "paid")   phpProg = "cgi-bin/paidLogin.php";
+  if(type.toLowerCase() == "orglog") phpProg = "cgi-bin/orgLogin.php";
 
   var xhttp;
   var returnVal;
@@ -37,12 +38,15 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     case "People":            func = formatPeople; break;
     case "PYConn":            func = formatPYConn; break;
     case "checkLogin":        func = doNothing; break;
+    case "orgLogin":          func = doNothing; break;
     case "paidLogin":         func = formatPaid;
                               X = rowVars['X']; Y = rowVars['Y'];
                               break;
     default:                  func = doNothing; break;
   }
-
+  // console.log(TableName);
+  // console.log(X);
+  // console.log(Y);
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   // console.log(func(rowVars));
@@ -92,6 +96,9 @@ function doNothing(rowVars){
 }
 
 function dbLogon(type, outDiv, X, Y, callback, valArray){
+  if(type == "OrgLog")
+      return dbGo("orgLogin", type, outDiv, X, Y, valArray, callback);
+
   if(type == "paid")
       return dbGo("paidLogin", type, outDiv, X, Y, valArray, callback);
 

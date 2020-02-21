@@ -122,7 +122,7 @@ function refillFormFinish(){
 }
 
 function refillForm(OrgID){
-    dbOrgs("select", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', ''], refillFormFinish);
+    dbOrgs("select", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
 }
 
 function outOrgs(){
@@ -150,7 +150,7 @@ function dbAccess(X, Y, ID){
     LOGON_PID = logon.PID;
     if(!FIRST_ENTRY) enterForm("org");
     FIRST_ENTRY = false;
-    dbOrgsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","","","",""], outOrgs);
+    dbOrgsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","","","","",""], outOrgs);
   }
 }
 

@@ -10,6 +10,7 @@ $OState = "";
 $OCountry = "";
 $OPayPalEmail = "";
 $OMailAddress = "";
+$OrgKey = "";
 
 if(array_key_exists('ID', $_POST)) $OrgID = $_POST['ID'];
 if(array_key_exists('ORav', $_POST)) $ORav = $_POST['ORav'];
@@ -21,6 +22,7 @@ if(array_key_exists('OState', $_POST)) $OState = $_POST['OState'];
 if(array_key_exists('OCountry', $_POST)) $OCountry = $_POST['OCountry'];
 if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = $_POST['OPayPalEmail'];
 if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = $_POST['OMailAddress'];
+if(array_key_exists('OrgKey', $_POST)) $OrgKey = $_POST['OrgKey'];
 
 $sql = "UPDATE Orgs SET ORav = " . "'" . $ORav . "'," .
                         "OEmail = " . "'" . $OEmail . "'," .
@@ -30,7 +32,8 @@ $sql = "UPDATE Orgs SET ORav = " . "'" . $ORav . "'," .
                         "OState = " . "'" . $OState . "'," .
                         "OCountry = " . "'" . $OCountry . "', " .
                         "OPayPalEmail = " . "'" . $OPayPalEmail . "', " .
-                        "OMailAddress = " . "'" . $OMailAddress . "'" .
+                        "OMailAddress = " . "'" . $OMailAddress . "', " .
+                        "OrgKey = " . "'" . $OrgKey . "'" .
 
               " WHERE OrgID = $OrgID";
 
