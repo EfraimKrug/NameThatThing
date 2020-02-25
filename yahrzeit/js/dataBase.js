@@ -18,6 +18,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     if (this.readyState == 4 && this.status == 200){
       outData = this.responseText;
       outDiv.innerHTML = outData;
+      // console.log(outData);
       if(typeof(callback) == 'function'){
         callback(X, Y, outData);
       }
@@ -46,10 +47,12 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   }
   // console.log(TableName);
   // console.log(X);
-  // console.log(Y);
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  // console.log(func(rowVars));
+  // console.log(phpProg);
+  // console.log("Before Send: ")
+  // console.log(X);
+  // console.log(Y);
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
 
@@ -96,6 +99,7 @@ function doNothing(rowVars){
 }
 
 function dbLogon(type, outDiv, X, Y, callback, valArray){
+  // console.log("dataBase.js: " + Y + "//" + X);
   if(type == "OrgLog")
       return dbGo("orgLogin", type, outDiv, X, Y, valArray, callback);
 

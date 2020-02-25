@@ -220,6 +220,7 @@ function formAccept(level){
 function dbAccess(X, Y, ID){
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
+  // console.log("accept.html: " + logon);
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
     initData();

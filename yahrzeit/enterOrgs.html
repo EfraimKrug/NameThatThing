@@ -39,19 +39,21 @@
       </div>
 
       <div class="grid-x grid-padding-x">
-          <div class="large-4 medium-4 small-4 cell">
+        <div class="large-8 medium-8 cell">
+              <label class=flabel>Email</label>
+              <input id=oemail type="text" placeholder="Email" />
+         </div>
+       </div>
+
+      <div class="grid-x grid-padding-x">
+          <div class="large-6 medium-6 small-6 cell">
               <label class=flabel>City</label>
               <input id=ocity type="text" placeholder="City" />
           </div>
-          <div class="large-4 medium-4 small-4 cell">
+          <div class="large-6 medium-6 small-6 cell">
               <label class=flabel>State</label>
               <input id=ostate type="text" placeholder="State" />
           </div>
-          <div class="large-4 medium-4 small-4 cell">
-              <label class=flabel>Country</label>
-              <input id=ocountry type="text" placeholder="Country" />
-          </div>
-
        </div>
 
        <div class="grid-x grid-padding-x">
@@ -59,9 +61,15 @@
                <label class=flabel>Street</label>
                <input id=ostreetaddress type="text" placeholder="Street Address" />
            </div>
-           <div class="large-6 medium-6 small-6 cell">
-               <label class=flabel>Email</label>
-               <input id=oemail type="text" placeholder="Email" />
+           <div class="large-4 medium-4 small-4 cell">
+             <label class=flabel>Country</label>
+             <!-- <input id=ocountry type="text" placeholder="Country" /> -->
+             <select id=ocountry>
+                 <option value="USA">USA</option>
+                 <option value="Canada">Canada</option>
+                 <option value="Israel">Israel</option>
+             </select>
+
            </div>
         </div>
           <button id="SButton" type=button class="button" onclick=checkLogin("org");>Enter</button>

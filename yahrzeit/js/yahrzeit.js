@@ -24,7 +24,10 @@ function getUrlVars() {
 function querystring(key) {
   var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
   var r=[], m;
+  // console.log("querystring: " + key);
+  // console.log(document.location.search);
   while ((m=re.exec(document.location.search)) != null) r[r.length]=m[1];
+  // console.log(r);
   return r;
 }
 
@@ -69,6 +72,8 @@ function checkLogin(type, valArray){
   // OrgLog - cookies are impossible...
   if(type == "OrgLog"){
     y = querystring('Y')[0];
+    x = querystring('X')[0];
+    // console.log("yahrzeit.js: " + y + "//" + x);
     dbLogon("OrgLog", output, x, y, dbAccess, valArray);
   }
   else {
