@@ -13,7 +13,8 @@ $ReqMoneySentDate = "";
 $ReqCancelDate = "";
 $ReqYID = "";
 $ReqOID = "";
-$X = $Y = "";
+$X = "";
+$Y = "";
 
 date_default_timezone_set("America/New_York");
 $today = date("Y-m-d");

@@ -90,7 +90,8 @@ function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbRequests(type, outDiv, X, Y, rowVars, callback) {
-  // console.log(rowVars);
+  console.log("dbRequests");
+  console.log(rowVars);
   return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
 }
 
