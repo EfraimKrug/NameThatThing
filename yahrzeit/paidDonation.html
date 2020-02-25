@@ -80,25 +80,24 @@ function fillPage(){
 }
 
 function getOrg (){
-  // alert("getOrg");
   dbOrgs("select", output2, 'X', 'Y', [oid, '', '', '', '', '', '', '', '', '', ''], fillPage);
 }
 
 function getPeople (){
-  // alert("getPeople");
   dbPeople("select", output3, 'X', 'Y', [pid, '', '', '', '', '', '', ''], getOrg);
 
 }
 
 function dbAccess(){
   // console.log("dbAccess");
+  // alert("just into dbAccess");
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
     FIRST_ENTRY = false;
+    // alert("before all");
     dbRequests("insert", output4, X, Y, [0, pid, type, '', amount, '',  '', '', '', '', oid, yid], function(){});
-    // alert("dbRequests");
     dbYahrzeits("select", output, 'X', 'Y', [yid, '', '', '', '', '', '', ''], getPeople);
   }
 }
