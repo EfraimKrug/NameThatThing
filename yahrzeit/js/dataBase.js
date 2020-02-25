@@ -46,10 +46,10 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   }
   // console.log(TableName);
   // console.log(X);
-  // console.log(Y);
+  console.log("posting: " + phpProg);
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  // console.log(func(rowVars));
+  console.log(func(rowVars));
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
 
@@ -87,7 +87,8 @@ function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbRequests(type, outDiv, X, Y, rowVars, callback) {
-  // console.log(rowVars);
+  console.log("dbRequests");
+  console.log(rowVars);
   return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
 }
 

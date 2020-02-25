@@ -79,22 +79,26 @@ function fillPage(){
   sendMail();
 }
 
+function getOrg (){
+  // alert("getOrg");
+  dbOrgs("select", output2, 'X', 'Y', [oid, '', '', '', '', '', '', '', '', '', ''], fillPage);
+}
+
+function getPeople (){
+  // alert("getPeople");
+  dbPeople("select", output3, 'X', 'Y', [pid, '', '', '', '', '', '', ''], getOrg);
+
+}
+
 function dbAccess(){
   // console.log("dbAccess");
-    var getOrg = function(){
-          dbOrgs("select", output2, 'X', 'Y', [oid, '', '', '', '', '', '', '', '', '', ''], fillPage);
-        }
-
-    var getPeople = function(){
-          dbPeople("select", output3, 'X', 'Y', [pid, '', '', '', '', '', '', ''], getOrg);
-        }
-
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
     FIRST_ENTRY = false;
     dbRequests("insert", output4, X, Y, [0, pid, type, '', amount, '',  '', '', '', '', oid, yid], function(){});
+    // alert("dbRequests");
     dbYahrzeits("select", output, 'X', 'Y', [yid, '', '', '', '', '', '', ''], getPeople);
   }
 }

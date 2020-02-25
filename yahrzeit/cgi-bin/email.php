@@ -1,4 +1,47 @@
 <?php
+function sendReturnEmailInvite($email, $href, $fname){
+  $to = $email;
+  $subject = 'Yahrzeit Holder: link to return';
+  $message = "<html>
+              <style>
+              body {
+                background-color: #DCEEFC;
+                max-width: 365px;
+                color: #f98e3f;
+              }
+              </style>
+              <body>
+              <!-- <center> -->
+              Hi $fname! Please <a href='$href'>click on the link.</a>
+              <br>
+              The way this works:
+              <br>
+              You are welcome to enter your yahrzeits... we will keep them for you.
+              Two weeks before the yahrzeit, we will send you an email reminding you that your
+              yahrzeit is coming up.
+              <br>
+              That's it.
+              <br>
+              Best,
+              <br>
+              Efraim
+              <!-- </center> -->
+              </body>
+              </html>";
+
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+  if(mail($to, $subject, $message, $headers)){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+
 function sendEmailInvite($email, $href, $fname){
   $to = $email;
   $subject = 'Yahrzeit Holder: Verifying your email address';
