@@ -125,5 +125,6 @@ if(!$logon){
   </div>
 </div>
 </body>
+<script src="../js/yahrzeit.js"></script>
 <script>setConfKey("<?php echo $ConfKey; ?>"); setFName("<?php echo $fname; ?>");</script>
 </html>

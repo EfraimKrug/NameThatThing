@@ -18,7 +18,6 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     if (this.readyState == 4 && this.status == 200){
       outData = this.responseText;
       outDiv.innerHTML = outData;
-      // console.log(outData);
       if(typeof(callback) == 'function'){
         callback(X, Y, outData);
       }
@@ -45,14 +44,9 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
                               break;
     default:                  func = doNothing; break;
   }
-  // console.log(TableName);
-  // console.log(X);
+
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  // console.log(phpProg);
-  // console.log("Before Send: ")
-  // console.log(X);
-  // console.log(Y);
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
 
@@ -70,14 +64,10 @@ function dbConf(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbPeople(type, outDiv, X, Y, rowVars, callback) {
-  // console.log("dbPeople: ");
-  // console.log(X);
-  // console.log(Y);
   return dbGo("People", type, outDiv, X, Y, rowVars, callback);
 }
 
 function dbYahrzeitsByPeople(type, outDiv, X, Y, rowVars, callback) {
-  // console.log("dbYahrzeitsByPeople");
   return dbGo("YahrzeitsByPeople", type, outDiv, X, Y, rowVars, callback);
 }
 
@@ -90,8 +80,6 @@ function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
 }
 
 function dbRequests(type, outDiv, X, Y, rowVars, callback) {
-  console.log("dbRequests");
-  console.log(rowVars);
   return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
 }
 
@@ -100,7 +88,6 @@ function doNothing(rowVars){
 }
 
 function dbLogon(type, outDiv, X, Y, callback, valArray){
-  // console.log("dataBase.js: " + Y + "//" + X);
   if(type == "OrgLog")
       return dbGo("orgLogin", type, outDiv, X, Y, valArray, callback);
 
@@ -109,7 +96,3 @@ function dbLogon(type, outDiv, X, Y, callback, valArray){
 
   return dbGo("checkLogin", type, outDiv, X, Y, [], callback);
 }
-
-// function dbPYConn(type, outDiv, X, Y, rowVars, callback){
-//   return dbGo("PYConn", type, outDiv, X, Y, rowVars, callback);
-// }

@@ -188,14 +188,13 @@ function isLoginPossible(output, x, y, callback){
   // console.log(x + ":" + y);
   dbLogon("check", output, x, y, callback);
 }
-// var DEBUG_ON = false;
+
 var screenWidth = screen.width;
 if(screenWidth > 800){
-  //no-repeat right;
       var div = document.getElementsByClassName("grid-container");
       for(var i = 0; i < div.length; i++){
-        div[i].classList.add("grid-container-alt");
-        div[i].classList.remove("grid-container");
+        div[i].classList.add("grid-container-pic");
+        div[i].classList.remove("grid-container-plain");
       }
       // var div = document.getElementsByClassName("grid-x");
       // for(var i = 0; i < div.length; i++){
