@@ -1,0 +1,198 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "stylesheet" type = "text/css" href = "css/yahrzeit.css" />
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+  async defer></script>
+  <title>Yahrzeit Keeper</title>
+  <link rel="stylesheet" href="css/foundation.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/yahrzeit.css">
+  <script type="text/javascript">
+    var verifyCallback = function(response) {
+      alert(response);
+    };
+
+    var onloadCallback = function() {
+      grecaptcha.render('captcha_element', {
+        'sitekey' : '6LewqMEUAAAAAJQ7wHGf4sYpLDQipBbgX2wPjHny'
+      });
+    };
+
+    function isCaptchaChecked() {
+      return grecaptcha && grecaptcha.getResponse().length !== 0;
+    }
+
+    function checkCaptcha(){
+      if(isCaptchaChecked()) return true;
+      return false;
+    }
+  </script>
+</head>
+<body>
+  <style>
+  #box01 {
+    width: 80%;
+    border: 2px solid #f98e3f;
+  }
+  #box02 {
+    width: 80%;
+    border: 2px solid #f98e3f;
+  }
+  .lightText {
+    color:#f98e3f;
+  }
+  .darkText {
+    color:#72411d;
+  }
+
+  #capBox {
+    position: absolute;
+    left: 0px;
+    /* bottom: -80px; */
+  }
+
+  #menu {
+      position: absolute;
+      left: 60%;
+      top: 15%;
+      width: 250px;
+      background-color: #f98e3f;
+      color:white;
+      padding: 10px;
+      border: 2px solid black;
+      visibility:hidden;
+  }
+
+  </style>
+
+<div id=topDiv>
+</div>
+<!-- captcha -->
+
+<!-- starting -->
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <h1><font color=#f98e3f>Remembering&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;זכר נשמת</font></h1>
+    </div>
+  </div>
+  <!-- begin -->
+  <div class="grid-x grid-padding-x">
+  <div id=box01 class="large-12 medium-12 cell">
+
+    <form id=SuggestionForm1 action="cgi-bin/getPeople.php" method="post">
+     <div class="grid-x grid-padding-x">
+       <div class="large-8 medium-8 cell">
+         <h5  class=flabel>First time here...</h5>
+       </div>
+
+       <div class="large-12 medium-12 cell">
+           <label class=flabel>What is your email address?</label>
+           <input type="text" name="email" placeholder="your email"/>
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 medium-12 small-12 cell">
+          <div class="large-6 medium-6 small-6 cell">
+              <label class=flabel>First Name</label>
+              <input name='fname' type="text" placeholder="First Name" />
+          </div>
+          <div class="large-6 medium-6 small-6 cell">
+            <label class=flabel>Last Name</label>
+            <input name='lname' type="text" placeholder="Last Name" />
+          </div>
+        </div>
+      </div>
+        <div class="grid-x grid-padding-x">
+          <div class="large-8 medium-8 small-8 cell">
+            <button id="SButton" type=button class="button" onclick=formSubmit(1);>Enter</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
+  <!-- end -->
+  <div class="grid-x grid-padding-x">
+    <div id=box02 class="large-8 medium-8 cell">
+
+    <form id=SuggestionForm2 action="cgi-bin/getReturningPeople.php" method="post">
+     <div class="grid-x grid-padding-x">
+       <div class="large-8 medium-8 cell">
+         <h5  class=flabel>Returning...</h5>
+       </div>
+       <div class="large-8 medium-8 cell">
+           <label class=flabel>What is your email address?</label>
+           <input type="text" name="email" placeholder="your email"/>
+        </div>
+      </div>
+
+        <div class="grid-x grid-padding-x">
+          <div class="large-4 medium-4 small-4 cell">
+            <button id="SButton" type=button class="button" onclick=formSubmit(2);>Enter</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+      <div id=capBox  class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 small-4 cell">
+          <form action="javascript:alert(grecaptcha.getResponse(widgetId1));" method="POST">
+            <div id="captcha_element"></div>
+            <br>
+          </form>
+        </div>
+      </div>
+
+</div>
+
+<div id=menu class="large-4 medium-4 cell">
+  <h5><span class=darkText>Yahrzeit display for shuls</span></h5>
+  <br><a href="InteractiveSite.html" target=_new><span class=darkText>Description</span></a>
+  <br><a href="InteractiveSite02.html" target=_new><span class=darkText>Hardware</span></a>
+  <br><a href="InteractiveSite03.html" target=_new><span class=darkText>Building</span></a>
+  <br><a href="InteractiveSite101.html" target=_new><span class=darkText>Hardware - more detail</span></a>
+  <br><a href="InteractiveSite201.html" target=_new><span class=darkText>Our thoughts</span></a>
+  <br><a href="InteractiveSite301.html" target=_new><span class=darkText>FAQs</span></a>
+</div>
+
+
+<!-- ending -->
+<script src="js/yahrzeit.js"></script>
+<script>
+//output.innerHTML = getUrlVars()["RETURN"] ? getUrlVars()["RETURN"].replace(/\%20/g, ' ') : "";
+
+var sWidth = screen.width;
+var box01 = document.getElementById("box01");
+var box02 = document.getElementById("box02");
+var capBox = document.getElementById("capBox");
+var menu = document.getElementById("menu");
+
+// alert(box01.style.width);
+if(sWidth > 500){
+  box01.style.width = '60%';
+  box02.style.width = '60%';
+  capBox.style.position = 'relative';
+  menu.style.visibility = 'visible';
+  // capBox.style.top = '';
+  // capBox.style.left = 0;
+  // capBox.style.bottom = 0;
+}
+</script>
+<script>
+
+function formSubmit(v){
+  if(checkCaptcha()){
+    if(v == 1) document.getElementById("SuggestionForm1").submit();
+    if(v == 2) document.getElementById("SuggestionForm2").submit();
+  }
+}
+</script>
+
+</body>
+</html>

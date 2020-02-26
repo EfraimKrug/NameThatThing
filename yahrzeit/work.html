@@ -1,0 +1,23 @@
+<form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
+ <div class="grid-x grid-padding-x">
+   <div class="large-8 medium-8 cell">
+       <label class=flabel>What is your email address?</label>
+       <input type="text" name="email" placeholder="your email"/>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+      <div class="large-4 medium-4 small-4 cell">
+          <label class=flabel>First Name</label>
+          <input name='fname' type="text" placeholder="First Name" />
+      </div>
+      <div class="large-4 medium-4 small-4 cell">
+        <label class=flabel>Last Name</label>
+        <input name='lname' type="text" placeholder="Last Name" />
+      </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+      <div class="large-4 medium-4 small-4 cell">
+        <button id="SButton" type=button class="button" onclick=formSubmit();>Enter</button>
+      </div>
+    </div>
