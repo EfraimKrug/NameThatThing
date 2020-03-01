@@ -1,15 +1,16 @@
 function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   var phpProg = "";
-  // console.log(TableName + "//" + type);
+  console.log(TableName + "//" + type);
   if(type.toLowerCase() == "insert") phpProg = "cgi-bin/insert" + TableName + ".php";
   if(type.toLowerCase() == "update") phpProg = "cgi-bin/update" + TableName + ".php";
   if(type.toLowerCase() == "delete") phpProg = "cgi-bin/delete" + TableName + ".php";
   if(type.toLowerCase() == "select") phpProg = "cgi-bin/select" + TableName + ".php";
   if(type.toLowerCase() == "selectall") phpProg = "cgi-bin/selectAll" + TableName + ".php";
+  if(type.toLowerCase() == "selectonly") phpProg = "cgi-bin/selectOnly" + TableName + ".php";
   if(type.toLowerCase() == "check")  phpProg = "cgi-bin/checkLogin.php";
   if(type.toLowerCase() == "paid")   phpProg = "cgi-bin/paidLogin.php";
   if(type.toLowerCase() == "orglog") phpProg = "cgi-bin/orgLogin.php";
-  // console.log("Running: " + phpProg);
+  console.log("Running: " + phpProg);
 
   var xhttp;
   var returnVal;
@@ -40,6 +41,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     case "Conf":              func = formatConf; break;
     case "People":            func = formatPeople; break;
     case "PYConn":            func = formatPYConn; break;
+    case "POConn":            func = formatPOConn; break;
     case "checkLogin":        func = doNothing; break;
     case "orgLogin":          func = doNothing; break;
     case "paidLogin":         func = formatPaid;
@@ -50,6 +52,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
 
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // console.log(func(rowVars));
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
 
@@ -84,6 +87,10 @@ function dbRequestsByPeople(type, outDiv, X, Y, rowVars, callback) {
 
 function dbRequests(type, outDiv, X, Y, rowVars, callback) {
   return dbGo("Requests", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbPOConn(type, outDiv, X, Y, rowVars, callback) {
+  return dbGo("POConn", type, outDiv, X, Y, rowVars, callback);
 }
 
 function doNothing(rowVars){

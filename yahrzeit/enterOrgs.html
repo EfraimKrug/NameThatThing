@@ -120,7 +120,7 @@ input[type=submit] {
 
            </div>
         </div>
-          <button id="SButton" type=button class="button" onclick=checkLogin("org");>Enter</button>
+          <button id="SButton" type=button class="button" onclick=doCheckLogin("org");>Enter</button>
       </div>
     </form>
     <div class="large-4 medium-4 cell">
@@ -140,6 +140,8 @@ input[type=submit] {
 <div id=output></div>
 <div id=output2></div>
 <div id=output3></div>
+<div id=output4></div>
+
 <style>
 allOrgs {
   visibility: hidden;
@@ -151,6 +153,9 @@ allOrgs {
 <script src="js/yahrzeit.js"></script>
 <script>
 //autocomplete
+var AUTO_OID = 0;
+var AUTO_I = -1;
+
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -168,17 +173,21 @@ function autocomplete(inp, arr) {
       a.setAttribute("class", "autocomplete-items");
       /*append the DIV element as a child of the autocomplete container:*/
       this.parentNode.appendChild(a);
+      // console.log("HERE");
+      // console.log(arr);
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+        if (arr[i][0].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          AUTO_OID = arr[i][1];
+          AUTO_I = i;
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
           /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
+          b.innerHTML = "<strong>" + arr[i][0].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i][0].substr(val.length);
           /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          b.innerHTML += "<input type='hidden' value='" + arr[i][0] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
               b.addEventListener("click", function(e) {
               /*insert the value for the autocomplete text field:*/
@@ -249,13 +258,14 @@ document.addEventListener("click", function (e) {
 }
 
 var allOrgs = document.getElementById("allOrgs");
+var shuls = [];
 
 function fillList(){
-  var shuls = [];
   var AO = JSON.parse(allOrgs.innerHTML);
   for (i=0; i < AO.length; i++){
-    shuls.push(AO[i]['OName']);
+    shuls.push([AO[i]['OName'],AO[i]['OrgID']]);
   }
+  // console.log(shuls);
   autocomplete(document.getElementById("oname"), shuls);
 }
 
@@ -263,6 +273,7 @@ dbOrgs("selectAll", allOrgs, querystring('X'), querystring('Y'), [0, '', '', '',
 
 </script>
 <script>
+// var ONLY_SWITCH = false;
 
 function refillFormFinish(){
   var oname = document.getElementById("oname");
@@ -272,10 +283,15 @@ function refillFormFinish(){
   var ostreetaddress = document.getElementById("ostreetaddress");
   var orav = document.getElementById("orav");
   var oemail = document.getElementById("oemail");
-
+  // console.log("NEXT");
+  // console.log(document.getElementById("output").innerHTML);
   var OData = JSON.parse(document.getElementById("output").innerHTML);
   var PID = OData['PID'];
   var SButton = document.getElementById("SButton");
+  // if(ONLY_SWITCH){
+  //
+  //   ONLY_SWITCH = false;
+  // }
   // console.log(OData);
   // alert(PID);
   if(PID > 0){
@@ -296,33 +312,47 @@ function refillFormFinish(){
   EDIT_FORM = true;
 }
 
-function refillForm(OrgID){
+function refillForm(OrgID, path){
+  alert("hello");
+  console.log([path, OrgID, LOGON_PID]);
+  if(path){
+    dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
+    dbPOConn("insert", output4, querystring('X'), querystring('Y'), [LOGON_PID, OrgID], function(){});
+  } else {
     dbOrgs("select", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
+  }
 }
 
 function outOrgs(){
+  console.log("outOrgs");
   var OData = JSON.parse(document.getElementById("output").innerHTML);
   var OList = document.getElementById("OList");
   var OClass = "OrgList";
   OList.innerHTML = "<span class=OrgList onclick=initForm('org')>NEW</span><br>";
   for (i=0; i < OData.length; i++){
     OClass = OData[i].PID == 0 ? "OrgListPublic" : "OrgList";
-    OList.innerHTML += "<span class=" + OClass + " onclick=refillForm(" + OData[i].OrgID + ")>" + unescape(OData[i].OName) + "</span><br>";
+    OList.innerHTML += "<span class=" + OClass + " onclick=refillForm(" + OData[i].OrgID + ", false)>" + unescape(OData[i].OName) + "</span><br>";
   }
   var SButton = document.getElementById("SButton");
   SButton.innerHTML = "Add New!"
 }
 
 function dbAccess(X, Y, ID){
+  console.log('dbAccess');
   if(!FIRST_ENTRY && !(oname.value && ocountry.value && ocity.value && orav.value && oemail.value)){
     alert("Please fill out all the fields!");
     return;
   }
 
   var logon = JSON.parse(document.getElementById("output").innerHTML);
+
   LOGON_OK = logon.RETURN;
+  console.log(logon);
+  console.log(LOGON_OK);
+
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
+    console.log(logon + "::" + LOGON_PID);
     if(!FIRST_ENTRY) enterForm("org");
     FIRST_ENTRY = false;
     dbOrgsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","","","","",""], outOrgs);
@@ -330,6 +360,20 @@ function dbAccess(X, Y, ID){
 }
 
 checkLogin("org");
+
+function doCheckLogin(val){
+    console.log("doCheckLogin:" + LOGON_PID);
+    var oname = document.getElementById('oname');
+    console.log(AUTO_I);
+    console.log(shuls);
+    if(shuls[AUTO_I][0].toLowerCase() == oname.value.toLowerCase()){
+      console.log(shuls[AUTO_I][1]);
+      refillForm(shuls[AUTO_I][1], true);
+    }
+  // console.log(oname.value);
+  // checkLogin(val);
+}
+
 </script>
 <script src="js/escape.js"></script>
 <script src="js/vendor/jquery.js"></script>
