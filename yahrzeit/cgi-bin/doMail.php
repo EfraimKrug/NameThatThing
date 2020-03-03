@@ -36,7 +36,7 @@ $sql = "SELECT * FROM Yahrzeits WHERE YahrzeitID = " . $yid;
 $resource = $conn->query($sql);
 $row3 = $resource->fetch_assoc();
 $ydate = $row3['YHDay'] . " " . $row3['YHMonth'];
- 
+
 if($type == "NextNoticeOrg") NextNoticeOrg($email, $row2['ORav'], $row2['OPayPalEmail'], $row2['OMailAddress'], $row2['OrgID'], $row2['OrgKey']);
 if($type == "CancelOrg") sendEmailCancelOrg($email);
 if($type == "OrgCanceledPeople") sendEmailOrgCanceled($email, $name, $req, $href);

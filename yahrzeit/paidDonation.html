@@ -88,6 +88,7 @@ function getPeople (){
 
 }
 
+
 function dbAccess(){
   // console.log("dbAccess");
   // alert("just into dbAccess");
@@ -97,7 +98,8 @@ function dbAccess(){
     LOGON_PID = logon.PID;
     FIRST_ENTRY = false;
     // alert("before all");
-    dbRequests("insert", output4, X, Y, [0, pid, type, '', amount, '',  '', '', '', '', oid, yid], function(){});
+    var paidDate = getCurrentDate();
+    dbRequests("insert", output4, X, Y, [0, pid, type, '', amount, paidDate,  '', '', '', '', oid, yid], function(){});
     dbYahrzeits("select", output, 'X', 'Y', [yid, '', '', '', '', '', '', ''], getPeople);
   }
 }

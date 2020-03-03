@@ -1,5 +1,7 @@
 <?php
 require 'openYDB.php';
+require 'email.php';
+
 $ORav = "";
 $OEmail = "";
 $OName = "";
@@ -52,4 +54,7 @@ $resource = $conn->query($sql);
 $OID = $conn->insert_id;
 $sql = "INSERT INTO `POConn` (`PID`,`OID`) VALUES ('" . $ConfPID .  "','" . $OID . "')";
 $resource = $conn->query($sql);
+
+$href = "https://www.NameThatThing.site/acceptFirst.html?RID=0" . "&X=" . $OrgKey . "&Y=" . $OID;
+WelcomeOrg($OEmail, $ORav, $OID, $OrgKey, $href);
 ?>

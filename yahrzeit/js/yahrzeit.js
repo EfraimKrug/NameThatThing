@@ -202,3 +202,18 @@ if(screenWidth > 800){
       //   div[i].classList.remove("grid-container");
       // }
 }
+
+function getCurrentDate(){
+  var dateToday = new Date();
+  var dd = dateToday.getDate();
+  var mm = dateToday.getMonth() + 1;
+  var yyyy = dateToday.getFullYear();
+
+   if (dd < 10) {
+       dd = '0' + dd;
+   }
+   if (mm < 10) {
+       mm = '0' + mm;
+   }
+   return yyyy + "-" + mm + "-" + dd;
+}

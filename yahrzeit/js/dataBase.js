@@ -22,7 +22,13 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
       outData = this.responseText;
       outDiv.innerHTML = outData;
       if(typeof(callback) == 'function'){
-        callback(X, Y, outData);
+        var x1 = X;
+        var y1 = Y;
+        var o1 = outData;
+        if(Array.isArray(X)) x1 = X[0];
+        if(Array.isArray(Y)) y1 = Y[0];
+        if(Array.isArray(outData)) o1 = outData[0];
+        callback(x1, y1, o1);
       }
       returnVal = 0;
     }

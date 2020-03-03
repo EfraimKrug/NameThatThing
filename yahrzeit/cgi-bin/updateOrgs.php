@@ -33,7 +33,8 @@ $sql = "UPDATE Orgs SET ORav = " . "'" . $ORav . "'," .
                         "OCountry = " . "'" . $OCountry . "', " .
                         "OPayPalEmail = " . "'" . $OPayPalEmail . "', " .
                         "OMailAddress = " . "'" . $OMailAddress . "', " .
-                        "OrgKey = " . "'" . $OrgKey . "'" .
+                        "OrgKey = " . "'" . $OrgKey . "', " .
+                        "OFirstContact = TRUE " .
 
               " WHERE OrgID = $OrgID";
 
