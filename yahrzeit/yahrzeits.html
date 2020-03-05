@@ -36,16 +36,26 @@
   #box01 {
     width: 80%;
     border: 2px solid #f98e3f;
+    padding: 3%;
   }
   #box02 {
     width: 80%;
     border: 2px solid #f98e3f;
+    padding: 3%;
   }
   .lightText {
     color:#f98e3f;
   }
   .darkText {
     color:#72411d;
+  }
+
+  #menubox {
+    width: 25%;
+    border: 2px solid #f98e3f;
+    padding: 3%;
+    background-color: #72411d;
+    height: 25%;
   }
 
   #capBox {
@@ -75,89 +85,94 @@
 <!-- starting -->
 <div class="grid-container">
     <div class="grid-x grid-padding-x">
-      <div class="large-12 cell">
-        <h1><font color=#f98e3f>Remember&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;זכר נשמת</font></h1>
-      </div>
+        <div class="large-8 cell">
+          <h1><font color=#f98e3f>Remember&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;זכר נשמת</font></h1>
+        </div>
 
-    <div id=box01 class="large-12 medium-12 cell">
-    <form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
-         <div class="grid-x grid-padding-x">
-           <div class="large-8 medium-8 cell">
-               <label class=flabel>What is your email address?</label>
-               <input type="text" name="email" placeholder="your email"/>
-            </div>
-          </div>
+        <div class="large-8 medium-8 cell">
+        <div id=box01 class="large-8 medium-8 cell">
+        <form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
+             <div class="grid-x grid-padding-x">
+               <div class="large-8 medium-8 cell">
+                   <label class=flabel>What is your email address?</label>
+                   <input type="text" name="email" placeholder="your email"/>
+                </div>
+              </div>
 
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-                <label class=flabel>First Name</label>
-                <input name='fname' type="text" placeholder="First Name" />
-            </div>
-            <div class="large-4 medium-4 small-4 cell">
-              <label class=flabel>Last Name</label>
-              <input name='lname' type="text" placeholder="Last Name" />
-            </div>
+              <div class="grid-x grid-padding-x">
+                <div class="large-4 medium-4 small-4 cell">
+                    <label class=flabel>First Name</label>
+                    <input name='fname' type="text" placeholder="First Name" />
+                </div>
+                <div class="large-4 medium-4 small-4 cell">
+                  <label class=flabel>Last Name</label>
+                  <input name='lname' type="text" placeholder="Last Name" />
+                </div>
+              </div>
+              <div class="grid-x grid-padding-x">
+                <div class="large-4 medium-4 small-4 cell">
+                  <button id="SButton" type=button class="button" onclick=formSubmit();>Enter</button>
+                </div>
+              </div>
+              <div class="grid-x grid-padding-x">
+                 <div class="large-4 medium-4 small-4 cell">
+                   <form action="javascript:alert(grecaptcha.getResponse(widgetId1));" method="POST">
+                     <div id="captcha_element"></div>
+                     <br>
+                   </form>
+                 </div>
+              </div>
           </div>
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-              <button id="SButton" type=button class="button" onclick=formSubmit();>Enter</button>
-            </div>
-          </div>
-          <div class="grid-x grid-padding-x">
-             <div class="large-4 medium-4 small-4 cell">
-               <form action="javascript:alert(grecaptcha.getResponse(widgetId1));" method="POST">
-                 <div id="captcha_element"></div>
-                 <br>
-               </form>
-             </div>
-          </div>
-      </div>
-      </form>
-      <div class="large-4 medium-4 cell">
-        <h5><span class=lightText>Shul yahrzeit display</span></h5>
-        <br><a href="InteractiveSite.html" target=_new><span class=darkText>Description</span></a>
-        <br><a href="InteractiveSite02.html" target=_new><span class=darkText>Hardware</span></a>
-        <br><a href="InteractiveSite03.html" target=_new><span class=darkText>Building</span></a>
-        <br><a href="InteractiveSite101.html" target=_new><span class=darkText>Hardware - more detail</span></a>
-        <br><a href="InteractiveSite201.html" target=_new><span class=darkText>Our thoughts</span></a>
-        <br><a href="InteractiveSite301.html" target=_new><span class=darkText>FAQs</span></a>
-        <br><br>
+          </form>
 
-      </div>
+          <div id=box02 class="large-8 medium-8 cell">
+          <form id=ReturnForm action="cgi-bin/getReturningPeople.php" method="post">
+             <div class="grid-x grid-padding-x">
+               <div class="large-8 medium-8 cell">
+                   <label class=flabel>What is your email address?</label>
+                   <input type="text" name="email" placeholder="your email"/>
+                </div>
+              </div>
 
-      <div id=box02 class="large-8 medium-8 cell">
-      <form id=ReturnForm action="cgi-bin/getReturningPeople.php" method="post">
-         <div class="grid-x grid-padding-x">
-           <div class="large-8 medium-8 cell">
-               <label class=flabel>What is your email address?</label>
-               <input type="text" name="email" placeholder="your email"/>
-            </div>
+              <div class="grid-x grid-padding-x">
+                <div class="large-4 medium-4 small-4 cell">
+                </div>
+                <div class="large-4 medium-4 small-4 cell">
+                </div>
+              </div>
+
+              <div class="grid-x grid-padding-x">
+                <div class="large-4 medium-4 small-4 cell">
+                  <button id="SButton" type=button class="button" onclick=returnFormSubmit();>Enter</button>
+                </div>
+              </div>
+            </form>
           </div>
+        </div>
 
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-            </div>
-            <div class="large-4 medium-4 small-4 cell">
-            </div>
-          </div>
-
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-              <button id="SButton" type=button class="button" onclick=returnFormSubmit();>Enter</button>
-            </div>
-          </div>
-    </form>
-
+<div id=menubox class="large-4 medium-4 cell">
+  <h5><span class=lightText>Shul yahrzeit display</span></h5>
+  <br><a href="InteractiveSite.html" target=_new><span class=lightText>Description</span></a>
+  <br><a href="InteractiveSite02.html" target=_new><span class=lightText>Hardware</span></a>
+  <br><a href="InteractiveSite03.html" target=_new><span class=lightText>Building</span></a>
+  <br><a href="InteractiveSite101.html" target=_new><span class=lightText>Hardware - more detail</span></a>
+  <br><a href="InteractiveSite201.html" target=_new><span class=lightText>Our thoughts</span></a>
+  <br><a href="InteractiveSite301.html" target=_new><span class=lightText>FAQs</span></a>
+  <br><br>
 </div>
 </div>
-
+</div>
 <!-- ending -->
 <script src="js/yahrzeit.js"></script>
 <script>
 
 function returnFormSubmit(){
+  var cElt = document.getElementById("captcha_element");
+
   if(checkCaptcha()){
     document.getElementById("ReturnForm").submit();
+  } else {
+    cElt.scrollIntoView();
   }
 }
 </script>

@@ -273,7 +273,7 @@ function WelcomeOrg($email, $rname, $OID, $OKey, $href){
               them (you) to acknowledge the Yahrzeit (by clicking on the link sent).
               <br>
               They make the donation. You say Kaddish. And we send you the donation(s) at the end of the
-              month. (I make a living my taking a small percentage of the donation).
+              month. (I make a living by taking a small percentage of the donation).
               <br>
               Some organizations use PayPal, and we send them the donation that way. Others ask for a
               check, and we mail them the check.
