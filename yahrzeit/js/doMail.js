@@ -24,7 +24,10 @@ function __doMail(type, email, name, req, callback) {
   // console.log("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
+  if(typeof(callback) == 'function')
+    xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
+  else
+    xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req + "&data=" + callback);
 }
 
 function doMail(type, email, name, req, callback){

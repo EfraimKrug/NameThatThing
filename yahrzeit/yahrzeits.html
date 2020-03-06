@@ -17,7 +17,7 @@
 
     var onloadCallback = function() {
       grecaptcha.render('captcha_element', {
-        'sitekey' : ''
+        'sitekey' : '6LewqMEUAAAAAJQ7wHGf4sYpLDQipBbgX2wPjHny'
       });
     };
 
@@ -36,10 +36,12 @@
   #box01 {
     width: 80%;
     border: 2px solid #f98e3f;
+    padding: 3%;
   }
   #box02 {
     width: 80%;
     border: 2px solid #f98e3f;
+    padding: 3%;
   }
   .lightText {
     color:#f98e3f;
@@ -52,6 +54,22 @@
     position: absolute;
     left: 0px;
     /* bottom: -80px; */
+  }
+
+  #menuBox {
+      background-color: #f98e3f;
+      border: 4px solid #72411d;
+      height: 13%;
+  }
+
+  #menuBox2 {
+      background-color: #f98e3f;
+      border: 0px solid #72411d;
+  }
+
+  #captchaBox {
+      background-color: #f98e3f;
+      margin-top: 4px;
   }
 
   #menu {
@@ -78,89 +96,146 @@
       <div class="large-12 cell">
         <h1><font color=#f98e3f>Remember&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;זכר נשמת</font></h1>
       </div>
+    </div>
 
-    <div id=box01 class="large-12 medium-12 cell">
-    <form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
-         <div class="grid-x grid-padding-x">
-           <div class="large-8 medium-8 cell">
-               <label class=flabel>What is your email address?</label>
-               <input type="text" name="email" placeholder="your email"/>
-            </div>
+    <div class="grid-x grid-padding-x">
+      <div class="large-8 medium-8 cell">
+          <div class="grid-x grid-padding-x">
+            <div class="large-12 medium-12 cell">
+            <form id=SuggestionForm action="cgi-bin/getPeople.php" method="post">
+            <div id=box01 class="large-12 medium-12 cell">
+              <label class=flabel><h5><u>First Time</u></h5></label>
+              <div class="large-8 medium-8 cell">
+                <label class=flabel>What is your email address?</label>
+                <input type="text" name="email" placeholder="your email"/>
+              </div>
+              <div class="grid-x grid-padding-x">
+                <div class="large-6 medium-6 small-6 cell">
+                  <label class=flabel>First Name</label>
+                  <input name='fname' type="text" placeholder="First Name" />
+                </div>
+                <div class="large-6 medium-6 small-6 cell">
+                  <label class=flabel>Last Name</label>
+                  <input name='lname' type="text" placeholder="Last Name" />
+                </div>
+              </div>
+              <div class="large-4 medium-4 small-4 cell">
+                <button id="SButton" type=button class="button" onclick=formSubmit();>Enter</button>
+              </div>
           </div>
+          </form>
 
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-                <label class=flabel>First Name</label>
-                <input name='fname' type="text" placeholder="First Name" />
-            </div>
-            <div class="large-4 medium-4 small-4 cell">
-              <label class=flabel>Last Name</label>
-              <input name='lname' type="text" placeholder="Last Name" />
-            </div>
+
+          <form id=ReturnForm action="cgi-bin/getReturningPeople.php" method="post">
+          <div id=box02 class="large-8 medium-8 cell">
+            <label class=flabel><h5><u>Returning</u></h5></label>
+              <div class="large-8 medium-8 cell">
+                 <label class=flabel>What is your email address?</label>
+                 <input type="text" name="email" placeholder="your email"/>
+              </div>
+              <div class="large-4 medium-4 small-4 cell">
+                  <button id="SButton" type=button class="button" onclick=returnFormSubmit();>Enter</button>
+              </div>
           </div>
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-              <button id="SButton" type=button class="button" onclick=formSubmit();>Enter</button>
-            </div>
-          </div>
-          <div class="grid-x grid-padding-x">
-             <div class="large-4 medium-4 small-4 cell">
-               <form action="javascript:alert(grecaptcha.getResponse(widgetId1));" method="POST">
-                 <div id="captcha_element"></div>
-                 <br>
-               </form>
-             </div>
-          </div>
+          </form>
+        </div>
+        <!-- <div class="grid-x grid-padding-x">
+        </div> -->
       </div>
-      </form>
-      <div class="large-4 medium-4 cell">
-        <h5><span class=lightText>Shul yahrzeit display</span></h5>
+      </div>
+        <div id=menuBox class="large-4 medium-4 cell">
+        <div id=menuBox2 class="large-4 medium-4 cell">
+        <span class=darkText><h5>Shul yahrzeit display</h5></span>
         <br><a href="InteractiveSite.html" target=_new><span class=darkText>Description</span></a>
         <br><a href="InteractiveSite02.html" target=_new><span class=darkText>Hardware</span></a>
         <br><a href="InteractiveSite03.html" target=_new><span class=darkText>Building</span></a>
         <br><a href="InteractiveSite101.html" target=_new><span class=darkText>Hardware - more detail</span></a>
         <br><a href="InteractiveSite201.html" target=_new><span class=darkText>Our thoughts</span></a>
         <br><a href="InteractiveSite301.html" target=_new><span class=darkText>FAQs</span></a>
-        <br><br>
+        </div>
+
+        <div id=captchaBox class="large-4 medium-4 small-4 cell">
+          <hr class=darkText>
+          <form action="javascript:alert(grecaptcha.getResponse(widgetId1));" method="POST">
+            <div id="captcha_element"></div>
+            <br>
+          </form>
+        </div>
 
       </div>
-
-      <div id=box02 class="large-8 medium-8 cell">
-      <form id=ReturnForm action="cgi-bin/getReturningPeople.php" method="post">
-         <div class="grid-x grid-padding-x">
-           <div class="large-8 medium-8 cell">
-               <label class=flabel>What is your email address?</label>
-               <input type="text" name="email" placeholder="your email"/>
-            </div>
-          </div>
-
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-            </div>
-            <div class="large-4 medium-4 small-4 cell">
-            </div>
-          </div>
-
-          <div class="grid-x grid-padding-x">
-            <div class="large-4 medium-4 small-4 cell">
-              <button id="SButton" type=button class="button" onclick=returnFormSubmit();>Enter</button>
-            </div>
-          </div>
-    </form>
-
-</div>
-</div>
-
+    </div>
+  </div>
 <!-- ending -->
 <script src="js/yahrzeit.js"></script>
 <script>
+function formSubmit(){
+  if(checkCaptcha()){
+    document.getElementById("SuggestionForm").submit();
+  } else {
+    openPopUp("Please check the captcha!", formSubmit, nostuff);
+  }
+}
 
 function returnFormSubmit(){
   if(checkCaptcha()){
     document.getElementById("ReturnForm").submit();
+  } else {
+    openPopUp("Please check the captcha!", returnFormSubmit, nostuff);
   }
 }
 </script>
 
 </body>
+<script>
+// THESE FUNCTIONS MUST BE WRITTEN FOR THE APPLICATION -
+// USUALLY okstuff STORES INFORMATION OR CAUSES CHANGES
+// THERE ARE TWO WAYS TO SET UP THE BOX:
+//    openPopUpText("This is the question", "Text Prompt", callback-for-ok, call-back-for-not-ok);
+//    openPopUp("This is the question", callback-for-ok, call-back-for-not-ok);
+//
+function okstuff(){
+  if(popUpReturn) alert("AHAH: " + popUpReturn);
+  else alert("no entry - ok!");
+}
+
+function nostuff(){
+  // alert("nope! not");
+}
+
+</script>
+<!-- HTML below - hidden by style sheet above -->
+<link rel="stylesheet" href="css/popUp.css">
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <div id=popUpBox class=popUpBox>
+        <table id=tbl class=popUpBox>
+          <div class="large-12 cell">
+          <tr class=popUpBox>
+            <td class=popUpBox>
+              <div id=popUpMessage class=popUpBox></div>
+            </td>
+          </tr>
+          </div>
+          <div class="large-12 cell">
+            <tr>
+              <td class=popUpBox>
+              <input type="text" id="popUpInput" placeholder=""/>
+              </td></tr>
+          </div>
+          <div class="large-4 cell"></div>
+          <div class="large-4 cell">
+            <tr><td class=popUpBox>
+            <div id=popUpButtons>
+              <button type=button class="button popUpBox" onclick=popUpTextOK(1);>OK</button>
+              <!-- <button type=button class="button popUpBox" onclick=popUpTextOK(0);>No</button> -->
+            </div>
+            </td></tr>
+          </div>
+          </table>
+      </div>
+</div>
+</div>
+<script src="js/popUp.js"></script>
+<!-- ending of the popUpBox -->
 </html>

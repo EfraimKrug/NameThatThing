@@ -15,7 +15,7 @@ if ($result->num_rows > 0) {
   $resource = $conn->query($sql2);
 
   $fname = $row['FName'];
-  $confirmationString = "ConfKey=" . $ConfKey . "&ConfEmail=" . $email . "&ConfPID=" . $row['PeopleID'] . "'";
+  $confirmationString = "ConfKey=" . $ConfKey . "&ConfEmail=" . $email . "&ConfPID=" . $row['PeopleID'];
   $href = "http://www.NameThatThing.site/cgi-bin/welcomeBackPage.php?" . $confirmationString;
   sendReturnEmailInvite($email, $href, $fname);
   header("Location: https://www.NameThatThing.site/nextAction.html?USER=RETURN");

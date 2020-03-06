@@ -5,6 +5,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel = "stylesheet" type = "text/css" href = "css/yahrzeit.css" />
+  <!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"  async defer></script> -->
   <title>Yahrzeit Donations</title>
   <link rel="stylesheet" href="css/foundation.css">
   <link rel="stylesheet" href="css/app.css">
@@ -26,10 +27,11 @@
 <div id=topDiv>
 </div>
 
+<!-- starting -->
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell">
-      <h1><font color=#f98e3f>Yahrzeits: Will you accept this donation?</font></h1>
+      <h1><font color=#f98e3f>Yahrzeits: Please give us an address</font></h1>
     </div>
   </div>
 
@@ -37,15 +39,26 @@
     <div class="large-8 medium-8 cell">
       <h5>We will contact the organization for you</h5>
 
-    <!-- <form id=SuggestionForm action="cgi-bin/getAccept.php" method="post"> -->
+    <form id=SuggestionForm action="cgi-bin/getAccept.php" method="post">
      <div class="grid-x grid-padding-x">
        <div class="large-8 medium-8 small-8 cell box">
-           <label><font color=#f98e3f>Do you want to accept?</font></label>
-           <input type="radio" name="acceptRadio" value="accept" id="accept"><label for="accept"><font color=#f98e3f>Accept</font></label>
-           <input type="radio" name="acceptRadio" value="reject" id="reject"><label for="reject"><font color=#f98e3f>Reject</font></label>
+           <label class=flabel>Accept using PayPal</label>
+           <label class=flabel>Better email address for PayPal?</label>
+           <input type="text" id="email" placeholder="your paypal email"/>
            <button id="SButton" type=button class="button" onclick=formAccept(1);>Accept using PayPal</button>
        </div>
 
+       <div class="large-8 medium-8 small-8 cell box">
+         <label class=flabel>Accept, but send a check</label>
+         <label class=flabel>Mailing Address?</label>
+         <input type="text" id="mailaddress" placeholder="full mailing address"/>
+         <button id="SButton" type=button class="button" onclick=formAccept(2);>Accept - but send us a check</button>
+       </div>
+
+       <div class="large-8 medium-8 small-8 cell box">
+         <label class=flabel>Refuse, please leave us alone!</label>
+         <button id="SButton" type=button class="button" onclick=formAccept(3);>Leave us alone</button>
+       </div>
       </div>
       </div>
       <div class="large-4 medium-4 cell">
@@ -57,7 +70,7 @@
         <br><a href="InteractiveSite201.html" target=_new><span class=darkText>Our thoughts</span></a>
         <br><a href="InteractiveSite301.html" target=_new><span class=darkText>FAQs</span></a>
       </div>
-    <!-- </form> -->
+    </form>
    </div>
  </div>
 <div id=output></div>
@@ -72,10 +85,10 @@ var RID = getUrlVars()["RID"];
 var X = getUrlVars()["X"];
 var Y = getUrlVars()["Y"];
 
-// var mailaddressELT = document.getElementById("mailaddress");
-// var emailELT = document.getElementById("email");
-// mailaddressELT.value = "";
-// emailELT.value = "";
+var mailaddressELT = document.getElementById("mailaddress");
+var emailELT = document.getElementById("email");
+mailaddressELT.value = "";
+emailELT.value = "";
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //initData
 //get current Request
@@ -111,116 +124,105 @@ function emailNextNoticeOrg(){
 
 //response to formAccept...
 //first response - give email for PayPal
-// var emailaddress = "";
-//
-// function storeEmailAddress(){
-//     // if(!emailaddress) emailaddress = popUpReturn;
-//
-//     var RData = JSON.parse(document.getElementById("output").innerHTML);
-//     var OData = JSON.parse(document.getElementById("output2").innerHTML);
-//     var OID = RData['ReqOID'];
-//
-//     OData['OPayPalEmail'] = emailaddress;
-//     OData['ID'] = OData['OrgID'];
-//     // console.log(OData);
-//     // console.log(emailELT.value);
-//     // console.log(emailaddress);
-//     dbOrgs("update", output4, X, Y, OData, function (){});
-//     emailNextNoticeOrg();
-// }
+var emailaddress = "";
 
-function emailAccept(){
-    var out = JSON.parse(output3.innerHTML)[0];
-    doMail("OrgAcceptedPeople", out['EMail'], out['FName'], RID);
-    window.open("https://NameThatThing.site/peopleThanks.html", "resizable=yes");
+function storeEmailAddress(){
+    if(!emailaddress) emailaddress = popUpReturn;
+
+    var RData = JSON.parse(document.getElementById("output").innerHTML);
+    var OData = JSON.parse(document.getElementById("output2").innerHTML);
+    var OID = RData['ReqOID'];
+
+    OData['OPayPalEmail'] = emailaddress;
+    OData['ID'] = OData['OrgID'];
+    // console.log(OData);
+    // console.log(emailELT.value);
+    // console.log(emailaddress);
+    dbOrgs("update", output4, X, Y, OData, function (){});
+    emailNextNoticeOrg();
 }
 
-function emailReject(){
-    var out = JSON.parse(output3.innerHTML)[0];
-    doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID, popUpReturn);
-    window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
-}
-
-function continueRejection(){
-  var RData = JSON.parse(document.getElementById("output").innerHTML);
-  var strDate = getTodayDate();
-  RData['ReqCancelDate'] = strDate;
-  dbRequests("update", output, 'X', 'Y', RData, emailReject);
-}
-
-function acceptDon(){
-  var acc = document.getElementById("accept");
-  var rej = document.getElementById("reject");
-  var RData = JSON.parse(document.getElementById("output").innerHTML);
-  var strDate = getTodayDate();
-
-  if(acc.checked){
-    RData['ReqRequestAcceptDate'] = strDate;
-    dbRequests("update", output, 'X', 'Y', RData, emailAccept);
-    //send email to requestor
-    //send list of yahrzeits - by date - to organization
-  }
-  if(rej.checked){
-    openPopUpText("Please tell us why you are rejecting this request.", "Reason", continueRejection, nostuff);
-  }
+function acceptPayPal(){
+  emailaddress = emailELT.value;
+  if(emailaddress.length < 10)
+    openPopUpText("Please enter an email address for PayPal.", "EMail Address", storeEmailAddress, nostuff);
+  else
+    storeEmailAddress();
 }
 
 //response to formAccept...
 //second response - give mailing address
 
-// var mailaddress = "";
-//
-// function storeCheckAddress(){
-//     // console.log(popUpReturn);
-//     if(!mailaddress) mailaddress = popUpReturn;
-//     // console.log(mailaddress);
-//     var RData = JSON.parse(document.getElementById("output").innerHTML);
-//     var OData = JSON.parse(document.getElementById("output2").innerHTML);
-//     var OID = RData['ReqOID'];
-//
-//     OData['OMailAddress'] = mailaddress;
-//     OData['ID'] = OData['OrgID'];
-//
-//     dbOrgs("update", output4, X, Y, OData, function (){});
-//     emailNextNoticeOrg();
-// }
-//
-// // Option 2 on formAccept - get an address to send check
-// function acceptCheck(){
-//   mailaddress = mailaddressELT.value;
-//   if(mailaddress.length < 10)
-//     openPopUpText("Please tell us exactly how to address the envelope.", "Mailing Address", storeCheckAddress, nostuff);
-//   else
-//     storeCheckAddress();
-// }
-//
-// // Email both person and organization
-// // Person - needs to find another Org
-// // Organization - for verification...
-// function emailOrg(){
-//   var out = JSON.parse(output2.innerHTML);
-//   doMail("CancelOrg", out['OEmail']);
-//   var out = JSON.parse(output3.innerHTML)[0];
-//   doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID);
-//   window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
-// }
-//
-// // Option 3 on formAccept
-// // Organization is asking to leave them alone - Mamash like Rashbi
-// function refusalDB(){
-function getTodayDate(){
+var mailaddress = "";
+
+function storeCheckAddress(){
+    // console.log(popUpReturn);
+    if(!mailaddress) mailaddress = popUpReturn;
+    // console.log(mailaddress);
+    var RData = JSON.parse(document.getElementById("output").innerHTML);
+    var OData = JSON.parse(document.getElementById("output2").innerHTML);
+    var OID = RData['ReqOID'];
+
+    OData['OMailAddress'] = mailaddress;
+    OData['ID'] = OData['OrgID'];
+
+    dbOrgs("update", output4, X, Y, OData, function (){});
+    emailNextNoticeOrg();
+}
+
+// Option 2 on formAccept - get an address to send check
+function acceptCheck(){
+  mailaddress = mailaddressELT.value;
+  if(mailaddress.length < 10)
+    openPopUpText("Please tell us exactly how to address the envelope.", "Mailing Address", storeCheckAddress, nostuff);
+  else
+    storeCheckAddress();
+}
+
+// Email both person and organization
+// Person - needs to find another Org
+// Organization - for verification...
+function emailOrg(){
+  var out = JSON.parse(output2.innerHTML);
+  doMail("CancelOrg", out['OEmail']);
+  var out = JSON.parse(output3.innerHTML)[0];
+  doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID);
+  window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
+}
+
+// Option 3 on formAccept
+// Organization is asking to leave them alone - Mamash like Rashbi
+function refusalDB(){
   var today = new Date();
   var strDate = 'Y-m-d'
     .replace('Y', today.getFullYear())
     .replace('m', parseInt(parseInt(today.getMonth())+1) < 10 ? '0' + parseInt(today.getMonth()+1) : parseInt(today.getMonth()+1))
     .replace('d', today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
-  return strDate;
+    // .replace('h', today.getHours())
+    // .replace('i', today.getMinutes())
+    // .replace('s', today.getSeconds());
+  // console.log(strDate);
+  // console.log(today.getMonth()+1);
+  // console.log(today.getMonth()+1 < 10 ? "less":"more");
+  var RData = JSON.parse(document.getElementById("output").innerHTML);
+  // console.log(RData['ReqCancelDate']);
+  if(!RData['ReqCancelDate']){
+    RData['ReqCancelDate'] = strDate;
+    // console.log("update Request");
+    dbRequests("update", output, 'X', 'Y', RData, emailOrg);
+  }
+}
+
+function refuseAll(){
+    openPopUp("You really don't want these donations? ", refusalDB, nostuff);
 }
 
 function formAccept(level){
   if(LOGON_OK.search("TRUE") > -1){
     switch(level){
-      case 1: acceptDon(); break;
+      case 1: acceptPayPal(); break;
+      case 2: acceptCheck(); break;
+      case 3: refuseAll(); break;
       default: break;
     }
   }

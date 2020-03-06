@@ -36,10 +36,12 @@ $sql = "SELECT * FROM Yahrzeits WHERE YahrzeitID = " . $yid;
 $resource = $conn->query($sql);
 $row3 = $resource->fetch_assoc();
 $ydate = $row3['YHDay'] . " " . $row3['YHMonth'];
+$yname = $row3['YName'];
 
 if($type == "NextNoticeOrg") NextNoticeOrg($email, $row2['ORav'], $row2['OPayPalEmail'], $row2['OMailAddress'], $row2['OrgID'], $row2['OrgKey']);
 if($type == "CancelOrg") sendEmailCancelOrg($email);
-if($type == "OrgCanceledPeople") sendEmailOrgCanceled($email, $name, $req, $href);
+if($type == "OrgCanceledPeople") sendEmailOrgCanceled($email, $name, $req, $href, $reason);
+if($type == "OrgAcceptedPeople") sendEmailPersonAccepted($email, $name, $req, $href, $row2['ORav'], $row2['OName'], $yname, $rType, $ydate);
 if($type == "ThanksPerson") sendPersonThanks($email, $name, $req, $href, $ReqAmount, $row2['OName'], $row3['YName']);
 if($type == "OrgSchedule"){
   $href = "https://www.NameThatThing.site/accept.html?RID=" . $req . "&X=" . $row2['OrgKey'] . "&Y=" . $row2['OrgID'];
