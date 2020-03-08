@@ -64,7 +64,7 @@ function sendEmailInvite($email, $href, $fname){
               </style>
 
               <div class=d>
-              Hi $fname! Please <a href=$href><font color=white>click on the link</font></a> to verify your email address...
+              Hi $fname! Please <a href=$href><font color=blue>click on the link</font></a> to verify your email address...
               <br>
               The way this works:
               <br>
@@ -110,7 +110,7 @@ function sendEmailRenew($email, $href, $fname){
               </style>
 
               <div class=d>
-              Hi $fname! Please <a href=$href><font color=white>click on the link</font></a> to log on.
+              Hi $fname! Please <a href=$href><font color=blue>click on the link</font></a> to log on.
               <br>
               What you can do:
               <br>
@@ -165,7 +165,7 @@ function sendEmailRequest($email, $href, $fname, $type, $yname, $ydate, $amount)
               Please remember, we will be taking a small fee from the amount.
               <br>
               If you are willing to accept this respsonsibility in exchange for their
-              donation, please <a href=$href><font color=white>click here</font></a>.
+              donation, please <a href=$href><font color=blue>click here</font></a>.
               <br>
               When you have accepted, we will send the money via your paypal account. If you do
               not have a paypal account, PayPal will be send you instructions how to create one.
@@ -259,7 +259,7 @@ function sendEmailOrgCanceled($email, $name, $req, $href, $reason){
               <br>
               $reason
               <br>
-              Please follow this <a href=$href><font color=white>link</font></a>, and choose another place!
+              Please follow this <a href=$href><font color=blue>link</font></a>, and choose another place!
               <br>
               Best,
               <br>
@@ -410,7 +410,7 @@ function WelcomeOrg($email, $rname, $OID, $OKey, $href){
               check, and we mail them the check.
               <br>
               In either case, we need to know you would like to be involved in this venture. Please
-              <a href=$href><font color=white>click here and follow the link</font></a>
+              <a href=$href><font color=blue>click here and follow the link</font></a>
 
               Best,
               <br>
@@ -473,6 +473,6 @@ function NextNoticeOrg($email, $rname, $ppemail, $maddress){
     return false;
   }
 }
-
+// WelcomeOrg("EfraimMKrug@GMail.com","Holy Rabbi", "14", "OKEY", "https://www.NameThatThing.site/accept.html?RID=3&X=$1$h99zZovM$rSFy9JHuBvrO5fM7GODVi/&Y=Efraim");
 // sendEmailRequest("EfraimMKrug@GMail.com","https://www.NameThatThing.site/accept.html?RID=3&X=$1$h99zZovM$rSFy9JHuBvrO5fM7GODVi/&Y=Efraim","Rabbi Efraim","Kaddish","Happy Go Lucky","14 AdarII","18.00");
 ?>
