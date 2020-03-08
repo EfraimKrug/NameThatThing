@@ -132,6 +132,8 @@ input[type=submit] {
         <h5>Organizations</h5>
         <div id=OList class=OrgList>
         </div>
+        <div id=nameSent class=OrgList>
+        </div>
       <!-- </div> -->
       </div>
     </div>
@@ -353,8 +355,12 @@ function dbAccess(X, Y, ID){
 
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
-    console.log(logon + "::" + LOGON_PID);
-    if(!FIRST_ENTRY) enterForm("org");
+    if(!FIRST_ENTRY){
+      var nameSent = document.getElementById("nameSent");
+      nameSent.innerHTML = oname.value;
+      enterForm("org");
+      // nameSent.innerHTML = "[This Stuff]";
+    }
     FIRST_ENTRY = false;
     dbOrgsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","","","","","","",""], outOrgs);
   }
