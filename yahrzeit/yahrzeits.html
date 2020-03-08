@@ -50,6 +50,14 @@
     color:#72411d;
   }
 
+  #menubox {
+    width: 25%;
+    border: 2px solid #f98e3f;
+    padding: 3%;
+    background-color: #72411d;
+    height: 25%;
+  }
+
   #capBox {
     position: absolute;
     left: 0px;
@@ -177,10 +185,16 @@ function formSubmit(){
 }
 
 function returnFormSubmit(){
+  var cElt = document.getElementById("captcha_element");
+
   if(checkCaptcha()){
     document.getElementById("ReturnForm").submit();
   } else {
+<<<<<<< HEAD
     openPopUp("Please check the captcha!", returnFormSubmit, nostuff);
+=======
+    cElt.scrollIntoView();
+>>>>>>> 0dc64d26b442bc7cce5186783f82d58fb817a73b
   }
 }
 </script>

@@ -1,4 +1,4 @@
-<!doctype html>
+`<!doctype html>
 <html class="no-js" lang="en" dir="ltr">
 <head>
 <script src="js/test.js"></script>
@@ -11,6 +11,10 @@
 #outDiv {
   visibility: hidden;
 }
+
+#poutDiv {
+    color: red;
+}
 </style>
 </head>
 <body>
@@ -22,20 +26,31 @@
 <hr><hr>
 <div id=clickit onclick=Ggo();>Click Here</div>
 <hr><hr>
+<script src="js/dtConversion.js"></script>
+<script>
+var poutDiv = document.getElementById("poutDiv");
+// poutDiv.innerHTML = "<table>";
+for(var i=0; i < 39; i++){
+  var yr = 5700 + i;
+  poutDiv.innerHTML += "<tr><td>Happy " + yr + " </td><td> " + (IsLeapYear(yr) ? "LEAP" : "NOT") + " </td></tr>";
+}
+alert(poutDiv.innerHTML);
+</script>
+
 <script>
 var dCookie = document.cookie;
 poutDiv = document.getElementById("poutDiv");
-poutDiv.innerHTML = "HERE: " + dCookie + "<br>";
-if(checkConfKey()){
-  poutDiv.innerHTML += getConfKey();
-}
-if(checkfname()){
-  poutDiv.innerHTML += "[" + getFName() + "]";
-}
+// poutDiv.innerHTML = "HERE: " + dCookie + "<br>";
+// if(checkConfKey()){
+//   poutDiv.innerHTML += getConfKey();
+// }
+// if(checkfname()){
+//   poutDiv.innerHTML += "[" + getFName() + "]";
+// }
 
 
 var json = {"OrgID":"1","ORav":"R Strauss","OEmail":"EfraimMKrug@GMail.com","OName":"KTM","OStreetAddress":"113 Washington St","OCity":"Brighton","OState":"MA","OCountry":"USA","PID":"20","OID":"1"};
-alert(json['OEmail']);
+// alert(json['OEmail']);
 
 function Ggo(){
   var X="$1$oqil3CRV$zIbRFp4neQsPmqLGfKro./";
@@ -103,7 +118,8 @@ function go(s){
 }
 
 var s = "the thing's thing is real";
-go(s);
+// go(s);
 </script>
 </body>
 </html>
+`

@@ -4,7 +4,7 @@ $OrgID = "";
 
 if(array_key_exists('ID', $_REQUEST)) $OrgID = $_REQUEST['ID'];
 
-$sql = "SELECT * FROM Orgs, POConn WHERE OrgID = OID AND OrgID = " . $OrgID;
+$sql = "SELECT * FROM Orgs WHERE OrgID = " . $OrgID;
 
 $resource = $conn->query($sql);
 $row = $resource->fetch_assoc();
