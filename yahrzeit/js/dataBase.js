@@ -1,6 +1,6 @@
 function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   var phpProg = "";
-  console.log(TableName + "//" + type);
+  // console.log(TableName + "//" + type);
   if(type.toLowerCase() == "insert") phpProg = "cgi-bin/insert" + TableName + ".php";
   if(type.toLowerCase() == "update") phpProg = "cgi-bin/update" + TableName + ".php";
   if(type.toLowerCase() == "delete") phpProg = "cgi-bin/delete" + TableName + ".php";
@@ -10,7 +10,8 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   if(type.toLowerCase() == "check")  phpProg = "cgi-bin/checkLogin.php";
   if(type.toLowerCase() == "paid")   phpProg = "cgi-bin/paidLogin.php";
   if(type.toLowerCase() == "orglog") phpProg = "cgi-bin/orgLogin.php";
-  console.log("Running: " + phpProg);
+
+  // console.log("Running: " + phpProg);
 
   var xhttp;
   var returnVal;
@@ -38,6 +39,8 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   };
 
   switch(TableName){
+    case "RYO":               func = formatRYO; break;
+    case "RYP":               func = formatRYO; break;
     case "Requests":          func = formatRequests; break;
     case "RequestsByPeople":  func = formatRequests; break;
     case "YahrzeitsByPeople": func = formatPeople; break;
@@ -111,4 +114,12 @@ function dbLogon(type, outDiv, X, Y, callback, valArray){
       return dbGo("paidLogin", type, outDiv, X, Y, valArray, callback);
 
   return dbGo("checkLogin", type, outDiv, X, Y, [], callback);
+}
+
+function dbRYO(type, outDiv,  X, Y, month1, month2, callback){
+  return dbGo("RYO", type, outDiv, "X", "Y", [month1, month2], callback);
+}
+
+function dbRYP(type, outDiv,  X, Y, month1, month2, callback){
+  return dbGo("RYP", type, outDiv, "X", "Y", [month1, month2], callback);
 }

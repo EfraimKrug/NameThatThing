@@ -50,6 +50,15 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country, PayPal
 
 }
 
+function formatRYO(arr) {
+  var str = '';
+  if(Array.isArray(arr)){
+    str = 'MonthL=' + arr[0];
+    str += '&MonthH=' + arr[1];
+    return str;
+  }
+}
+
 function formatPeople(Id, FName, LName, EMail, Secret) {
   var str = '';
   if(Id && FName && LName && EMail && Secret){

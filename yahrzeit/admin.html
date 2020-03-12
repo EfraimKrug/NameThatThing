@@ -12,39 +12,39 @@
   <script src="js/doMail.js"></script>
   <script src="js/dateTranslation.js"></script>
   <script src="js/dtConversion.js"></script>
+  <script src="js/yahrzeit.js"></script>
+  <script src="js/dataBase.js"></script>
+  <script src="js/formatData.js"></script>
+
 </head>
 <body>
-<div id=topDiv>
-</div>
-
-<!-- starting -->
+<div id=topDiv></div>
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell">
-      <h1><font color=#f98e3f>Yahrzeits: Please give us an address</font></h1>
+      <h1><font color=#f98e3f>Yahrzeits: Sending email</font></h1>
     </div>
   </div>
 
   <div class="grid-x grid-padding-x">
     <div class="large-8 medium-8 cell">
-      <!-- <h5>We will contact the organization for you</h5> -->
-
-    <!-- <form id=SuggestionForm action="cgi-bin/getAccept.php" method="post"> -->
      <div class="grid-x grid-padding-x">
        <div class="large-8 medium-8 small-8 cell box">
-           <button id="SButton" type=button class="button" onclick=formAccept(1);>Send Yahrzeit Notices</button>
+           <button id="SButton" type=button class="button" onclick=formAccept(1);>Notice Orgs</button>
        </div>
 
        <div class="large-8 medium-8 small-8 cell box">
-         <button id="SButton" type=button class="button" onclick=formAccept(2);>Accept - but send us a check</button>
+         <button id="SButton" type=button class="button" onclick=formAccept(2);>Notice People</button>
        </div>
 
-       <div class="large-8 medium-8 small-8 cell box">
+       <!-- <div class="large-8 medium-8 small-8 cell box">
          <button id="SButton" type=button class="button" onclick=formAccept(3);>Leave us alone</button>
-       </div>
+       </div> -->
+       <div id=tblOut class="large-8 medium-8 small-8 cell box">
       </div>
       </div>
-      <!-- <div class="large-4 medium-4 cell">
+      </div>
+      <div class="large-4 medium-4 cell">
         <h2><span class=darkText>Free yahrzeit display for the non-technical</span></h2>
         <br><a href="InteractiveSite.html" target=_new><span class=darkText>Description</span></a>
         <br><a href="InteractiveSite02.html" target=_new><span class=darkText>Hardware</span></a>
@@ -52,19 +52,103 @@
         <br><a href="InteractiveSite101.html" target=_new><span class=darkText>Hardware - more detail</span></a>
         <br><a href="InteractiveSite201.html" target=_new><span class=darkText>Our thoughts</span></a>
         <br><a href="InteractiveSite301.html" target=_new><span class=darkText>FAQs</span></a>
-      </div> -->
-    <!-- </form> -->
+      </div>
    </div>
  </div>
+ <div id=output></div>
+<style>
+  td {
+    color: white;
+  }
+  #myTable,tr,td {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .LB {
+    color: yellow;
+  }
+</style>
 </body>
 <script>
-function formAccept(v){
-  var s = "";
-  for (var i=0; i < 20; i++){
-    y = 5760 + i;
-    s += "[" + y + "]" + IsLeapYear(y) + "\n";
+
+
+function SEmail(row, em, name, yn, d, m, a, type){
+  var z = document.createElement("TD");
+  var t = document.createTextNode(em);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+
+  var z = document.createElement("TD");
+  var t = document.createTextNode(name);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+
+  var z = document.createElement("TD");
+  var t = document.createTextNode(yn);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+
+  var z = document.createElement("TD");
+  var t = document.createTextNode(d);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+
+  var z = document.createElement("TD");
+  var t = document.createTextNode(m);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+
+  var z = document.createElement("TD");
+  var t = document.createTextNode(a);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+
+  var z = document.createElement("TD");
+  var t = document.createTextNode(type);
+  z.appendChild(t);
+  document.getElementById(row).appendChild(z);
+  if(runType == 1)
+    doMail("OrgReminder", [em, name, yn, d, m, a, type]);
+  else
+    doMail("PeopleReminder", [em, name, yn, d, m, a, type]);
+}
+
+var runType = 0;
+function getList(){
+  var oData = JSON.parse(document.getElementById("output").innerHTML);
+  var tblOut = document.getElementById("tblOut");
+  tblOut.innerHTML = runType == 1 ? "<h3 class=LB>Organizations</h3>" : "<h3 class=LB>People</h3>";
+  var tbl = document.getElementById("myTable");
+  if(!tbl) tbl = document.createElement("TABLE");
+  tbl.setAttribute("id", "myTable");
+  while(tbl.rows.length > 0) {
+    tbl.deleteRow(0);
   }
-  alert(s);
+  tblOut.appendChild(tbl);
+
+  for(var i=0; i < oData.length; i++){
+    var y = document.createElement("TR");
+    y.setAttribute("id", "myTr" + i);
+    document.getElementById("myTable").appendChild(y);
+    if(runType == 1)
+      SEmail("myTr" + i, oData[i]['OEmail'], oData[i]['ORav'], oData[i]['YName'], oData[i]['YHDay'], oData[i]['YHMonth'], oData[i]['ReqAmount'], oData[i]['ReqType']);
+    else
+      SEmail("myTr" + i, oData[i]['EMail'], oData[i]['FName'], oData[i]['YName'], oData[i]['YHDay'], oData[i]['YHMonth'], oData[i]['ReqAmount'], oData[i]['ReqType']);
+  }
+}
+
+
+function formAccept(v){
+  var output = document.getElementById("output");
+  var dtF = new Date(getCurrentDate());
+  var dtL = new Date(dtF);
+  dtF.setDate(dtF.getDate() - 1);
+  dtL.setDate(dtL.getDate() + 14);
+  var m1 = FormatDateHParts(GregToHeb(dtF)).Month;
+  var m2 = FormatDateHParts(GregToHeb(dtL)).Month;
+  runType = v;
+  if(v == 1) dbRYO("select", output, querystring('X'), querystring('Y'), m1, m2, getList);
+  if(v == 2) dbRYP("select", output, querystring('X'), querystring('Y'), m1, m2, getList);
 }
 </script>
 </html>

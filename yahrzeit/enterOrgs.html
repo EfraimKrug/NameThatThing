@@ -316,8 +316,8 @@ function refillFormFinish(){
 }
 
 function refillForm(OrgID, path){
-  alert("hello");
-  console.log([path, OrgID, LOGON_PID]);
+  // alert("hello");
+  // console.log([path, OrgID, LOGON_PID]);
   if(path){
     dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
     dbPOConn("insert", output4, querystring('X'), querystring('Y'), [LOGON_PID, OrgID], function(){});
@@ -327,7 +327,7 @@ function refillForm(OrgID, path){
 }
 
 function outOrgs(){
-  console.log("outOrgs");
+  // console.log("outOrgs");
   var OData = JSON.parse(document.getElementById("output").innerHTML);
   var OList = document.getElementById("OList");
   var OClass = "OrgList";
@@ -341,7 +341,7 @@ function outOrgs(){
 }
 
 function dbAccess(X, Y, ID){
-  console.log('dbAccess');
+  // console.log('dbAccess');
   if(!FIRST_ENTRY && !(oname.value && ocountry.value && ocity.value && orav.value && oemail.value)){
     alert("Please fill out all the fields!");
     return;
@@ -369,12 +369,12 @@ function dbAccess(X, Y, ID){
 checkLogin("org");
 
 function doCheckLogin(val){
-    console.log("doCheckLogin:" + LOGON_PID);
+    // console.log("doCheckLogin:" + LOGON_PID);
     var oname = document.getElementById('oname');
-    console.log(AUTO_I);
-    console.log(shuls);
+    // console.log(AUTO_I);
+    // console.log(shuls);
     if(shuls[AUTO_I][0].toLowerCase() == oname.value.toLowerCase()){
-      console.log(shuls[AUTO_I][1]);
+      // console.log(shuls[AUTO_I][1]);
       refillForm(shuls[AUTO_I][1], true);
     }
   // console.log(oname.value);

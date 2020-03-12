@@ -499,59 +499,21 @@ function FormatDateH(cDate, parts=false) {
 
 // excactly the same as FormatDateH, but it returns the date in pieces.
 function FormatDateHParts(cDate) {
+  var ncDate = FormatDateH(cDate);
   var aDate = new Array()
   var cFormatDate
-
-  aDate = cDate.split("/")
-  switch (Number(aDate[0])) {
-    case 1:
-      cFormatDate = "Tishrei"
-      break
-    case 2:
-      cFormatDate = "Cheshvan"
-      break
-    case 3:
-      cFormatDate = "Kislev"
-      break
-    case 4:
-      cFormatDate = "Tevet"
-      break
-    case 5:
-      cFormatDate = "Shevat"
-      break
-    case 6:
-      cFormatDate = "Adar A"
-      break
-    case 7:
-      cFormatDate = (IsLeapYear(Number(aDate[2])) ? "Adar B" : "Adar")
-      break
-    case 8:
-      cFormatDate = "Nissan"
-      break
-    case 9:
-      cFormatDate = "Iyyar"
-      break
-    case 10:
-      cFormatDate = "Sivan"
-      break
-    case 11:
-      cFormatDate = "Tammuz"
-      break
-    case 12:
-      cFormatDate = "Av"
-      break
-    case 13:
-      cFormatDate = "Elul"
-      break
-  }
+  ncDate = ncDate.replace(/[,.]/g, "");
+  aDate = ncDate.split(" ")
+  // console.log(cDate);
+  // console.log(aDate);
   var cFormatDate = {
     Year: aDate[2],
-    Month: cFormatDate,
+    Month: aDate[0],
     Day: aDate[1]
   }
 
   //cFormatDate += " " + aDate[1] + ", " + aDate[2]
-  return cFormatDate
+  return cFormatDate;
 }
 
 

@@ -2,7 +2,6 @@ function __doMail(type, email, name, req, callback) {
   // console.log([type, email, name, req]);
   var xhttp;
   var returnVal;
-  var outData = "";
   var func = "";
   phpProg = "cgi-bin/doMail.php";
 
@@ -20,14 +19,18 @@ function __doMail(type, email, name, req, callback) {
     else
       returnVal = this.status;
   };
-  // console.log(phpProg);
-  // console.log("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
+
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  if(typeof(callback) == 'function')
-    xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
+
+  if(Array.isArray(email)){
+    xhttp.send("type=" + type + "&email=" + email[0] + "&name=" + email[1] + "&yname=" + email[2]  + "&ydate=" + email[3] + ",%20%" + email[4] + "&amount=" + email[5]  + "&rtype=" + email[6]);
+  }
   else
-    xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req + "&data=" + callback);
+    if(typeof(callback) == 'function')
+      xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req);
+    else
+      xhttp.send("type=" + type + "&email=" + email + "&name=" + name + "&req=" + req + "&data=" + callback);
 }
 
 function doMail(type, email, name, req, callback){
