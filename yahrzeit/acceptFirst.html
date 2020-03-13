@@ -109,7 +109,7 @@ emailELT.value = "";
 // }
 
 function initData(){
-  console.log(OID);
+  // console.log(OID);
   dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', '', '', ''], function(){});
 }
 
@@ -226,6 +226,8 @@ function formAccept(level){
       case 3: refuseAll(); break;
       default: break;
     }
+     window.open('','_parent','');
+     window.close();
   }
 }
 

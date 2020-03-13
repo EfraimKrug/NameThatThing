@@ -96,19 +96,19 @@ input[type=submit] {
 
       <div class="grid-x grid-padding-x">
           <div class="large-6 medium-6 small-6 cell">
-              <label class=flabel>City</label>
-              <input id=ocity type="text" placeholder="City" />
+            <label class=flabel>Street</label>
+            <input id=ostreetaddress type="text" placeholder="Street Address" />
           </div>
           <div class="large-6 medium-6 small-6 cell">
-              <label class=flabel>State</label>
-              <input id=ostate type="text" placeholder="State" />
+              <label class=flabel>City</label>
+              <input id=ocity type="text" placeholder="City" />
           </div>
        </div>
 
        <div class="grid-x grid-padding-x">
-           <div class="large-6 medium-6 small-6 cell">
-               <label class=flabel>Street</label>
-               <input id=ostreetaddress type="text" placeholder="Street Address" />
+          <div class="large-6 medium-6 small-6 cell">
+             <label class=flabel>State</label>
+             <input id=ostate type="text" placeholder="State" />
            </div>
            <div class="large-4 medium-4 small-4 cell">
              <label class=flabel>Country</label>
@@ -277,6 +277,7 @@ dbOrgs("selectAll", allOrgs, querystring('X'), querystring('Y'), [0, '', '', '',
 </script>
 <script>
 // var ONLY_SWITCH = false;
+var BLOCK_FIELDS = false;
 
 function refillFormFinish(){
   var oname = document.getElementById("oname");
@@ -311,17 +312,30 @@ function refillFormFinish(){
   oemail.value = unescape(OData['OEmail']);
   ocity.value = unescape(OData['OCity']);
   ostreetaddress.value = unescape(OData['OStreetAddress']);
+  oemail.removeAttribute("readonly");
+  orav.removeAttribute("readonly");
+  oname.removeAttribute("readonly");
+  // console.log("no blocking...[" + BLOCK_FIELDS + "]");
+
+  if(BLOCK_FIELDS){
+    // console.log("blocking...[" + BLOCK_FIELDS + "]");
+    oemail.setAttribute("readonly", true);
+    orav.setAttribute("readonly", true);
+    oname.setAttribute("readonly", true);
+  }
   EDIT_OID = OData['OrgID'];
   EDIT_FORM = true;
 }
 
 function refillForm(OrgID, path){
   // alert("hello");
-  // console.log([path, OrgID, LOGON_PID]);
+  console.log([path, OrgID, LOGON_PID]);
   if(path){
+    BLOCK_FIELDS = false;
     dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
     dbPOConn("insert", output4, querystring('X'), querystring('Y'), [LOGON_PID, OrgID], function(){});
   } else {
+    BLOCK_FIELDS = true;
     dbOrgs("select", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
   }
 }
@@ -330,11 +344,16 @@ function outOrgs(){
   // console.log("outOrgs");
   var OData = JSON.parse(document.getElementById("output").innerHTML);
   var OList = document.getElementById("OList");
+  OList.innerHTML = "";
   var OClass = "OrgList";
   OList.innerHTML = "<span class=OrgList onclick=initForm('org')>NEW</span><br>";
   for (i=0; i < OData.length; i++){
     OClass = OData[i].PID == 0 ? "OrgListPublic" : "OrgList";
-    OList.innerHTML += "<span class=" + OClass + " onclick=refillForm(" + OData[i].OrgID + ", false)>" + unescape(OData[i].OName) + "</span><br>";
+    // alert( OData[i].OrgID);
+    var x = OClass + " onclick=refillForm(" + OData[i].OrgID + ")>";
+    // alert(unescape(OData[i].OName));
+    OList.innerHTML += "<span class=" + x + unescape(OData[i].OName) + "</span><br>";
+    // alert(OList.innerHTML);
   }
   var SButton = document.getElementById("SButton");
   SButton.innerHTML = "Add New!"
@@ -350,8 +369,8 @@ function dbAccess(X, Y, ID){
   var logon = JSON.parse(document.getElementById("output").innerHTML);
 
   LOGON_OK = logon.RETURN;
-  console.log(logon);
-  console.log(LOGON_OK);
+  // console.log(logon);
+  // console.log(LOGON_OK);
 
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
@@ -373,12 +392,15 @@ function doCheckLogin(val){
     var oname = document.getElementById('oname');
     // console.log(AUTO_I);
     // console.log(shuls);
-    if(shuls[AUTO_I][0].toLowerCase() == oname.value.toLowerCase()){
-      // console.log(shuls[AUTO_I][1]);
-      refillForm(shuls[AUTO_I][1], true);
+    if(shuls[AUTO_I]){
+      if(shuls[AUTO_I][0].toLowerCase() == oname.value.toLowerCase()){
+        // console.log(shuls[AUTO_I][1]);
+        refillForm(shuls[AUTO_I][1], true);
+      }
     }
+    // else refillForm(EDIT_OID, false);
   // console.log(oname.value);
-  // checkLogin(val);
+  checkLogin(val);
 }
 
 </script>

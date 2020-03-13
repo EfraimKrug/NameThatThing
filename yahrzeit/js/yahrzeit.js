@@ -119,6 +119,10 @@ function initForm(type){
     var oemail = document.getElementById("oemail");
     oname.value = ocountry.value = ostate.value = orav.value = oemail.value = "";
     ocity.value = ostreetaddress.value = "";
+    // console.log("yahrzeit.js: remove blocking...[" + BLOCK_FIELDS + "]");
+    oemail.removeAttribute("readonly");
+    orav.removeAttribute("readonly");
+    oname.removeAttribute("readonly");
   }
 
   if(type == "req"){
