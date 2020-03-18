@@ -12,6 +12,7 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country, PayPal
     str += "&OPayPalEmail=" + encodeURIComponent(PayPalEmail);
     str += "&OMailAddress=" + encodeURIComponent(MailAddress);
     str += "&OrgKey=" + encodeURIComponent(OrgKey);
+    str += "&OOwnerPID" + encodeURIComponent(OOwnerPID);
 
     return str;
   }
@@ -28,7 +29,7 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country, PayPal
     str += "&OPayPalEmail=" + encodeURIComponent(Id[8]);
     str += "&OMailAddress=" + encodeURIComponent(Id[9]);
     str += "&OrgKey=" + encodeURIComponent(Id[10]);
-
+    str += "&OOwnerPID" + encodeURIComponent(Id[11]);
     return str;
   }
 
@@ -44,6 +45,7 @@ function formatOrgs(Id, Rav, Email, Name, SAddress, City, State, Country, PayPal
     str += "&OPayPalEmail=" + encodeURIComponent(Id['OPayPalEmail']);
     str += "&OMailAddress=" + encodeURIComponent(Id['OMailAddress']);
     str += "&OrgKey=" + encodeURIComponent(Id['OrgKey']);
+    str += "&OOwnerPID=" + encodeURIComponent(Id['OOwnerPID']);
 
     return str;
   }

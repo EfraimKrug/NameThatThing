@@ -37,19 +37,19 @@ function sendReturnEmailInvite($email, $href, $fname){
   $subject = 'Yahrzeit Holder: link to return';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:250px;padding:36px;'>
               Hi $fname! Please <a href=$href><font color=blue>click on the link.</font></a>
-              <br>
+              <br><br>
               The way this works:
-              <br>
+              <br><br>
               You are welcome to enter your yahrzeits... we will keep them for you.<br>
               Two weeks before the yahrzeit, we will send you an email reminding you that <br>
               your yahrzeit is coming up.
-              <br>
+              <br><br>
               That's it.
-              <br>
+              <br><br>
               Best,
-              <br>
+              <br><br>
               Efraim
               <!-- </center> -->
               </div>

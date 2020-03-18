@@ -154,151 +154,42 @@ allOrgs {
 <div id=finish></div>
 </body>
 <script src="js/yahrzeit.js"></script>
+<script src="js/autocomplete.js"></script>
 <script>
 //autocomplete
 var AUTO_OID = 0;
 var AUTO_I = -1;
-var SOMEONE_ELSES_ENTRY = false;
-
-function findOID(shulName){
-  //[AO[i]['OName'],AO[i]['OrgID']
-  // console.log(shuls);
-  for(shul in shuls){
-    // console.log(shuls[shul][0]);
-    if(shuls[shul][0] == shulName){
-      refillForm(shuls[shul][1]);
-      SOMEONE_ELSES_ENTRY = true;
-    }
-  }
-}
-
-function autocomplete(inp, arr) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
-  var currentFocus;
-  /*execute a function when someone writes in the text field:*/
-  inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value;
-      /*close any already open lists of autocompleted values*/
-      closeAllLists();
-      if (!val) { return false;}
-      currentFocus = -1;
-      /*create a DIV element that will contain the items (values):*/
-      a = document.createElement("DIV");
-      a.setAttribute("id", this.id + "autocomplete-list");
-      a.setAttribute("class", "autocomplete-items");
-      /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
-      // console.log("HERE");
-      // console.log(arr);
-      /*for each item in the array...*/
-      for (i = 0; i < arr.length; i++) {
-        /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i][0].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-          AUTO_OID = arr[i][1];
-          AUTO_I = i;
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i][0].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i][0].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i][0] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
-              b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
-              inp.value = this.getElementsByTagName("input")[0].value;
-              findOID(inp.value);
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              closeAllLists();
-          });
-          a.appendChild(b);
-        }
-      }
-  });
-  /*execute a function presses a key on the keyboard:*/
-  inp.addEventListener("keydown", function(e) {
-      var x = document.getElementById(this.id + "autocomplete-list");
-      if (x) x = x.getElementsByTagName("div");
-      if (e.keyCode == 40) {
-        /*If the arrow DOWN key is pressed,
-        increase the currentFocus variable:*/
-        currentFocus++;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 38) { //up
-        /*If the arrow UP key is pressed,
-        decrease the currentFocus variable:*/
-        currentFocus--;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
-        if (currentFocus > -1) {
-          /*and simulate a click on the "active" item:*/
-          if (x) x[currentFocus].click();
-        }
-      }
-  });
-  function addActive(x) {
-    /*a function to classify an item as "active":*/
-    if (!x) return false;
-    /*start by removing the "active" class on all items:*/
-    removeActive(x);
-    if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
-    x[currentFocus].classList.add("autocomplete-active");
-  }
-  function removeActive(x) {
-    /*a function to remove the "active" class from all autocomplete items:*/
-    for (var i = 0; i < x.length; i++) {
-      x[i].classList.remove("autocomplete-active");
-    }
-  }
-  function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != inp) {
-      x[i].parentNode.removeChild(x[i]);
-    }
-  }
-}
-/*execute a function when someone clicks in the document:*/
-document.addEventListener("click", function (e) {
-    closeAllLists(e.target);
-});
-}
+// var SOMEONE_ELSES_ENTRY = false;
+var BLOCK_FIELDS = false;
+var BUTTONS_OFF = false;
 
 var allOrgs = document.getElementById("allOrgs");
 var shuls = [];
 
-function addToMyList(){
-  //dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [EDIT_OID, '', '', '', '', '', '', '', '', '', ''], function(){});
-  dbPOConn("insert", output4, querystring('X'), querystring('Y'), [LOGON_PID, EDIT_OID], location.reload());
-  // location.reload();
-  // doCheckLogin("org");
+function findOID(shulName){
+  // console.log(shulName);
+  // console.log(shuls);
+  for(shul in shuls){
+    if(shuls[shul][0] == shulName){
+      // alert("findOID" + shuls[shul][1]);
+      refillForm(shuls[shul][1]);
+      // SOMEONE_ELSES_ENTRY = true;
+    }
+  }
 }
 
-function fillList(){
+function addToMyList(){
+  dbPOConn("insert", output4, querystring('X'), querystring('Y'), [LOGON_PID, EDIT_OID], location.reload());
+}
+
+function prefillOrgList(){
   var AO = JSON.parse(allOrgs.innerHTML);
   for (i=0; i < AO.length; i++){
     shuls.push([AO[i]['OName'],AO[i]['OrgID']]);
   }
-  // console.log(shuls);
-  autocomplete(document.getElementById("oname"), shuls);
+  autocomplete(document.getElementById("oname"), shuls, findOID);
 }
 
-dbOrgs("selectAll", allOrgs, querystring('X'), querystring('Y'), [0, '', '', '', '', '', '', '', '', '', ''], fillList);
-
-</script>
-<script>
-// var ONLY_SWITCH = false;
-var BLOCK_FIELDS = false;
 
 function refillFormFinish(){
   var oname = document.getElementById("oname");
@@ -308,30 +199,32 @@ function refillFormFinish(){
   var ostreetaddress = document.getElementById("ostreetaddress");
   var orav = document.getElementById("orav");
   var oemail = document.getElementById("oemail");
-  // console.log("NEXT");
-  // console.log(document.getElementById("output").innerHTML);
   var OData = JSON.parse(document.getElementById("output").innerHTML);
+
   var PID = OData['PID'];
   var SButton = document.getElementById("SButton");
-  // if(ONLY_SWITCH){
-  //
-  //   ONLY_SWITCH = false;
-  // }
-  // console.log(OData);
-  // alert(PID);
-  if(SOMEONE_ELSES_ENTRY){
-    var AButton = document.getElementById("AButton");
-    AButton.style.visibility = 'visible';
-  }
-
-  if((PID > 0) && !SOMEONE_ELSES_ENTRY){
-    SButton.disabled = false;
-    SButton.innerHTML = "Change It!";
-  } else {
+  var AButton = document.getElementById("AButton");
+  // console.log(OData['OOwnerPID']);
+  // console.log(LOGON_PID);
+  if(PID == 0 || BUTTONS_OFF){
     SButton.disabled = true;
     SButton.innerHTML = "";
+    AButton.style.visibility = 'hidden';
+    SButton.style.visibility = 'hidden';
+    BUTTONS_OFF = false;
+  } else {
+    if(LOGON_PID == OData['OOwnerPID']){
+      SButton.style.visibility = 'visible';
+      AButton.style.visibility = 'hidden';
+      SButton.disabled = false;
+      SButton.innerHTML = "Change It!";
+    } else {
+          console.log([LOGON_PID, OData['OOwnerPID'], OData['PID']]);
+          AButton.style.visibility = 'visible';
+          SButton.style.visibility = 'hidden';
+    }
   }
-  SOMEONE_ELSES_ENTRY = false;
+  // SOMEONE_ELSES_ENTRY = false;
   oname.value = unescape(OData['OName']);
   ocountry.value = unescape(OData['OCountry']);
   ostate.value = unescape(OData['OState']);
@@ -355,8 +248,6 @@ function refillFormFinish(){
 }
 
 function refillForm(OrgID, path){
-  // alert("hello");
-  // console.log([path, OrgID, LOGON_PID]);
   if(path){
     BLOCK_FIELDS = false;
     dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
@@ -367,20 +258,25 @@ function refillForm(OrgID, path){
   }
 }
 
+function refillFormNoButton(OrgID){
+  BUTTONS_OFF = true;
+  refillForm(OrgID, false);
+}
+////////////////////////////////////////////////////////////////////////////////////
+/////////////// GETTING ALL DATABASE DATA NEEDED FOR THE PAGE //////////////////////
+/////////////// GETTING ALL DATABASE DATA NEEDED FOR THE PAGE //////////////////////
+/////////////// On successful return of data, we fill up the orgs list /////////////
+////////////////////////////////////////////////////////////////////////////////////
 function outOrgs(){
-  // console.log("outOrgs");
   var OData = JSON.parse(document.getElementById("output").innerHTML);
   var OList = document.getElementById("OList");
-  OList.innerHTML = "";
+  // OList.innerHTML = "";
   var OClass = "OrgList";
   OList.innerHTML = "<span class=OrgList onclick=initForm('org')>NEW</span><br>";
   for (i=0; i < OData.length; i++){
-    OClass = OData[i].PID == 0 ? "OrgListPublic" : "OrgList";
-    // alert( OData[i].OrgID);
-    var x = OClass + " onclick=refillForm(" + OData[i].OrgID + ")>";
-    // alert(unescape(OData[i].OName));
+    OClass = OData[i].PID == LOGON_PID ? "OrgList" : "OrgListPublic";
+    var x = OClass + " onclick=refillFormNoButton(" + OData[i].OrgID + ")>";
     OList.innerHTML += "<span class=" + x + unescape(OData[i].OName) + "</span><br>";
-    // alert(OList.innerHTML);
   }
   var SButton = document.getElementById("SButton");
   SButton.innerHTML = "Add New!"
@@ -389,48 +285,45 @@ function outOrgs(){
 function dbAccess(X, Y, ID){
   var AButton = document.getElementById("AButton");
   AButton.style.visibility = 'hidden';
-  // console.log('dbAccess');
   if(!FIRST_ENTRY && !(oname.value && ocountry.value && ocity.value && orav.value && oemail.value)){
     alert("Please fill out all the fields!");
     return;
-  }
+    }
 
   var logon = JSON.parse(document.getElementById("output").innerHTML);
 
   LOGON_OK = logon.RETURN;
-  // console.log(logon);
-  // console.log(LOGON_OK);
-
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
     if(!FIRST_ENTRY){
       var nameSent = document.getElementById("nameSent");
       nameSent.innerHTML = oname.value;
       enterForm("org");
-      // nameSent.innerHTML = "[This Stuff]";
     }
     FIRST_ENTRY = false;
     dbOrgsByPeople("select", output, querystring('X'), querystring('Y'), [LOGON_PID,"","","","","","","","","",""], outOrgs);
   }
 }
 
-checkLogin("org");
-
 function doCheckLogin(val){
-    // console.log("doCheckLogin:" + LOGON_PID);
     var oname = document.getElementById('oname');
-    // console.log(AUTO_I);
-    // console.log(shuls);
     if(shuls[AUTO_I]){
       if(shuls[AUTO_I][0].toLowerCase() == oname.value.toLowerCase()){
-        // console.log(shuls[AUTO_I][1]);
         refillForm(shuls[AUTO_I][1], true);
       }
     }
-    // else refillForm(EDIT_OID, false);
-  // console.log(oname.value);
   checkLogin(val);
 }
+
+//////////////// INITIALIZING THIS PAGE ///////////////////////////////////////
+//////////////// INITIALIZING THIS PAGE ///////////////////////////////////////
+// this code gets the list of orgs and fills the autocomplete list ////////////
+// for convenience there is also a list of shuls: 'shuls' - array of arrays ///
+dbOrgs("selectAll", allOrgs, querystring('X'), querystring('Y'), [0, '', '', '', '', '', '', '', '', '', ''], prefillOrgList);
+// this line checks for security access and sets up data for the page /////////
+checkLogin("org");
+//////////////// INITIALIZING THIS PAGE ///////////////////////////////////////
+//////////////// INITIALIZING THIS PAGE ///////////////////////////////////////
 
 </script>
 <script src="js/escape.js"></script>

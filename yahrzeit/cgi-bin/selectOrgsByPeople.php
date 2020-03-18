@@ -1,6 +1,7 @@
 <?php
 require 'openYDB.php';
-// $_POST['PeopleID'] = 44;
+// essentially:
+// select users orgs with a count on user connections UNION base orgs
 $PeopleID = "";
 
 if(array_key_exists('ID', $_POST)) $PeopleID = $_POST['ID'];

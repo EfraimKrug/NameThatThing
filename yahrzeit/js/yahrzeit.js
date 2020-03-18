@@ -89,9 +89,12 @@ function checkLogin(type, valArray){
 
 function initForm(type){
   var SButton = document.getElementById("SButton");
+  var AButton = document.getElementById("AButton");
   if(SButton){
     SButton.innerHTML = "Add New!"
     SButton.disabled = false;
+    SButton.style.visibility = 'visible';
+    AButton.style.visibility = 'hidden';
   }
   if(type == "yahr"){
     EDIT_YID = 0;

@@ -11,6 +11,7 @@ $OCountry = "";
 $OPayPalEmail = "";
 $OMailAddress = "";
 $OrgKey = "";
+$OOwnerPID = "";
 
 if(array_key_exists('ID', $_POST)) $OrgID = $_POST['ID'];
 if(array_key_exists('ORav', $_POST)) $ORav = urldecode($_POST['ORav']);
@@ -23,6 +24,7 @@ if(array_key_exists('OCountry', $_POST)) $OCountry = urldecode($_POST['OCountry'
 if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = urldecode($_POST['OPayPalEmail']);
 if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = urldecode($_POST['OMailAddress']);
 if(array_key_exists('OrgKey', $_POST)) $OrgKey = urldecode($_POST['OrgKey']);
+if(array_key_exists('OOwnerPID', $_POST)) $OOwnerPID = urldecode($_POST['OOwnerPID']);
 
 $sql = "UPDATE Orgs SET ORav = " . "'" . $ORav . "'," .
                         "OEmail = " . "'" . $OEmail . "'," .
@@ -34,6 +36,7 @@ $sql = "UPDATE Orgs SET ORav = " . "'" . $ORav . "'," .
                         "OPayPalEmail = " . "'" . $OPayPalEmail . "', " .
                         "OMailAddress = " . "'" . $OMailAddress . "', " .
                         "OrgKey = " . "'" . $OrgKey . "', " .
+                        "OOwnerPID = " . "'" . $OOwnerPID . "', " .                        
                         "OFirstContact = TRUE " .
 
               " WHERE OrgID = $OrgID";
