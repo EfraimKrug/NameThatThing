@@ -68,25 +68,28 @@ function sendReturnEmailInvite($email, $href, $fname){
   }
 }
 
-
+// 87608a new
+// 87605c old
 function sendEmailInvite($email, $href, $fname){
   $to = $email;
   $subject = 'Yahrzeit Holder: Verifying your email address';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
-              Hi $fname! Please <a href=$href><font color=blue>click on the link</font></a> to verify your email address...
-              <br>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87608a;width:500px;height:250px;padding:36px;'>
+              Hi $fname!
+              <br><br>
+              Please <a href=$href><font color=blue>click on the link</font></a> to verify your email address...
+              <br><br>
               The way this works:
-              <br>
+              <br><br>
               You are welcome to enter your yahrzeits... we will keep them for you.
               Two weeks before the yahrzeit, we will send you an email reminding you that your
               yahrzeit is coming up.
-              <br>
+              <br><br>
               That's it.
-              <br>
+              <br><br>
               Best,
-              <br>
+              <br><br>
               Efraim
               </div>
               </body>
@@ -321,33 +324,33 @@ function WelcomeOrg($email, $rname, $OID, $OKey, $href){
   $to = $email;
   $subject = 'Someone wants to give donations';
   $message =  "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
-              <body>;
-              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:600px;padding:36px;>'
+              <body>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:600px;padding:36px;>
               Dear $rname,
-              <br>
+              <br><br>
               Someone recently came to our website, and gave us your name and contact information.
-              <br>
+              <br><br>
               Our website allows individuals who need Kaddish, K'eil Malei Harachamim, or Yizkor observances
               to enter organization names they would like to donate to, in trade.
-              <br>
+              <br><br>
               The way it works: Someone comes to our website, and enters their Yahrzeit information. Two
               weeks before the yahrzeit, we send email asking them if they need someone to say Kaddish
               for them. If they respond, they give a donation and specify the place to say Kaddish.
-              <br>
+              <br><br>
               When they specify the place to say Kaddish, we send an email to that organization asking
               them (you) to acknowledge the Yahrzeit (by clicking on the link sent).
-              <br>
+              <br><br>
               They make the donation. You say Kaddish. And we send you the donation(s) at the end of the
               month. (I make a living by taking a small percentage of the donation).
-              <br>
+              <br><br>
               Some organizations use PayPal, and we send them the donation that way. Others ask for a
               check, and we mail them the check.
-              <br>
+              <br><br>
               In either case, we need to know you would like to be involved in this venture. Please
               <a href=$href><font color=blue>click here and follow the link</font></a>
-
+              <br><br>
               Best,
-              <br>
+              <br><br>
               Efraim
               </div>
               </body>
@@ -368,21 +371,23 @@ function WelcomeOrg($email, $rname, $OID, $OKey, $href){
 }
 
 function NextNoticeOrg($email, $rname, $ppemail, $maddress){
-  $info = "check payment to your " . $maddress . " mailing ";
-  if($ppemail) $info = "paypal payment to your " . $ppemail . " email ";
+
+  $info = "check payments to your " . $maddress . " mailing ";
+  if($ppemail) $info = "paypal payments to your " . $ppemail . " email ";
+
   $to = $email;
   $subject = 'We got your update';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:250px;padding:36px;'>
               Dear $rname,
-              <br>
-              Thanks for your information. We will send a $info address.
+              <br><br>
+              Thanks for your information. We will send $info address.
               You should get it near the end of each month, or about a week
               before Yom Tov when applicable.
-              <br>
+              <br><br>
               Best,
-              <br>
+              <br><br>
               Efraim
               </div>
               </body>

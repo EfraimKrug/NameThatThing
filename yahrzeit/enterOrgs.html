@@ -121,7 +121,7 @@ input[type=submit] {
 
            </div>
         </div>
-          <button id="SButton" type=button class="button" onclick=doCheckLogin("org");>Enter</button>
+          <button id="SButton" type=button class="button" onclick=doCheckLogin("org");>Enter</button><button id="AButton" type=button class="button" onclick=addToMyList();>Add to my list</button>
       </div>
     </form>
     <div class="large-4 medium-4 cell">
@@ -158,6 +158,19 @@ allOrgs {
 //autocomplete
 var AUTO_OID = 0;
 var AUTO_I = -1;
+var SOMEONE_ELSES_ENTRY = false;
+
+function findOID(shulName){
+  //[AO[i]['OName'],AO[i]['OrgID']
+  // console.log(shuls);
+  for(shul in shuls){
+    // console.log(shuls[shul][0]);
+    if(shuls[shul][0] == shulName){
+      refillForm(shuls[shul][1]);
+      SOMEONE_ELSES_ENTRY = true;
+    }
+  }
+}
 
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
@@ -195,6 +208,7 @@ function autocomplete(inp, arr) {
               b.addEventListener("click", function(e) {
               /*insert the value for the autocomplete text field:*/
               inp.value = this.getElementsByTagName("input")[0].value;
+              findOID(inp.value);
               /*close the list of autocompleted values,
               (or any other open lists of autocompleted values:*/
               closeAllLists();
@@ -263,6 +277,13 @@ document.addEventListener("click", function (e) {
 var allOrgs = document.getElementById("allOrgs");
 var shuls = [];
 
+function addToMyList(){
+  //dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [EDIT_OID, '', '', '', '', '', '', '', '', '', ''], function(){});
+  dbPOConn("insert", output4, querystring('X'), querystring('Y'), [LOGON_PID, EDIT_OID], location.reload());
+  // location.reload();
+  // doCheckLogin("org");
+}
+
 function fillList(){
   var AO = JSON.parse(allOrgs.innerHTML);
   for (i=0; i < AO.length; i++){
@@ -298,13 +319,19 @@ function refillFormFinish(){
   // }
   // console.log(OData);
   // alert(PID);
-  if(PID > 0){
+  if(SOMEONE_ELSES_ENTRY){
+    var AButton = document.getElementById("AButton");
+    AButton.style.visibility = 'visible';
+  }
+
+  if((PID > 0) && !SOMEONE_ELSES_ENTRY){
     SButton.disabled = false;
     SButton.innerHTML = "Change It!";
   } else {
     SButton.disabled = true;
     SButton.innerHTML = "";
   }
+  SOMEONE_ELSES_ENTRY = false;
   oname.value = unescape(OData['OName']);
   ocountry.value = unescape(OData['OCountry']);
   ostate.value = unescape(OData['OState']);
@@ -329,7 +356,7 @@ function refillFormFinish(){
 
 function refillForm(OrgID, path){
   // alert("hello");
-  console.log([path, OrgID, LOGON_PID]);
+  // console.log([path, OrgID, LOGON_PID]);
   if(path){
     BLOCK_FIELDS = false;
     dbOrgs("selectOnly", output, querystring('X'), querystring('Y'), [OrgID, '', '', '', '', '', '', '', '', '', ''], refillFormFinish);
@@ -360,6 +387,8 @@ function outOrgs(){
 }
 
 function dbAccess(X, Y, ID){
+  var AButton = document.getElementById("AButton");
+  AButton.style.visibility = 'hidden';
   // console.log('dbAccess');
   if(!FIRST_ENTRY && !(oname.value && ocountry.value && ocity.value && orav.value && oemail.value)){
     alert("Please fill out all the fields!");
