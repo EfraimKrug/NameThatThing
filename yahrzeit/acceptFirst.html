@@ -14,6 +14,7 @@
   <script src="js/formatData.js"></script>
   <script src="js/dataBase.js"></script>
   <script src="js/doMail.js"></script>
+  <script src="js/doMail2.js"></script>
 </head>
 <body>
   <style>
@@ -81,35 +82,39 @@
 <script src="js/yahrzeit.js"></script>
 <script>
 FIRST_ENTRY = false;
-var RID = getUrlVars()["RID"];
 var X = getUrlVars()["X"];
 var OID = getUrlVars()["Y"];
+var PID = getUrlVars()["PID"];
 
 var mailaddressELT = document.getElementById("mailaddress");
 var emailELT = document.getElementById("email");
 mailaddressELT.value = "";
 emailELT.value = "";
 /////////////////////////////////////////////////////////////////////////////////////////////////
-//initData
-//get current Request
-//based on Request, get People and Org records...
-// var OID = "";
-// var PID = "";
-
 
 // function getRequest(){
 //   dbRequestsByOrg("select", output, 'X', 'Y', [OID, '', '', '', '', '', '', ''], function(){});
 // }
 
-// var getPeople = function(){
-//   var RData = JSON.parse(document.getElementById("output").innerHTML);
-//   OID = RData['ReqOID'];
-//   PID = RData['ReqPID'];
-//   dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], getOrg);
-// }
+function sendPersonNotify(){
+  var outP = JSON.parse(output3.innerHTML)[0];
+  var outO = JSON.parse(output2.innerHTML);
+  // type, RID, PID, OID, YID, data, callback
+  // console.log([outP['EMail'], outP['FName'], outO['OName'], outO['ORav']]);
+  console.log(["sendPersonNotify", 0, outP['PeopleID'], outO['OrgID'], 0, '']);
+  doMail2("sendPersonNotify", 0, outP['PeopleID'], outO['OrgID'], 0, '', function(){});
+  // doMail("sendPersonNotify", outP['EMail'], outP['FName'], outO['OName'], outO['ORav']);
+  // window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
+
+}
+
+
+function getPeople(){
+  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], sendPersonNotify);
+}
 
 function initData(){
-  // console.log(OID);
+  console.log(OID);
   dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', '', '', ''], function(){});
 }
 
@@ -119,7 +124,10 @@ initData();
 
 function emailNextNoticeOrg(){
   var out = JSON.parse(output2.innerHTML);
-  doMail("NextNoticeOrg", out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']);
+  // console.log([out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']]);
+  // type, RID, PID, OID, YID, data, callback
+  doMail2("NextNoticeOrg", 0, 0, out['OrgID'], 0, "", function(){});
+  // doMail("NextNoticeOrg", out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']);
   window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
 }
 
@@ -129,17 +137,12 @@ var emailaddress = "";
 
 function storeEmailAddress(){
     if(!emailaddress) emailaddress = popUpReturn;
-
-    var RData = JSON.parse(document.getElementById("output").innerHTML);
     var OData = JSON.parse(document.getElementById("output2").innerHTML);
-    var OID = RData['ReqOID'];
+    var OID = OData['OrgID'];
 
     OData['OPayPalEmail'] = emailaddress;
     OData['ID'] = OData['OrgID'];
-    // console.log(OData);
-    // console.log(emailELT.value);
-    // console.log(emailaddress);
-    dbOrgs("update", output4, X, OID, OData, function (){});
+    dbOrgs("update", output4, X, OID, OData, getPeople);
     emailNextNoticeOrg();
 }
 
@@ -159,15 +162,12 @@ var mailaddress = "";
 function storeCheckAddress(){
     // console.log(popUpReturn);
     if(!mailaddress) mailaddress = popUpReturn;
-    // console.log(mailaddress);
-    // var RData = JSON.parse(document.getElementById("output").innerHTML);
     var OData = JSON.parse(document.getElementById("output2").innerHTML);
-    // var OID = RData['ReqOID'];
 
     OData['OMailAddress'] = mailaddress;
     OData['ID'] = OData['OrgID'];
 
-    dbOrgs("update", output4, X, OID, OData, function (){});
+    dbOrgs("update", output4, X, OID, OData, getPeople);
     emailNextNoticeOrg();
 }
 
@@ -186,8 +186,6 @@ function acceptCheck(){
 function emailOrg(){
   var out = JSON.parse(output2.innerHTML);
   doMail("CancelOrg", out['OEmail']);
-  // var out = JSON.parse(output3.innerHTML)[0];
-  // doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID);
   window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
 }
 
@@ -199,19 +197,6 @@ function refusalDB(){
     .replace('Y', today.getFullYear())
     .replace('m', parseInt(parseInt(today.getMonth())+1) < 10 ? '0' + parseInt(today.getMonth()+1) : parseInt(today.getMonth()+1))
     .replace('d', today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
-    // .replace('h', today.getHours())
-    // .replace('i', today.getMinutes())
-    // .replace('s', today.getSeconds());
-  // console.log(strDate);
-  // console.log(today.getMonth()+1);
-  // console.log(today.getMonth()+1 < 10 ? "less":"more");
-  var RData = JSON.parse(document.getElementById("output").innerHTML);
-  // console.log(RData['ReqCancelDate']);
-  if(!RData['ReqCancelDate']){
-    RData['ReqCancelDate'] = strDate;
-    // console.log("update Request");
-    dbRequests("update", output, 'X', 'Y', RData, emailOrg);
-  }
 }
 
 function refuseAll(){
@@ -226,8 +211,8 @@ function formAccept(level){
       case 3: refuseAll(); break;
       default: break;
     }
-     window.open('','_parent','');
-     window.close();
+     // window.open('','_parent','');
+     // window.close();
   }
 }
 
@@ -235,7 +220,7 @@ function formAccept(level){
 function dbAccess(X, Y, ID){
   var logon = JSON.parse(document.getElementById("output").innerHTML);
   LOGON_OK = logon.RETURN;
-  console.log("acceptFirst.html: " + logon);
+  // console.log("acceptFirst.html: " + logon);
   if(LOGON_OK.search("TRUE") > -1){
     LOGON_PID = logon.PID;
     initData();

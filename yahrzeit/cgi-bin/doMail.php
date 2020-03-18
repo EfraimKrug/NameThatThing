@@ -7,13 +7,13 @@ $req = "";
 $type = "";
 $email = "";
 $name = "";
-
-// print_r($_REQUEST);
+$data = "";
 
 if(array_key_exists('type', $_REQUEST)) $type = $_REQUEST['type'];
 if(array_key_exists('email', $_REQUEST)) $email = $_REQUEST['email'];
 if(array_key_exists('name', $_REQUEST)) $name = $_REQUEST['name'];
 if(array_key_exists('req', $_REQUEST)) $req = $_REQUEST['req'];
+if(array_key_exists('data', $_REQUEST)) $data = $_REQUEST['data'];
 
 $sql = "SELECT * FROM Requests WHERE RID = " . $req;
 $resource = $conn->query($sql);
@@ -38,10 +38,9 @@ $row3 = $resource->fetch_assoc();
 $ydate = $row3['YHDay'] . " " . $row3['YHMonth'];
 $yname = $row3['YName'];
 
-if($type == "NextNoticeOrg") NextNoticeOrg($email, $row2['ORav'], $row2['OPayPalEmail'], $row2['OMailAddress'], $row2['OrgID'], $row2['OrgKey']);
+// if($type == "sendPersonNotify") sendPersonNotify($email, $name, $req, $data);
+// if($type == "NextNoticeOrg") NextNoticeOrg($email, $row2['ORav'], $row2['OPayPalEmail'], $row2['OMailAddress'], $row2['OrgID'], $row2['OrgKey']);
 if($type == "CancelOrg") sendEmailCancelOrg($email);
-if($type == "OrgCanceledPeople") sendEmailOrgCanceled($email, $name, $req, $href, $reason);
-if($type == "OrgAcceptedPeople") sendEmailPersonAccepted($email, $name, $req, $href, $row2['ORav'], $row2['OName'], $yname, $rType, $ydate);
 if($type == "ThanksPerson") sendPersonThanks($email, $name, $req, $href, $ReqAmount, $row2['OName'], $row3['YName']);
 if($type == "OrgSchedule"){
   $href = "https://www.NameThatThing.site/accept.html?RID=" . $req . "&X=" . $row2['OrgKey'] . "&Y=" . $row2['OrgID'];

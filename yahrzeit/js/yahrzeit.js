@@ -168,7 +168,8 @@ function enterForm(type){
     if(EDIT_FORM)
       dbOrgs("update", output, querystring('X'), querystring('Y'), [EDIT_OID, escape(orav.value), escape(oemail.value), escape(oname.value), escape(ostreetaddress.value), escape(ocity.value), escape(ostate.value), escape(ocountry.value)]);
     else
-      dbOrgs("insert", output, querystring('X'), querystring('Y'), [0, escape(orav.value), escape(oemail.value), escape(oname.value), escape(ostreetaddress.value), escape(ocity.value), escape(ostate.value), escape(ocountry.value)]);
+      console.log(["insert", output, querystring('X'), querystring('Y'), [0, escape(orav.value), escape(oemail.value), escape(oname.value), escape(ostreetaddress.value), escape(ocity.value), escape(ostate.value), escape(ocountry.value)]]);
+      dbOrgs("insert", output, querystring('X'), querystring('Y'), [0, escape(orav.value), escape(oemail.value), escape(oname.value), escape(ostreetaddress.value), escape(ocity.value), escape(ostate.value), escape(ocountry.value), '', '', '']);
   }
 
   if(type == "req"){

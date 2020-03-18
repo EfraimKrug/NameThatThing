@@ -1,21 +1,43 @@
 <?php
+
+function sendPersonNotify($email, $fname, $oname, $orav, $href){
+  $to = $email;
+  $subject = "Yahrzeit Holder: $oname has responded";
+  $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
+              <body>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
+              Hi $fname!
+              <br>
+              We would like to inform you that $orav at $oname has accepted your
+              invitation to this site. If you would like to send them a request, you
+              may go to <a href='$href'>our web site</a>.
+              <br>
+              Best,
+              <br>
+              Efraim
+              <!-- </center> -->
+              </div>
+              </body>
+              </html>";
+
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+  if(mail($to, $subject, $message, $headers)){
+    return true;
+  } else{
+    return false;
+  }
+}
+
 function sendReturnEmailInvite($email, $href, $fname){
   $to = $email;
   $subject = 'Yahrzeit Holder: link to return';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-              <!-- <center> -->
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Hi $fname! Please <a href=$href><font color=blue>click on the link.</font></a>
               <br>
               The way this works:
@@ -52,18 +74,7 @@ function sendEmailInvite($email, $href, $fname){
   $subject = 'Yahrzeit Holder: Verifying your email address';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Hi $fname! Please <a href=$href><font color=blue>click on the link</font></a> to verify your email address...
               <br>
               The way this works:
@@ -98,18 +109,7 @@ function sendEmailRenew($email, $href, $fname){
   $subject = 'Yahrzeit Holder: Link to get on';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Hi $fname! Please <a href=$href><font color=blue>click on the link</font></a> to log on.
               <br>
               What you can do:
@@ -144,19 +144,7 @@ function sendEmailRequest($email, $href, $fname, $type, $yname, $ydate, $amount)
   $subject = 'YAHRZEIT Donation Request: for Kaddish';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <!-- <center> -->
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Hi $fname!
               <br>
               Someone has come to our website to ask you to have someone say $type
@@ -200,18 +188,7 @@ function sendEmailCancelOrg($email){
   $subject = 'We have canceled your donations on your request';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               We are so sorry to see you leave!
               <br>
               We are honoring your request to be left alone.
@@ -235,23 +212,13 @@ function sendEmailCancelOrg($email){
   }
 }
 
-function sendEmailOrgCanceled($email, $name, $req, $href, $reason){
+function OrgCanceledPeople($email, $name, $href, $reason){
   $to = $email;
+  if(!$reason) $reason = "No Reason, sorry.";
   $subject = 'Your donation was not accepted';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Dear $name:
               <br>
               The place you wanted to give money to in honor of your yahrzeit has asked
@@ -286,18 +253,7 @@ function sendPersonThanks($email, $name, $req, $href, $amount, $oname, $yname){
   $subject = 'Thanks for your donation';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Dear $name,
               <br>
               You have given a donation of $amount to $oname in honor of the yahrzeit of $yname.
@@ -323,7 +279,7 @@ function sendPersonThanks($email, $name, $req, $href, $amount, $oname, $yname){
 }
 
 
-function sendEmailPersonAccepted($email, $name, $req, $href, $orav, $oname, $yname, $rType, $ydate){
+function OrgAcceptedPeople($email, $name, $orav, $oname, $yname, $rType, $ydate){
   $msg =  "$yname.";
   if($rType == "Kaddish")
     $msg =  "$yname for the year.";
@@ -336,21 +292,10 @@ function sendEmailPersonAccepted($email, $name, $req, $href, $orav, $oname, $yna
   $subject = 'Thanks for your donation';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Dear $name,
               <br>Your donation to $oname in honor of the yahrzeit of $yname has been accepted.
-              $orav has assured me that $rType will be said for $msg
+              $orav has assured us that $rType will be said for $msg
               <br>
               Best,
               <br>
@@ -375,20 +320,9 @@ function sendEmailPersonAccepted($email, $name, $req, $href, $orav, $oname, $yna
 function WelcomeOrg($email, $rname, $OID, $OKey, $href){
   $to = $email;
   $subject = 'Someone wants to give donations';
-  $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
-              <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+  $message =  "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
+              <body>;
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:600px;padding:36px;>'
               Dear $rname,
               <br>
               Someone recently came to our website, and gave us your name and contact information.
@@ -417,12 +351,14 @@ function WelcomeOrg($email, $rname, $OID, $OKey, $href){
               Efraim
               </div>
               </body>
-              </html>";
+              </html>
+              ";
 
   $headers = "From: mahtzevah@GMail.com\r\n";
   $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
   $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
 
   if(mail($to, $subject, $message, $headers)){
     return true;
@@ -438,22 +374,12 @@ function NextNoticeOrg($email, $rname, $ppemail, $maddress){
   $subject = 'We got your update';
   $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='utf-8'/></head>
               <body>
-              <style>
-                .d {
-                  font-size:12px;
-                  background-color:#f98e3f;
-                  color:#87605c;
-                  width:500px;
-                  height:400px;
-                  padding:36px;
-                }
-              </style>
-
-              <div class=d>
+              <div style='font-size:14px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
               Dear $rname,
               <br>
-              Thanks for your update information. The next time we pay you, we will
-              send a $info address. You should get it near the end of each month.
+              Thanks for your information. We will send a $info address.
+              You should get it near the end of each month, or about a week
+              before Yom Tov when applicable.
               <br>
               Best,
               <br>
@@ -465,7 +391,7 @@ function NextNoticeOrg($email, $rname, $ppemail, $maddress){
   $headers = "From: mahtzevah@GMail.com\r\n";
   $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
   $headers .= "MIME-Version: 1.0\r\n";
-  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+  $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
   if(mail($to, $subject, $message, $headers)){
     return true;
@@ -473,6 +399,41 @@ function NextNoticeOrg($email, $rname, $ppemail, $maddress){
     return false;
   }
 }
+
+function testEmail(){
+  $to = "efraimmkrug@gmail.com";
+  $subject = 'test - and only a test';
+  $message = "<html class='no-js' lang='en' dir='ltr'><head><meta charset='ISO-8859-1'/></head>
+              <body>
+              <div div style='font-size:12px;background-color:#f98e3f;color:#87605c;width:500px;height:400px;padding:36px;'>
+              <font color=red>Dear Dude</font>,
+              <br>
+              <font size=2em>Thanks for your information.</font>
+              <br>
+              <p class=d>
+              Best,
+              <br>
+              Efraim
+              </p>
+              </div>
+              </body>
+              </html>";
+
+  $headers = "From: mahtzevah@GMail.com\r\n";
+  $headers .= "Reply-To: mahtzevah@GMail.com\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
+  if(mail($to, $subject, $message, $headers)){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+// testEmail();
+// sendPersonNotify("efraimmkrug@gmail.com", "Efraim", "Org 04", "Rabbi Org04");
+// NextNoticeOrg("EfraimMKrug@GMail.com", "Rabbi Org04", "happyMoney@happyDomain.com", "paypalefraim@yahoo.com" );
 // WelcomeOrg("EfraimMKrug@GMail.com","Holy Rabbi", "14", "OKEY", "https://www.NameThatThing.site/accept.html?RID=3&X=$1$h99zZovM$rSFy9JHuBvrO5fM7GODVi/&Y=Efraim");
 // sendEmailRequest("EfraimMKrug@GMail.com","https://www.NameThatThing.site/accept.html?RID=3&X=$1$h99zZovM$rSFy9JHuBvrO5fM7GODVi/&Y=Efraim","Rabbi Efraim","Kaddish","Happy Go Lucky","14 AdarII","18.00");
 ?>

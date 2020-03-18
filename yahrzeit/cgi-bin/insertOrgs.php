@@ -12,22 +12,21 @@ $OCountry = "";
 $OPayPalEmail = "";
 $OMailAddress = "";
 
+if (count($_REQUEST) < 4) die();
 
-if (count($_POST) < 5) die();
+if(array_key_exists('ORav', $_REQUEST)) $ORav = urldecode($_REQUEST['ORav']);
+if(array_key_exists('OEmail', $_REQUEST)) $OEmail = urldecode($_REQUEST['OEmail']);
+if(array_key_exists('OName', $_REQUEST)) $OName = urldecode($_REQUEST['OName']);
+if(array_key_exists('OStreetAddress', $_REQUEST)) $OStreetAddress = urldecode($_REQUEST['OStreetAddress']);
+if(array_key_exists('OCity', $_REQUEST)) $OCity = urldecode($_REQUEST['OCity']);
+if(array_key_exists('OState', $_REQUEST)) $OState = urldecode($_REQUEST['OState']);
+if(array_key_exists('OCountry', $_REQUEST)) $OCountry = urldecode($_REQUEST['OCountry']);
+if(array_key_exists('OPayPalEmail', $_REQUEST)) $OPayPalEmail = urldecode($_REQUEST['OPayPalEmail']);
+if(array_key_exists('OMailAddress', $_REQUEST)) $OMailAddress = urldecode($_REQUEST['OMailAddress']);
+if(array_key_exists('OrgKey', $_REQUEST)) $OrgKey = urldecode($_REQUEST['OrgKey']);
 
-if(array_key_exists('ORav', $_POST)) $ORav = $_POST['ORav'];
-if(array_key_exists('OEmail', $_POST)) $OEmail = $_POST['OEmail'];
-if(array_key_exists('OName', $_POST)) $OName = $_POST['OName'];
-if(array_key_exists('OStreetAddress', $_POST)) $OStreetAddress = $_POST['OStreetAddress'];
-if(array_key_exists('OCity', $_POST)) $OCity = $_POST['OCity'];
-if(array_key_exists('OState', $_POST)) $OState = $_POST['OState'];
-if(array_key_exists('OCountry', $_POST)) $OCountry = $_POST['OCountry'];
-if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = $_POST['OPayPalEmail'];
-if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = $_POST['OMailAddress'];
-if(array_key_exists('OrgKey', $_POST)) $OrgKey = $_POST['OrgKey'];
-
-if(array_key_exists('X', $_POST)) $X = $_POST['X'];
-if(array_key_exists('Y', $_POST)) $Y = $_POST['Y'];
+if(array_key_exists('X', $_REQUEST)) $X = urldecode($_REQUEST['X']);
+if(array_key_exists('Y', $_REQUEST)) $Y = urldecode($_REQUEST['Y']);
 
 $today = date("Y-m-d H:i:s");
 $OrgKey = crypt($today . $OEmail . $OName);
@@ -55,6 +54,9 @@ $OID = $conn->insert_id;
 $sql = "INSERT INTO `POConn` (`PID`,`OID`) VALUES ('" . $ConfPID .  "','" . $OID . "')";
 $resource = $conn->query($sql);
 
-$href = "https://www.NameThatThing.site/acceptFirst.html?RID=0" . "&X=" . $OrgKey . "&Y=" . $OID;
+echo "<html><body><pre>";
+
+// echo "https://www.NameThatThing.site/acceptFirst.html?RID=0&PID=" . $ConfPID . "&X=" . $OrgKey . "&Y=" . $OID;
+$href = "https://www.NameThatThing.site/acceptFirst.html?RID=0&PID=" . $ConfPID . "&X=" . $OrgKey . "&Y=" . $OID;
 WelcomeOrg($OEmail, $ORav, $OID, $OrgKey, $href);
 ?>

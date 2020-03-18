@@ -10,7 +10,7 @@ $YHDay = "";
 $YHYear = "";
 
 if(array_key_exists('ID', $_POST)) $YahrzeitID = $_POST['ID'];
-if(array_key_exists('YName', $_POST)) $YName = $_POST['YName'];
+if(array_key_exists('YName', $_POST)) $YName = urldecode($_POST['YName']);
 if(array_key_exists('YGDate', $_POST)) $YGDate = $_POST['YGDate'];
 if(array_key_exists('YHMonth', $_POST)) $YHMonth = $_POST['YHMonth'];
 if(array_key_exists('YHDay', $_POST)) $YHDay = $_POST['YHDay'];

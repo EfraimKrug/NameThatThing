@@ -13,16 +13,16 @@ $OMailAddress = "";
 $OrgKey = "";
 
 if(array_key_exists('ID', $_POST)) $OrgID = $_POST['ID'];
-if(array_key_exists('ORav', $_POST)) $ORav = $_POST['ORav'];
-if(array_key_exists('OEmail', $_POST)) $OEmail = $_POST['OEmail'];
-if(array_key_exists('OName', $_POST)) $OName = $_POST['OName'];
-if(array_key_exists('OStreetAddress', $_POST)) $OStreetAddress = $_POST['OStreetAddress'];
-if(array_key_exists('OCity', $_POST)) $OCity = $_POST['OCity'];
-if(array_key_exists('OState', $_POST)) $OState = $_POST['OState'];
-if(array_key_exists('OCountry', $_POST)) $OCountry = $_POST['OCountry'];
-if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = $_POST['OPayPalEmail'];
-if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = $_POST['OMailAddress'];
-if(array_key_exists('OrgKey', $_POST)) $OrgKey = $_POST['OrgKey'];
+if(array_key_exists('ORav', $_POST)) $ORav = urldecode($_POST['ORav']);
+if(array_key_exists('OEmail', $_POST)) $OEmail = urldecode($_POST['OEmail']);
+if(array_key_exists('OName', $_POST)) $OName = urldecode($_POST['OName']);
+if(array_key_exists('OStreetAddress', $_POST)) $OStreetAddress = urldecode($_POST['OStreetAddress']);
+if(array_key_exists('OCity', $_POST)) $OCity = urldecode($_POST['OCity']);
+if(array_key_exists('OState', $_POST)) $OState = urldecode($_POST['OState']);
+if(array_key_exists('OCountry', $_POST)) $OCountry = urldecode($_POST['OCountry']);
+if(array_key_exists('OPayPalEmail', $_POST)) $OPayPalEmail = urldecode($_POST['OPayPalEmail']);
+if(array_key_exists('OMailAddress', $_POST)) $OMailAddress = urldecode($_POST['OMailAddress']);
+if(array_key_exists('OrgKey', $_POST)) $OrgKey = urldecode($_POST['OrgKey']);
 
 $sql = "UPDATE Orgs SET ORav = " . "'" . $ORav . "'," .
                         "OEmail = " . "'" . $OEmail . "'," .

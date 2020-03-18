@@ -7,7 +7,7 @@ if(array_key_exists('ID', $_POST) && ($_POST['ID'] > 0)){
 }
 else
   if(array_key_exists('ConfKey', $_POST)){
-    $ConfKey = $_POST['ConfKey'];
+    $ConfKey = urldecode($_POST['ConfKey']);
     $sql = "SELECT * FROM Conf WHERE ConfKey = '" . $ConfKey . "'";
   }
 

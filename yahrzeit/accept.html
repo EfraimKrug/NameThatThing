@@ -5,7 +5,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel = "stylesheet" type = "text/css" href = "css/yahrzeit.css" />
-  <title>Yahrzeit Donations</title>
+  <title>Accepting Donations</title>
   <link rel="stylesheet" href="css/foundation.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/yahrzeit.css">
@@ -13,6 +13,7 @@
   <script src="js/formatData.js"></script>
   <script src="js/dataBase.js"></script>
   <script src="js/doMail.js"></script>
+  <script src="js/doMail2.js"></script>
 </head>
 <body>
   <style>
@@ -43,7 +44,7 @@
            <label><font color=#f98e3f>Do you want to accept?</font></label>
            <input type="radio" name="acceptRadio" value="accept" id="accept"><label for="accept"><font color=#f98e3f>Accept</font></label>
            <input type="radio" name="acceptRadio" value="reject" id="reject"><label for="reject"><font color=#f98e3f>Reject</font></label>
-           <button id="SButton" type=button class="button" onclick=formAccept(1);>Accept using PayPal</button>
+           <button id="SButton" type=button class="button" onclick=formAccept(1);>Please Select and Click</button>
        </div>
 
       </div>
@@ -83,71 +84,63 @@ var Y = getUrlVars()["Y"];
 var OID = "";
 var PID = "";
 
-    var getOrg = function(){
-          dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', '', ''], function(){});
-        }
+// function getOrg(){
+  // dbOrgs("select", output2, 'X', 'Y', [OID, '', '', '', '', '', '', '', '', '', '', ''], function(){});
+// }
 
-var getPeople = function(){
+function getPeople(){
   var RData = JSON.parse(document.getElementById("output").innerHTML);
   OID = RData['ReqOID'];
   PID = RData['ReqPID'];
-  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], getOrg);
+  // dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], getOrg);
+  dbPeople("select", output3, 'X', 'Y', [PID, '', '', '', '', '', '', ''], function(){});
 }
 
 function initData(){
-  // console.log(RID);
-  dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', ''], getPeople);
+  dbRequests("select", output, 'X', 'Y', [RID, '', '', '', '', '', '', '', '', '', '', ''], getPeople);
 }
 
 initData();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-
-function emailNextNoticeOrg(){
-  var out = JSON.parse(output2.innerHTML);
-  doMail("NextNoticeOrg", out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']);
-  window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
-}
-
-//response to formAccept...
-//first response - give email for PayPal
-// var emailaddress = "";
 //
-// function storeEmailAddress(){
-//     // if(!emailaddress) emailaddress = popUpReturn;
-//
-//     var RData = JSON.parse(document.getElementById("output").innerHTML);
-//     var OData = JSON.parse(document.getElementById("output2").innerHTML);
-//     var OID = RData['ReqOID'];
-//
-//     OData['OPayPalEmail'] = emailaddress;
-//     OData['ID'] = OData['OrgID'];
-//     // console.log(OData);
-//     // console.log(emailELT.value);
-//     // console.log(emailaddress);
-//     dbOrgs("update", output4, X, Y, OData, function (){});
-//     emailNextNoticeOrg();
+// function emailNextNoticeOrg(){
+//   var out = JSON.parse(output2.innerHTML);
+//   doMail("NextNoticeOrg", out['OEmail'], out['ORav'], out['OPayPalEmail'], out['OMailAddress']);
+//   window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
 // }
 
+//use
 function emailAccept(){
-    var out = JSON.parse(output3.innerHTML)[0];
-    doMail("OrgAcceptedPeople", out['EMail'], out['FName'], RID);
-    window.open("https://NameThatThing.site/peopleThanks.html", "resizable=yes");
+    var outP = JSON.parse(output3.innerHTML)[0];
+    //send to people RID, PID, OID, YID, data, callback
+    doMail2("OrgAcceptedPeople", RID, outP['PeopleID'], 0, 0, 0, '', function(){});
+    window.open("https://NameThatThing.site/ThanksWillSend.html", "resizable=yes");
 }
 
+//use - need final email
 function emailReject(){
-    var out = JSON.parse(output3.innerHTML)[0];
-    doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID, popUpReturn);
-    window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
+    var outP = JSON.parse(output3.innerHTML)[0];
+    //send to people
+    doMail2("OrgCanceledPeople", RID, outP['PeopleID'], 0, 0, 0, '', function(){});
+    // doMail("OrgCanceledPeople", outP['EMail'], outP['FName'], RID, popUpReturn);
+    window.open("https://NameThatThing.site/ThanksWillLetThemKnow.html?fn=" + outP['FName'] + "&ln=" + outP['LName'], "resizable=yes");
 }
 
+//use
+var rejReason = '';
 function continueRejection(){
+  if(!rejReason) rejReason = popUpReturn;
   var RData = JSON.parse(document.getElementById("output").innerHTML);
+  var rejReasonRec = [RData['RID'], rejReason];
   var strDate = getTodayDate();
   RData['ReqCancelDate'] = strDate;
+
+  dbRejectReason("insert", output2, 'X', 'Y', rejReasonRec, function(){});
   dbRequests("update", output, 'X', 'Y', RData, emailReject);
 }
 
+//use
 function acceptDon(){
   var acc = document.getElementById("accept");
   var rej = document.getElementById("reject");
@@ -157,57 +150,12 @@ function acceptDon(){
   if(acc.checked){
     RData['ReqRequestAcceptDate'] = strDate;
     dbRequests("update", output, 'X', 'Y', RData, emailAccept);
-    //send email to requestor
-    //send list of yahrzeits - by date - to organization
   }
   if(rej.checked){
     openPopUpText("Please tell us why you are rejecting this request.", "Reason", continueRejection, nostuff);
   }
 }
-
-//response to formAccept...
-//second response - give mailing address
-
-// var mailaddress = "";
-//
-// function storeCheckAddress(){
-//     // console.log(popUpReturn);
-//     if(!mailaddress) mailaddress = popUpReturn;
-//     // console.log(mailaddress);
-//     var RData = JSON.parse(document.getElementById("output").innerHTML);
-//     var OData = JSON.parse(document.getElementById("output2").innerHTML);
-//     var OID = RData['ReqOID'];
-//
-//     OData['OMailAddress'] = mailaddress;
-//     OData['ID'] = OData['OrgID'];
-//
-//     dbOrgs("update", output4, X, Y, OData, function (){});
-//     emailNextNoticeOrg();
-// }
-//
-// // Option 2 on formAccept - get an address to send check
-// function acceptCheck(){
-//   mailaddress = mailaddressELT.value;
-//   if(mailaddress.length < 10)
-//     openPopUpText("Please tell us exactly how to address the envelope.", "Mailing Address", storeCheckAddress, nostuff);
-//   else
-//     storeCheckAddress();
-// }
-//
-// // Email both person and organization
-// // Person - needs to find another Org
-// // Organization - for verification...
-// function emailOrg(){
-//   var out = JSON.parse(output2.innerHTML);
-//   doMail("CancelOrg", out['OEmail']);
-//   var out = JSON.parse(output3.innerHTML)[0];
-//   doMail("OrgCanceledPeople", out['EMail'], out['FName'], RID);
-//   window.open("https://NameThatThing.site/orgThanks.html", "resizable=yes");
-// }
-//
-// // Option 3 on formAccept
-// // Organization is asking to leave them alone - Mamash like Rashbi
-// function refusalDB(){
+//use
 function getTodayDate(){
   var today = new Date();
   var strDate = 'Y-m-d'
@@ -216,7 +164,7 @@ function getTodayDate(){
     .replace('d', today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
   return strDate;
 }
-
+//use
 function formAccept(level){
   if(LOGON_OK.search("TRUE") > -1){
     switch(level){

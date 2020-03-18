@@ -53,6 +53,7 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
     case "POConn":            func = formatPOConn; break;
     case "checkLogin":        func = doNothing; break;
     case "orgLogin":          func = doNothing; break;
+    case "RejectReason":      func = formatRejectReason; break;
     case "paidLogin":         func = formatPaid;
                               X = rowVars['X']; Y = rowVars['Y'];
                               break;
@@ -62,6 +63,8 @@ function dbGo(TableName, type, outDiv, X, Y, rowVars, callback) {
   xhttp.open("POST", phpProg, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   // console.log(func(rowVars));
+  // console.log(phpProg);
+  // console.log("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
   xhttp.send("X=" +  X + "&Y=" + Y + "&" + func(rowVars));
 }
 
@@ -100,6 +103,10 @@ function dbRequests(type, outDiv, X, Y, rowVars, callback) {
 
 function dbPOConn(type, outDiv, X, Y, rowVars, callback) {
   return dbGo("POConn", type, outDiv, X, Y, rowVars, callback);
+}
+
+function dbRejectReason(type, outDiv, X, Y, rowVars, callback) {
+  return dbGo("RejectReason", type, outDiv, X, Y, rowVars, callback);
 }
 
 function doNothing(rowVars){
