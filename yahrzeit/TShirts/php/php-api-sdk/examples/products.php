@@ -1,12 +1,13 @@
 <?php
-use Printful\Exceptions\PrintfulApiException;
-use Printful\Exceptions\PrintfulException;
-use Printful\PrintfulApiClient;
+// require '..\Exceptions\PrintfulApiException.php';
+//
+// use "..\Exceptions\PrintfulException";
+// use "..\PrintfulApiClient";
 
-require_once __DIR__ . '../vendor/autoload.php';
+// require_once __DIR__ . '../vendor/autoload.php';
 
 // Replace this with your API key
-$apiKey = '';
+$apiKey = 'aj8lew54-qdnh-aam0:cswl-uizia5v89ov4';
 
 $pf = new PrintfulApiClient($apiKey);
 
@@ -35,9 +36,11 @@ try {
     var_export($data);
     */
 
-} catch (PrintfulApiException $e) { //API response status code was not successful
+} catch (Exception $e) { //API response status code was not successful
     echo 'Printful API Exception: ' . $e->getCode() . ' ' . $e->getMessage();
-} catch (PrintfulException $e) { //API call failed
+} catch (Exception $e) { //API call failed
     echo 'Printful Exception: ' . $e->getMessage();
     var_export($pf->getLastResponseRaw());
 }
+
+?>

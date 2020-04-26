@@ -1,13 +1,30 @@
 <?php
 
-namespace Printful;
+// namespace Printful\Exceptions;
 
-use Printful\Exceptions\PrintfulApiException;
-use Printful\Exceptions\PrintfulException;
+use Exception;
 
 /**
- * Class PrintfulClient
+ * Generic API exception
  */
+class PrintfulException extends Exception
+{
+    /**
+     * Last response from API that triggered this exception
+     *
+     * @var string
+     */
+    public $rawResponse;
+}
+
+class PrintfulApiException extends PrintfulException
+{
+}
+
+
+################################################################
+## PrintfulApiClient
+################################################################
 class PrintfulApiClient
 {
     /**
@@ -69,6 +86,7 @@ class PrintfulApiClient
      */
     public function get($path, $params = [])
     {
+        echo "GET";
         return $this->request('GET', $path, $params);
     }
 
@@ -96,6 +114,10 @@ class PrintfulApiClient
      */
     public function post($path, $data = [], $params = [])
     {
+        echo $path;
+        echo "<br><pre>";
+        print_r($data);
+        echo "</pre><br>";
         return $this->request('POST', $path, $params, $data);
     }
 
@@ -110,6 +132,7 @@ class PrintfulApiClient
      */
     public function put($path, $data = [], $params = [])
     {
+        echo "PUT";
         return $this->request('PUT', $path, $params, $data);
     }
 
@@ -143,6 +166,7 @@ class PrintfulApiClient
      */
     private function request($method, $path, array $params = [], $data = null)
     {
+        echo "REQUEST";
         $this->lastResponseRaw = null;
         $this->lastResponse = null;
 
@@ -195,3 +219,5 @@ class PrintfulApiClient
         return $response['result'];
     }
 }
+
+?>

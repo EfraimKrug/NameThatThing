@@ -1,6 +1,7 @@
 #shoppingCart {
-  position:absolute;
-  width: 30%;
+  /* position:absolute; */
+  position: fixed;
+  width: 40%;
   height: 20%;
   top: 5%;
   right: 5%;
@@ -9,9 +10,21 @@
 }
 
 img {
+  /* float:left; */
+  position:relative;
   border:4px solid orange;
   height: 40%;
-  width: 40%;
+  width: 80%;
+}
+
+.bigable {
+  position: fixed;
+  float:left;
+  top: 0px;
+  left: 0px;
+  height: 80%;
+  width: 60%;
+  z-index: 99;
 }
 
 .back {
@@ -44,17 +57,24 @@ img {
 }
 
 
+#colorBar-00, #colorBar-01, #colorBar-02, #colorBar-03, #colorBar-04, #colorBar-05, #colorBar-06 {
+  margin:2%;
+  display: inline;
+}
+
+
 #total {
   color:maroon;
 }
 
 #dataGather {
   visibility: hidden;
-  position: absolute;
+  /* position: absolute; */
+  position:fixed;
   top: 5%;
   left: 10%;
   width: 30%;
-  height: 50%;
+  height: 70%;
   color: maroon;
   z-index: 9;
   background-color: grey;
@@ -109,7 +129,7 @@ img {
   /* padding-left:6%; */
 }
 
-.sizeButton {
+.sizeButton, .colorButton {
   padding: 1px;
   margin: 1px;
   width: 2%;
@@ -121,12 +141,16 @@ img {
 .sideBy {
   display:inline;
   max-height: 45%;
-  max-width: 45%;
+  max-width: 85%;
   /* background-color: orange; */
 }
 
 .noshow {
   display:none;
+}
+
+#id=sButton-00,#id=sButton-01,#id=sButton-02,#id=sButton-03,#id=sButton-04,#id=sButton-05,#id=sButton-06{
+
 }
 
 .submitButton {
@@ -139,7 +163,47 @@ img {
   background-color: pink;
 }
 
+.cancelButton {
+  padding: 5px;
+  margin-top:5px;
+  width: 12%;
+  height: 12%;
+  display: inline;
+  border:2px solid blue;
+  background-color: lightgrey;
+}
+
+.elementFade {
+    /* width:200px;
+    height: 200px; */
+    /* background: red; */
+    -webkit-animation: fadeinout 1s linear forwards;
+    animation: fadeinout 1s linear forwards;
+    opacity: 1;
+}
+
+@-webkit-keyframes fadeinout {
+  50% { opacity: 0; }
+  /* 100%,0% { opacity: 1; } */
+  /* 0%,100% { opacity: 0; } */
+}
+
+@keyframes fadeinout {
+  50% { opacity: 0; }
+  /* 100%,0% { opacity: 1; } */
+  /* 0%,100% { opacity: 0; } */
+}
+
 td {
   padding:2px;
   text-align: center;
+}
+
+.leftAlign {
+  padding:2px;
+  text-align: left;
+}
+
+.oneColumn {
+  width: 20%;
 }

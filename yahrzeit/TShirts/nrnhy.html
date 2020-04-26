@@ -10,10 +10,31 @@
 </head>
 <body bgcolor=tan>
 <style>
+  h1 {
+    color: maroon;
+  }
+
+  #place {
+    position: fixed;
+    right: 5px;
+    top: 5px;
+    padding: 1%;
+    height:15%;
+    width: 15%;
+    border: 2px solid green;
+    background-color: lightgrey;
+    color:maroon;
+    visibility: hidden;
+  }
 
   #person-00 {
     position: absolute;
     z-index: 1;
+  }
+
+  #nefesh-mercheves-00 {
+    position: absolute;
+    z-index: 0;
   }
 
   #chaya-00 {
@@ -43,34 +64,43 @@
 
   .person {
     width: 220px;
-    height: 740px;
+    height: 790px;
     border: 2px solid black;
+  }
+
+  .nefesh-mercheves {
+    width: 40%;
+    height: 140%;
+    border: 2px solid blue;
+    background-color: lightblue;
+    color: blue;
+    padding: 10px;
   }
 
   .nefesh {
     width: 190px;
-    height: 210px;
+    height: 230px;
     border: 2px solid maroon;
     background-color: maroon;
-    color: maroon;
+    color: blue;
     padding: 10px;
   }
 
   .ruach {
     width: 190px;
-    height: 210px;
+    height: 230px;
     border: 2px solid blue;
     background-color: blue;
-    color: blue;
+    color: grey;
     padding: 10px;
   }
 
   .neshama {
     width: 190px;
-    height: 210px;
+    height: 230px;
     border: 2px solid grey;
     background-color: grey;
-    color: grey;
+    color: black;
     padding: 10px;
   }
 
@@ -110,36 +140,41 @@
 
 
 </style>
+<h1>The Soul of Every Thing</h1>
+<div id=place></div>
 <canvas id=myCanvas></canvas>
-<div id=yechida-00 class=yechida>yechida [yechida-nefesh: elokus]</div>
-<div id=chaya-00 class=chaya>chaya [yechida-ruach: elokus]</div>
+<div id=nefesh-mercheves-00 class=nefesh-mercheves><span title="Pintele Yid (it all starts here)">Nefesh Mercheves</span>
+
+<div id=yechida-00 class=yechida><span title="Yechida Kallalit: Beyond/Adam Kadmon">yechida [yechida-nefesh: <i>Elokus</i>]</span></div>
+<div id=chaya-00 class=chaya><span title="Chaya Kallalit: Beyond/Olam Atzilut/M'daber">chaya [yechida-ruach: <i>Elokus</i>]</span></div>
 <div id=person-00 class=person>
 </div>
-<div id=neshama-00 class=neshama>
-  <div class=spart>yechida [elokus]</div>
-  <div class=spart>chaya [elokus]</div>
+<div id=neshama-00 class=neshama><span id=NeshamaK title="Neshama Kallalit: Moach/Olam Bria/Chaya">Neshama</span>
+  <div class=spart onmouseover="showPlace(1, 'yechida', 'NeshamaK');"  onmouseout="showPlace(0, 'yechida', 'NeshamaK');">yechida [<i>Elokus</i>]</div>
+  <div class=spart onmouseover="showPlace(1, 'chaya', 'NeshamaK');"  onmouseout="showPlace(0, 'chaya', 'NeshamaK');">chaya [<i>Elokus</i>]</div>
 
-  <div class=part>neshama [elokus]</div>
-  <div class=part>ruach</div>
-  <div class=part>nefesh</div>
+  <div class=part onmouseover="showPlace(1, 'neshama', 'NeshamaK');"  onmouseout="showPlace(0, 'neshama', 'NeshamaK');">neshama [<i>Elokus</i>]</div>
+  <div class=part onmouseover="showPlace(1, 'ruach', 'NeshamaK');"  onmouseout="showPlace(0, 'ruach', 'NeshamaK');">ruach</div>
+  <div class=part onmouseover="showPlace(1, 'nefesh', 'NeshamaK');"  onmouseout="showPlace(0, 'nefesh', 'NeshamaK');">nefesh</div>
 </div>
-<div id=ruach-00 class=ruach>
-  <div class=spart>yechida [elokus]</div>
-  <div class=spart>chaya [elokus]</div>
+<div id=ruach-00 class=ruach><span id=RuachK title="Ruach Kallalit: Lev/Olam Yetzira/Tzemach">Ruach</span>
+  <div class=spart onmouseover="showPlace(1, 'yechida', 'RuachK');"  onmouseout="showPlace(0, 'yechida');">yechida [<i>Elokus</i>]</div>
+  <div class=spart onmouseover="showPlace(1, 'chaya', 'RuachK');"  onmouseout="showPlace(0, 'chaya');">chaya [<i>Elokus</i>]</div>
 
-  <div class=part>neshama</div>
-  <div class=part>ruach</div>
-  <div class=part>nefesh</div>
+  <div class=part onmouseover="showPlace(1, 'neshama', 'RuachK');"  onmouseout="showPlace(0, 'neshama', 'RuachK');">neshama </div>
+  <div class=part onmouseover="showPlace(1, 'ruach', 'RuachK');"  onmouseout="showPlace(0, 'ruach', 'RuachK');">ruach</div>
+  <div class=part onmouseover="showPlace(1, 'nefesh', 'RuachK');"  onmouseout="showPlace(0, 'nefesh', 'RuachK');">nefesh</div>
 </div>
-<div id=nefesh-00 class=nefesh>
-  <div class=spart>yechida [elokus]</div>
-  <div class=spart>chaya</div>
+<div id=nefesh-00 class=nefesh><span id=NefeshK title="Nefesh Kallalit: Kaved/Olam Assiya/Domeim">Nefesh</span>
+  <div class=spart onmouseover="showPlace(1, 'yechida', 'NefeshK');"  onmouseout="showPlace(0, 'yechida', 'NefeshK');">yechida</div>
+  <div class=spart onmouseover="showPlace(1, 'chaya', 'NefeshK');"  onmouseout="showPlace(0, 'chaya', 'NefeshK');">chaya</div>
 
-  <div class=part>neshama</div>
-  <div class=part>ruach</div>
-  <div class=part>nefesh</div>
+  <div class=part onmouseover="showPlace(1, 'neshama', 'NefeshK');"  onmouseout="showPlace(0, 'neshama', 'NefeshK');">neshama</div>
+  <div class=part onmouseover="showPlace(1, 'ruach', 'NefeshK');"  onmouseout="showPlace(0, 'ruach', 'NefeshK');">ruach</div>
+  <div class=part onmouseover="showPlace(1, 'nefesh', 'NefeshK');"  onmouseout="showPlace(0, 'nefesh', 'NefeshK');">nefesh</div>
 </div>
 
+</div> <!-- nefesh-mercheves-00 -->
 <script>
 person = document.getElementById("person-00");
 neshama = document.getElementById("neshama-00");
@@ -147,27 +182,34 @@ ruach = document.getElementById("ruach-00");
 nefesh = document.getElementById("nefesh-00");
 
 function place(spot, sfx){
+  nefeshMercheves = document.getElementById("nefesh-mercheves-00");
+  nefeshMercheves.style.top =  (spot - 300) + "px";
+  nefeshMercheves.style.left =  (spot - 2) + "px";
+
   yechida = document.getElementById("yechida-" + sfx);
-  yechida.style.top =  (spot - 100) + "px";
-  yechida.style.left = (spot - 100) + "px";
+  yechida.style.top =  (spot - 350) + "px";
+  yechida.style.left = (spot - 300) + "px";
 
   chaya = document.getElementById("chaya-" + sfx);
-  chaya.style.top =  (spot - 50) + "px";
-  chaya.style.left = (spot - 50) + "px";
+  chaya.style.top =  (spot - 300) + "px";
+  chaya.style.left = (spot - 250) + "px";
 
   person = document.getElementById("person-" + sfx);
   neshama = document.getElementById("neshama-" + sfx);
   ruach = document.getElementById("ruach-" + sfx);
   nefesh = document.getElementById("nefesh-" + sfx);
 
-  person.style.top =  spot + "px";
-  person.style.left = spot + "px";
-  neshama.style.top = (spot + 5) + "px";
-  neshama.style.left = (spot + 5) + "px";
-  ruach.style.top = (spot + 255) + "px";
-  ruach.style.left = (spot + 5) + "px";
-  nefesh.style.top = (spot + 505) + "px";
-  nefesh.style.left = (spot + 5) + "px";
+  person.style.top =  (spot - 260) + "px";
+  person.style.left = (spot - 205) + "px";
+
+  neshama.style.top = (spot - 250) + "px";
+  neshama.style.left = (spot - 200) + "px";
+
+  ruach.style.top = (spot + 10) + "px";
+  ruach.style.left = (spot - 200) + "px";
+
+  nefesh.style.top = (spot + 270) + "px";
+  nefesh.style.left = (spot - 200) + "px";
 }
 
 // function drawLine(spot, sfx){
@@ -182,6 +224,30 @@ function place(spot, sfx){
 
 place(400, "00");
 // drawLine(400, "00");
+function showPlace(direction, soul, genSoul){
+  var Kallala = document.getElementById(genSoul);
+  var place = document.getElementById("place");
+  place.style.visibility = "hidden";
+  if(direction)
+    place.style.visibility = "visible";
+  if(soul.indexOf("yechida") > -1){
+    place.innerHTML = "beyond";
+  }
+  if(soul.indexOf("chaya") > -1){
+    place.innerHTML = "beyond";
+  }
+  if(soul.indexOf("neshama") > -1){
+    place.innerHTML = "moach/brain";
+  }
+  if(soul.indexOf("ruach") > -1){
+    place.innerHTML = "lev/heart";
+  }
+  if(soul.indexOf("nefesh") > -1){
+    place.innerHTML = "kaved/liver";
+  }
+  place.innerHTML +=  "<hr>" + Kallala.title;
+
+}
 </script>
 </body>
 </html>

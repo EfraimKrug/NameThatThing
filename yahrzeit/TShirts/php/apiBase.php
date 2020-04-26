@@ -1,13 +1,30 @@
 <?php
 
-namespace Printful;
+// namespace Printful\Exceptions;
 
-use Printful\Exceptions\PrintfulApiException;
-use Printful\Exceptions\PrintfulException;
+use Exception;
 
 /**
- * Class PrintfulClient
+ * Generic API exception
  */
+class PrintfulException extends Exception
+{
+    /**
+     * Last response from API that triggered this exception
+     *
+     * @var string
+     */
+    public $rawResponse;
+}
+
+class PrintfulApiException extends PrintfulException
+{
+}
+
+
+################################################################
+## PrintfulApiClient
+################################################################
 class PrintfulApiClient
 {
     /**
@@ -195,3 +212,5 @@ class PrintfulApiClient
         return $response['result'];
     }
 }
+
+?>

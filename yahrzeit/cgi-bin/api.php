@@ -1,13 +1,30 @@
 <?php
 
-namespace Printful;
+namespace Printful\Exceptions;
 
-use Printful\Exceptions\PrintfulApiException;
-use Printful\Exceptions\PrintfulException;
+use Exception;
 
 /**
- * Class PrintfulClient
+ * Generic API exception
  */
+class PrintfulException extends Exception
+{
+    /**
+     * Last response from API that triggered this exception
+     *
+     * @var string
+     */
+    public $rawResponse;
+}
+
+class PrintfulApiException extends PrintfulException
+{
+}
+
+
+################################################################
+## PrintfulApiClient
+################################################################
 class PrintfulApiClient
 {
     /**
@@ -195,3 +212,78 @@ class PrintfulApiClient
         return $response['result'];
     }
 }
+
+############################################################
+# product.php
+############################################################
+// Replace this with your API key
+$apiKey = 'aj8lew54-qdnh-aam0:cswl-uizia5v89ov4';
+
+$pf = new PrintfulApiClient($apiKey);
+
+try {
+    // Get information about the store
+    /*
+    $store = $pf->get('store');
+    var_export($store);
+    */
+
+    // Get product list
+    // $products = $pf->get('products');
+    // print_r($products);
+    // var_export($products);
+
+    // GETS ALL MY PICTURES...
+    // $files = $pf->get('files');
+    // print_r($files);
+
+    // THIS GETS ONE PICTURE
+    // $files = $pf->get('files/190199839');
+    // print_r($files);
+
+    // STORE INFO...
+    // $info = $pf->get('store');
+    // echo "<pre>";
+    // print_r($info);
+    // echo "</pre>";
+    //
+    echo "<h1>Products</h1>";
+    $productList = $pf->get('sync/products');
+    echo "<pre>";
+    print_r($productList);
+    echo "</pre>";
+
+    //sync/products/id - id comes from productList above
+    echo "<h1>One Product - Variants </h1>";
+    $product = $pf->get('sync/products/168655720');
+    echo "<pre>";
+    print_r($product);
+    echo "</pre>";
+
+    //sync/variant/id - id comes from product above
+    echo "<h1>One Variant</h1>";
+    $variant = $pf->get('sync/variant/1839669711');
+    echo "<pre>";
+    print_r($variant);
+    echo "</pre>";
+
+
+    // Get variants for product 10
+    /*
+    $variants = $pf->get('products/10');
+    var_export($variants);
+    */
+
+    // Get information about Variant 1007
+    // $data = $pf->get('products/variant/5e9ce4c9867325');
+    // // var_export($data);
+    // print_r($data);
+
+} catch (PrintfulApiException $e) { //API response status code was not successful
+    echo 'Printful API Exception: ' . $e->getCode() . ' ' . $e->getMessage();
+} catch (PrintfulException $e) { //API call failed
+    echo 'Printful Exception: ' . $e->getMessage();
+    var_export($pf->getLastResponseRaw());
+}
+
+?>
